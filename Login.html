@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sign In - Grassroots Sales Leads</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#acbfff",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#bc4800",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed": "#00174b",
+                        "surface-dim": "#d9dadb",
+                        "surface-container": "#edeeef",
+                        "outline": "#737686",
+                        "inverse-primary": "#b4c5ff",
+                        "on-tertiary-fixed": "#360f00",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9fa",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "outline-variant": "#c3c6d7",
+                        "on-primary-fixed": "#00174b",
+                        "tertiary-fixed": "#ffdbcd",
+                        "inverse-on-surface": "#f0f1f2",
+                        "primary": "#004ac6",
+                        "on-secondary-fixed-variant": "#31447b",
+                        "secondary": "#495c95",
+                        "on-surface": "#191c1d",
+                        "background": "#f8f9fa",
+                        "on-primary-container": "#eeefff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-tint": "#0053db",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-surface-variant": "#434655",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#394c84",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#ffede6",
+                        "inverse-surface": "#2e3132",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary": "#943700"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBDyhbj7mk4OQDFkVce5L_Wt64q6v-QY_6Ts8E5nzN7X9YZ-Qil-5crKLmEmBskY5gYSa3qm5Bt8hw7mz56e7my5EIwz3wSi4vFTK-sfNT4PS_ZlAfkSA2jbJA2Sz6-phCkQNpdnTHnLk3exJQ8FsUG85b4WqiF4W8xlFPeUD6uV8tsvLhBR5l5TKwxri7YIq3Ve_cH_3xGSMuEenWGIbaPRn3PFK2oIlzt_4CFDUfj6qm6bDYDA6I4PLHe60KO6BSkT2K1LLePkeh0);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed
+        }
+
+        .ambient-shadow {
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2)
+        }
+
+        .cta-gradient {
+            background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%)
+        }
+
+        /* Overlay to ensure readability against the background image */
+        .page-overlay {
+            background-color: rgba(25, 28, 29, 0.4)
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased text-on-surface relative">
+    <div class="fixed inset-0 page-overlay pointer-events-none z-0"></div>
+    <!-- Header / TopAppBar -->
+    <main class="flex-grow flex items-center justify-center px-4 pt-20 pb-12 z-10">
+        <div class="w-full max-w-[440px]">
+            <!-- Center Branding -->
+            <div class="mb-10 text-center">
+                <div class="inline-flex items-center gap-3 mb-2">
+                    <span class="material-symbols-outlined text-white text-4xl" data-icon="psychology">psychology</span>
+                    <h2 class="text-[1.75rem] font-bold tracking-tight text-white drop-shadow-md">Grassroots Sales Leads
+                    </h2>
+                </div>
+            </div>
+            <!-- Login Card -->
+            <div
+                class="bg-surface-container-lowest rounded-xl p-8 md:p-10 ambient-shadow border border-outline-variant/10 relative overflow-hidden">
+                <div class="mb-8 text-center md:text-left">
+                    <h1 class="text-[1.5rem] font-semibold text-on-surface mb-2 leading-tight">Sign in to your account
+                    </h1>
+                    <p class="text-[0.875rem] text-on-surface-variant">Enter your credentials to access the grassroots
+                        portal.</p>
+                </div>
+                <form action="#" class="space-y-6" id="loginForm">
+                    <!-- Mobile Number Field -->
+                    <div class="space-y-1.5">
+                        <label class="text-[0.6875rem] font-semibold uppercase tracking-wider text-on-surface-variant"
+                            for="mobile">Mobile Number</label>
+                        <p data-field-error="true" style="display:none;color:#ba1a1a;font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem;"></p>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
+                                id="mobile" name="mobile" placeholder="+1 (555) 000-0000" type="tel" />
+                        </div>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label
+                                class="text-[0.6875rem] font-semibold uppercase tracking-wider text-on-surface-variant"
+                                for="password">Password</label>
+                        </div>
+                        <p data-field-error="true" style="display:none;color:#ba1a1a;font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem;"></p>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
+                                id="password" name="password" placeholder="••••••••" type="password" />
+                        </div>
+                    </div>
+                    <!-- OTP Field -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label
+                                class="text-[0.6875rem] font-semibold uppercase tracking-wider text-on-surface-variant"
+                                for="otp">OTP</label>
+                        </div>
+                        <p data-field-error="true" style="display:none;color:#ba1a1a;font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem;"></p>
+                        <div class="relative">
+                            <input
+                                class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
+                                id="otp" maxlength="6" name="otp" placeholder="Enter 6-digit code" type="text" />
+                        </div>
+                    </div>
+                    <!-- Remember Me removed -->
+                    <!-- Sign In Button -->
+                    <button
+                        class="w-full cta-gradient text-white font-semibold py-3.5 xl:rounded-xl hover:-translate-y-0.5 transition-all shadow-md active:scale-95 text-[0.875rem]"
+                        type="submit">
+                        Sign In
+                    </button>
+                </form>
+            </div>
+            <!-- Branding Accent -->
+            <div class="mt-8 flex justify-center opacity-60">
+                <div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-primary mx-2"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full flex flex-col md:flex-row justify-between items-center px-12 py-8 mt-auto z-10">
+        <span class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 mb-4 md:mb-0">© 2024
+            Grassroots Sales Leads. All rights reserved.</span>
+        <div class="flex gap-8">
+            <a class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 hover:text-white transition-colors active:scale-95"
+                href="#">Privacy Policy</a>
+            <a class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 hover:text-white transition-colors active:scale-95"
+                href="#">Terms of Service</a>
+            <a class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 hover:text-white transition-colors active:scale-95"
+                href="#">Security</a>
+        </div>
+    </footer>
+<script src="toast.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Leads | Grassroots Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="sidebar.js?v=2"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface": "#f0f1f2",
+            "on-tertiary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-secondary-fixed": "#00174b",
+            "surface-variant": "#e1e3e4",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e1e3e4",
+            "surface-dim": "#d9dadb",
+            "on-background": "#191c1d",
+            "on-secondary": "#ffffff",
+            "on-tertiary-container": "#ffede6",
+            "tertiary-container": "#bc4800",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-primary": "#b4c5ff",
+            "on-surface-variant": "#434655",
+            "on-primary-fixed-variant": "#003ea8",
+            "surface-container": "#edeeef",
+            "error": "#ba1a1a",
+            "surface": "#f8f9fa",
+            "on-secondary-container": "#394c84",
+            "on-tertiary-fixed-variant": "#7d2d00",
+            "secondary": "#495c95",
+            "surface-container-low": "#f3f4f5",
+            "outline-variant": "#c3c6d7",
+            "outline": "#737686",
+            "primary-fixed": "#dbe1ff",
+            "surface-bright": "#f8f9fa",
+            "secondary-fixed": "#dbe1ff",
+            "on-surface": "#191c1d",
+            "tertiary-fixed": "#ffdbcd",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed": "#360f00",
+            "surface-container-high": "#e7e8e9",
+            "on-error": "#ffffff",
+            "background": "#f8f9fa",
+            "on-primary-container": "#eeefff",
+            "primary-container": "#2563eb",
+            "secondary-fixed-dim": "#b4c5ff",
+            "tertiary": "#943700",
+            "tertiary-fixed-dim": "#ffb596",
+            "secondary-container": "#acbfff",
+            "inverse-surface": "#2e3132",
+            "on-primary-fixed": "#00174b",
+            "primary": "#004ac6",
+            "on-secondary-fixed-variant": "#31447b"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .no-border { border: none !important; }
+    .tonal-shift { background-color: #f3f4f5; }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(24px);
+    }
+  </style>
+</head>
+<body class="text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Side Navigation Bar -->
+<app-sidebar active-page="manage_leads.html"></app-sidebar>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen bg-surface">
+<!-- Top Bar -->
+<header class="h-16 flex items-center justify-between px-8 bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100">
+<h2 class="text-xl font-bold tracking-tight text-slate-900">Manage Leads</h2>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-slate-200 overflow-hidden ml-2">
+<img alt="User profile avatar" data-alt="professional portrait of a business executive in a modern office environment with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkuZOcjt-C24EHkEMkzVMN0gxkiVqTeCUuU-sqs3lyHwyYKwjYOxZ6GG_okwlao8iia3eX3flUy8W0zIXcZj25dY6YzKo8hnPHjN0RXxZm97kK0Qttd6Sagb6er_ZkQVm9x_2Bzk23bf5BAHxWdCMObQRiBsiDnQzGdTPNatULdFoUeRn489INMgrx7AoEOOeqEqvtb0V0ap54vhEx0PBegSZySyYgcwzwUfrkCDliuZZSp1CjuiZsIeAkUjqU6tbEo5t3Z0pgDwRD"/>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-[1600px] mx-auto space-y-6">
+<!-- Filters Row -->
+<section class="flex flex-wrap items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+<div class="flex-1 min-w-[300px] relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm placeholder:text-slate-400" placeholder="Search leads, companies, or people..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<select class="bg-slate-50 border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary/20 text-slate-600 cursor-pointer">
+<option>Status: All</option>
+<option>Qualified</option>
+<option>Discovery</option>
+<option>Proposal</option>
+</select>
+<select class="bg-slate-50 border-none rounded-lg text-sm px-4 py-2 focus:ring-2 focus:ring-primary/20 text-slate-600 cursor-pointer">
+<option>Industry: All</option>
+<option>Technology</option>
+<option>Finance</option>
+<option>Healthcare</option>
+</select>
+<button class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+            Date Range
+          </button>
+</div>
+</section>
+<!-- Bulk Actions Bar -->
+<section class="hidden items-center justify-between bg-white px-6 py-3 rounded-xl shadow-sm border-l-4 border-primary" id="bulk-actions-bar">
+<div class="flex items-center gap-4">
+<span class="text-sm font-semibold text-primary">3 Leads Selected</span>
+<div class="h-4 w-[1px] bg-slate-200 mx-2"></div>
+<button class="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+            Delete Selected
+          </button>
+<button class="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_export">file_export</span>
+            Export Selected
+          </button>
+<button class="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit_calendar">edit_calendar</span>
+            Change Status
+          </button>
+</div>
+<button class="bg-primary hover:bg-primary-container text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+          New Lead
+        </button>
+</section>
+<!-- Leads Table Container -->
+<div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50">
+<th class="px-6 py-4 border-b border-slate-100">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Lead ID</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Company</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Contact Person</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Value</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Status</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Tags</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Owner</th>
+<th class="px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500">Created Date</th>
+<th class="px-4 py-4 border-b border-slate-100 text-right"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<!-- Table Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<input checked="" class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-mono text-slate-500">LD-9021</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-xs">V</div>
+<span class="text-sm font-semibold text-slate-900">Velocity Media</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-slate-600">Sarah Jenkins</span>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-slate-900">$45,000</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-50 text-green-700">Qualified</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Enterprise</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-600">High-Value</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<img alt="JD" class="w-5 h-5 rounded-full" data-alt="professional user avatar icon headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCClEICOwJ9iP1dSl3c4xBL7ngCXBvYxNsCG8EqYK9s41tFW9tXenOGe7Lmf5JUEJEHS8H9gPoiq50eb3fGhDnXMM-CTgYmiWLKtDBDVa6i85aiu7REcJV1GiS5p6jDHfd5KBXuYIdoN23qXmrt3-1G0syZ-8Joh_iAnkNbBZPA5QTYA5YNxZ3edIDjlvFr0haBrLOSYDD0vOgiSyfTpJehjcAvv0g3n8xg1UgJBy8mBtY3L3PchEhmXt7UB-OLS-6obt-7BfN6MK3-"/>
+<span class="text-sm text-slate-600">John Doe</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm text-slate-500">Oct 12, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<input checked="" class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-mono text-slate-500">LD-8842</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600 font-bold text-xs">A</div>
+<span class="text-sm font-semibold text-slate-900">Aura Analytics</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-slate-600">Michael Chen</span>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-slate-900">$12,800</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">Discovery</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Follow-up</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<img alt="AS" class="w-5 h-5 rounded-full" data-alt="close-up of a smiling business consultant professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtZX2mTv5I4C0cAUqlBeXAE5R1BBOat_ndOOiFM1Uh2XVvQPP0KxexbDw1kS_JMEOTD_cfgW-sNFr-yg3As8Y6b8qqDfr1VISbNipnUUCH8Mv4onEFf8D04DioV269LIVxK5RibRou7XOhGsNXFVrjGuzbsQ72FT7Pr8_krBJFiA9HsV8u2rcrhyI64cqnaVergjGDvvkk2Mm__N_FyZB412eDeecI37ziSf0ylObYU34I9nafPWtTMcLawPY6-Tpov0paXiA2vZAa"/>
+<span class="text-sm text-slate-600">Alice Smith</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm text-slate-500">Oct 15, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-slate-50/50 transition-colors bg-blue-50/20">
+<td class="px-6 py-4">
+<input checked="" class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-mono text-slate-500">LD-8701</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 font-bold text-xs">P</div>
+<span class="text-sm font-semibold text-slate-900">Prism Labs</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-slate-600">Elena Rodri</span>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-slate-900">$22,500</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-container text-on-primary-container">Proposal Sent</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">SAAS</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-600">Hot Lead</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<img alt="JD" class="w-5 h-5 rounded-full" data-alt="corporate portrait of male account executive" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb97FttURjFHNWC4pbxUG2vtUnkI8Fug9kjKcHHCOeYhdZYUssdjSBXIP20h4zJZuWMcCrUfyCqRQxtsLfcLUiYvM2rg6NnJ0r3KhiGVENsY3wVMBz6BPf0phiwAMahBgPLnSjH-GICaZOuGkOvw-n62FyVC1rjRfCHXC8Owu178pI5-jmyh5CWttQLByfLRUaVGhNn9sHdo6xclVICT1Ypxh3gp-_nvQ_tEzUFNe0kRiWDfh6nIjj0CZQToyrolHqpQiZKFnrxCaE"/>
+<span class="text-sm text-slate-600">John Doe</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm text-slate-500">Oct 18, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-mono text-slate-500">LD-8650</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-xs">O</div>
+<span class="text-sm font-semibold text-slate-900">Oasis Fintech</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-slate-600">Tom Vance</span>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-slate-900">$8,400</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600">Nurturing</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">SME</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<img alt="AS" class="w-5 h-5 rounded-full" data-alt="professional photo of young business professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSodH5w3Ocs4eG0dDOvGCj5d6SnjALtnxX7BjpTNSNGcjlQhDoXCB1VIFA-34nhKoSiQccKVWU-UVQBp8y5xYxSIhF8mB83rTRVFulqdEh2r2bCOc6gdOrCEgfK3TraN6gUSq3lEKnzn7ZP8YZeGGWGkjLpEII2uJZYSDVSM6y9Qe_nng1mew7aQoG9CFUlpqkNUK7dk3LszKid0y8p1iKsh7qHVeOQUTTxzQlXdhqvb2v5GfNAvwLh8T9ubIiztozRqVES5J1nmNE"/>
+<span class="text-sm text-slate-600">Alice Smith</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm text-slate-500">Oct 20, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Table Row 5 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<input class="rounded text-primary focus:ring-primary/20 border-slate-300" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-mono text-slate-500">LD-8512</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600 font-bold text-xs">L</div>
+<span class="text-sm font-semibold text-slate-900">Lumen Systems</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm text-slate-600">Gary Oldman</span>
+</td>
+<td class="px-4 py-4">
+<span class="text-sm font-bold text-slate-900">$64,000</span>
+</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-error-container text-on-error-container">At Risk</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">Enterprise</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<img alt="JD" class="w-5 h-5 rounded-full" data-alt="professional user avatar icon headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1hErSA7LdeKPIyWvLyE9x4hoW-BRNTzsV4jcSYfYxApSIr3rzsS44hPPr12Q9QNiegaOQaMONonbENJSif_Ee0HSJR1Tez2aqLs_SBXCzYV8TrwI5sz7YEstOhkw2fI-dgcNbbRAOgE_tl5tT-GroqMaV99rge6QGGZqTImIuMuxis80YbNgC5vf_GpiZuUAEhGNVUiYJq6RL9iTwiTfqIdY7_UOAgPzhGrX6IfTjCwyGom_RQ1rFehib2SwcRrXZrRe6DkBHwFXU"/>
+<span class="text-sm text-slate-600">John Doe</span>
+</div>
+</td>
+<td class="px-4 py-4 text-sm text-slate-500">Oct 21, 2023</td>
+<td class="px-4 py-4 text-right">
+<button class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Table Pagination -->
+<div class="px-6 py-4 bg-slate-50/30 flex items-center justify-between">
+<p class="text-sm text-slate-500">Showing <span class="font-bold text-slate-900">1 to 5</span> of <span class="font-bold text-slate-900">124</span> results</p>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">Previous</button>
+<button class="px-3 py-1 rounded-md bg-primary text-white text-sm font-bold shadow-sm">1</button>
+<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">2</button>
+<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">3</button>
+<span class="px-2 text-slate-400">...</span>
+<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">25</button>
+<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Quick Metrics Grid -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Pipeline Value</p>
+<p class="text-2xl font-bold text-slate-900">$1.2M</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Active Leads</p>
+<p class="text-2xl font-bold text-slate-900">842</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest">High Potential</p>
+<p class="text-2xl font-bold text-slate-900">46</p>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Conv. Rate</p>
+<p class="text-2xl font-bold text-slate-900">24.8%</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Button Contextual -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined" data-icon="message">message</span>
+</button>
+<!-- Toast Interaction -->
+<script src="toast.js"></script>
+<script src="app.js"></script>
+</body></html>

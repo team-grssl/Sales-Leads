@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Review Leads | Grassroots Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="sidebar.js?v=2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#0053db",
+                        "on-secondary-fixed": "#00174b",
+                        "surface-variant": "#e1e3e4",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-background": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#ffede6",
+                        "tertiary-container": "#bc4800",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "inverse-primary": "#b4c5ff",
+                        "on-surface-variant": "#434655",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container": "#edeeef",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9fa",
+                        "on-secondary-container": "#394c84",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "secondary": "#495c95",
+                        "surface-container-low": "#f3f4f5",
+                        "outline-variant": "#c3c6d7",
+                        "outline": "#737686",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-bright": "#f8f9fa",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-surface": "#191c1d",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#360f00",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error": "#ffffff",
+                        "background": "#f8f9fa",
+                        "on-primary-container": "#eeefff",
+                        "primary-container": "#2563eb",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "tertiary": "#943700",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "secondary-container": "#acbfff",
+                        "inverse-surface": "#2e3132",
+                        "on-primary-fixed": "#00174b",
+                        "primary": "#004ac6",
+                        "on-secondary-fixed-variant": "#31447b"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .no-border.tonal-shift { border: none !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- SideNavBar -->
+<app-sidebar active-page="review_leads.html"></app-sidebar>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-64 right-0 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-40 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-700/50 shadow-sm dark:shadow-none font-inter antialiased">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Review Leads</h2>
+<div class="h-6 w-px bg-slate-200"></div>
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-slate-400 group-focus-within:text-blue-600">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+</span>
+<input class="pl-10 pr-4 py-1.5 bg-slate-100/50 border-none rounded-lg text-sm w-80 focus:ring-2 focus:ring-blue-600/20 transition-all outline-none" placeholder="Search leads by ID, Company or Owner..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden ml-2 ring-2 ring-slate-100">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="professional headshot of a smiling male executive in a blue shirt with soft office background lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqxmVqnl7mJkZkcissBsqwpIaZzPu_faBCoxS5tTgHpki_ZF1xH97fX8hvJcENtaDJ6xM_B5Wh0w1pa-rQ2dpz5q6JiO853MmP6VBcobD_M7NZWjG1H4FPRZBMnyj-hyIyy702evpDY6M_GbhDUbYqW96vZ-0WaDQnyHC7l5pXaPh_B20Y_ZHIiU51BA49w0xgCX-EvNTHPgmxFHwz4QiGmXHV1z7aX0qr3ALWHCz4FJl_UB7a5ENQ8Wxdj-NbcQOOp7kb-J7r6FcJ"/>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="pt-24 px-8 pb-12">
+<!-- Summary Bento Grid -->
+<div class="grid grid-cols-12 gap-6 mb-8">
+<div class="col-span-12 md:col-span-8 bg-surface-container-lowest rounded-xl p-6 shadow-[0px_12px_32px_rgba(25,28,29,0.04)] flex flex-col justify-between">
+<div>
+<span class="text-xs font-semibold text-primary uppercase tracking-wider mb-2 block">Performance Overview</span>
+<h3 class="text-2xl font-semibold text-on-surface mb-1">Queue Health</h3>
+<p class="text-on-surface-variant text-sm">Lead processing speed is up by 12% this week.</p>
+</div>
+<div class="flex gap-12 mt-8">
+<div>
+<p class="text-[2.75rem] font-bold text-on-surface leading-none">142</p>
+<p class="text-xs font-medium text-on-surface-variant mt-2 uppercase tracking-tight">Pending Review</p>
+</div>
+<div>
+<p class="text-[2.75rem] font-bold text-on-surface leading-none">0.8<span class="text-lg">h</span></p>
+<p class="text-xs font-medium text-on-surface-variant mt-2 uppercase tracking-tight">Avg Response Time</p>
+</div>
+<div>
+<p class="text-[2.75rem] font-bold text-tertiary leading-none">24</p>
+<p class="text-xs font-medium text-tertiary mt-2 uppercase tracking-tight">Hot Leads</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Leads Table Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_12px_32px_rgba(25,28,29,0.04)] overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant/15 flex items-center justify-between bg-white">
+<h4 class="text-lg font-semibold text-on-surface">Active Pipeline</h4>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:bg-slate-50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="filter_list">filter_list</span>
+                            Filter
+                        </button>
+<button class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-on-surface-variant hover:bg-slate-50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+                            Export
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Lead ID</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Company</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Contact Person</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Value</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Owner</th>
+<th class="px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Created Date</th>
+<th class="px-6 py-3 text-right text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Lead Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-4 text-sm font-medium text-primary">#L-9402</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">NL</div>
+<span class="text-sm font-semibold text-on-surface">NexaLogistics</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-on-surface">Sarah Jenkins</span>
+<span class="text-xs text-on-surface-variant">VP of Growth</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">$45,000</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-700">Qualified</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="close-up portrait of professional male business analyst with glasses in studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHxkmIjXxMiKRZaWuSt72AzJDpNCcLyRhUyPOoT1RJhXkr6iZrYurCw1-mxqOKdC0CAAX9chmnXN72tx6hdXto7kfHqtV4NDjFnR_EAcaRKg8O7ku1PWDWeMrXiWzqJRgzddwaCxRbxRzKJSMgtpwq0SJE5sGYB8Dhmrw5brz49BAG_6t5T7qnKrUmebVi-S0dTyVWh_tCPDxi4eCbDbj9MhGnztTKvvHSACNo8XkRrRfglMUxDlF0j4QWvRtahH2KvlFM_gPK_LUY"/>
+</div>
+<span class="text-sm text-on-surface">Alex Rivera</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 12, 2023</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Comments"><span class="material-symbols-outlined text-xl" data-icon="forum">forum</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Timeline"><span class="material-symbols-outlined text-xl" data-icon="history">history</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Change Owner"><span class="material-symbols-outlined text-xl" data-icon="person_add">person_add</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Location"><span class="material-symbols-outlined text-xl" data-icon="location_on">location_on</span></button>
+</div>
+</td>
+</tr>
+<!-- Lead Row 2 (Hot Lead) -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-4 text-sm font-medium text-primary">#L-9405</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">QT</div>
+<span class="text-sm font-semibold text-on-surface">Quantum Tech</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-on-surface">Marcus Thorne</span>
+<span class="text-xs text-on-surface-variant">CTO</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">$128,500</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-orange-100 text-orange-700">Negotiation</span>
+<div class="w-2 h-2 rounded-full bg-tertiary" title="Hot Lead"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="professional portrait of female senior manager with confident smile and corporate attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmLDbRCH8itAr2ipJcaLU2IhsOXKRyYYx9b33mEczeJysEWaZ6LEHQKWFj4UNA-HZR05JKj2PLtpotFC8UB901Gu-zMmd2bFzqBjTDj7Sjakxx2ycMj9l6tVTcaztRMhpfRM0OV1b-mHVR1rLuISwQA-cIWPyBdfS6mLjWvl9A21VReWYh1xqGw6yN67PkEn6yOiXBicbr2sIKvTasRbwQsBZ5eu01W4WbXjcL5TMQP214aKdh2E1OBkCpsaHm4k230iYAjQeh0A78"/>
+</div>
+<span class="text-sm text-on-surface">Elena Sofia</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 14, 2023</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Comments"><span class="material-symbols-outlined text-xl" data-icon="forum">forum</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Timeline"><span class="material-symbols-outlined text-xl" data-icon="history">history</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Change Owner"><span class="material-symbols-outlined text-xl" data-icon="person_add">person_add</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Location"><span class="material-symbols-outlined text-xl" data-icon="location_on">location_on</span></button>
+</div>
+</td>
+</tr>
+<!-- Lead Row 3 -->
+<tr class="hover:bg-slate-50/50 transition-colors group">
+<td class="px-6 py-4 text-sm font-medium text-primary">#L-9408</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">V8</div>
+<span class="text-sm font-semibold text-on-surface">Velocity AI</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-on-surface">David Chen</span>
+<span class="text-xs text-on-surface-variant">Director of IT</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-semibold text-on-surface">$12,000</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 text-emerald-700">Proposal Sent</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="business headshot of young female tech lead with neutral professional expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO4eelogMxB9M15YSR3TuRa6LxlW2tObuleBvEb4LC8WwsbHwCqFBDLby6y7YX1OEt6ZRXkc_-h87myF14AzREaWQyjP6mg0BKR1Dp5mpjH-WFcdcmXC1RZeRZpPCVEld40328_p_vbD0ezjEn59PSMG4zGMHGzHdBC4b6LCgdy2P1NBd1aeuaa9-mClHbF7hSklaSqHul9ccDunm247xIO75ajw88OKib66gCWF4chb6ixnPh_m9vQHuaaQvWW1baDJFDBsO4fGsY"/>
+</div>
+<span class="text-sm text-on-surface">Alex Rivera</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Oct 15, 2023</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Comments"><span class="material-symbols-outlined text-xl" data-icon="forum">forum</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Timeline"><span class="material-symbols-outlined text-xl" data-icon="history">history</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Change Owner"><span class="material-symbols-outlined text-xl" data-icon="person_add">person_add</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all active:scale-90" title="Location"><span class="material-symbols-outlined text-xl" data-icon="location_on">location_on</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 flex items-center justify-between text-sm text-on-surface-variant bg-surface-container-low/30">
+<span>Showing 1-3 of 42 leads</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant/20 rounded hover:bg-white transition-colors">Previous</button>
+<button class="px-3 py-1 bg-primary text-white rounded shadow-sm">1</button>
+<button class="px-3 py-1 border border-outline-variant/20 rounded hover:bg-white transition-colors">2</button>
+<button class="px-3 py-1 border border-outline-variant/20 rounded hover:bg-white transition-colors">3</button>
+<button class="px-3 py-1 border border-outline-variant/20 rounded hover:bg-white transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Overlay Elements / Visualizing Popover/Modal States -->
+<div class="hidden mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Comments Popover Simulation -->
+<div class="bg-white rounded-xl shadow-lg p-4 ring-1 ring-slate-100">
+<div class="flex items-center justify-between mb-4">
+<h5 class="text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600" data-icon="chat">chat</span>
+                            Lead Comments
+                        </h5>
+</div>
+<div class="space-y-4 mb-4 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+<div class="flex gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 shrink-0"></div>
+<div class="bg-slate-50 p-2 rounded-lg text-[11px]">
+<p class="font-bold mb-1">Alex Rivera</p>
+<p>Requested a demo for next Thursday at 2PM.</p>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="w-6 h-6 rounded-full bg-blue-100 shrink-0"></div>
+<div class="bg-blue-50 p-2 rounded-lg text-[11px]">
+<p class="font-bold text-blue-700 mb-1">You</p>
+<p>Confirmation sent. Preparing slide deck.</p>
+</div>
+</div>
+</div>
+<div class="relative">
+<input class="w-full pl-3 pr-10 py-2 bg-slate-100 border-none rounded-lg text-xs focus:ring-1 focus:ring-blue-500 transition-all outline-none" placeholder="Add a note..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+</button>
+</div>
+</div>
+<!-- Timeline Modal Simulation -->
+<div class="bg-white rounded-xl shadow-lg p-4 ring-1 ring-slate-100">
+<h5 class="text-sm font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600" data-icon="timeline">timeline</span>
+                        Activity Timeline
+                    </h5>
+<div class="relative border-l-2 border-slate-100 ml-2 pl-4 space-y-6">
+<div class="relative">
+<div class="absolute -left-[22px] top-1 w-3 h-3 rounded-full bg-primary border-2 border-white"></div>
+<p class="text-[11px] font-bold">Proposal Sent</p>
+<p class="text-[10px] text-on-surface-variant">2 hours ago • Alex Rivera</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[22px] top-1 w-3 h-3 rounded-full bg-slate-300 border-2 border-white"></div>
+<p class="text-[11px] font-bold">Lead Created</p>
+<p class="text-[10px] text-on-surface-variant">Oct 12, 10:45 AM • System</p>
+</div>
+</div>
+</div>
+<!-- Change Owner Popover Simulation -->
+<div class="bg-white rounded-xl shadow-lg p-4 ring-1 ring-slate-100">
+<h5 class="text-sm font-bold mb-4">Reassign Lead</h5>
+<div class="space-y-3">
+<div>
+<label class="text-[10px] uppercase font-bold text-on-surface-variant mb-1 block">Current Owner</label>
+<div class="flex items-center gap-2 p-2 bg-slate-50 rounded-lg">
+<div class="w-5 h-5 rounded-full bg-slate-300"></div>
+<span class="text-xs">Alex Rivera</span>
+</div>
+</div>
+<div>
+<label class="text-[10px] uppercase font-bold text-on-surface-variant mb-1 block">New Owner</label>
+<select class="w-full text-xs bg-white border border-slate-200 rounded-lg p-2 focus:ring-1 focus:ring-blue-500">
+<option>Select team member...</option>
+<option>Elena Sofia</option>
+<option>Marcus Thorne</option>
+</select>
+</div>
+<button class="w-full bg-primary text-white text-xs font-bold py-2 rounded-lg hover:bg-primary-container transition-all active:scale-95">Transfer Lead</button>
+</div>
+</div>
+<!-- Location Map Simulation -->
+<div class="bg-white rounded-xl shadow-lg p-4 ring-1 ring-slate-100 flex flex-col">
+<h5 class="text-sm font-bold mb-4 flex items-center justify-between">
+<span>Headquarters</span>
+<span class="text-[10px] text-primary font-medium">San Francisco, CA</span>
+</h5>
+<div class="flex-1 rounded-lg overflow-hidden relative min-h-[140px] bg-slate-100">
+<img class="w-full h-full object-cover grayscale opacity-60" data-alt="simplified stylistic map view of downtown San Francisco streets with clean modern look" data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_dGQeUTanT8uVRRdNObEE-BrJskSePc004FGubjJWF75W04H7uztuOhfmocvlB4R2wVtU_f0rfqso5J_OMMGN7ZUlrhmxZ176tUMDHqLCHF_u2RLkGE3PfNbvD9THRRk8vwEJK_ykVC69p0ckw5R2i5qWXwynh9I-b9Z33mNvi54Vaw3vbZKOib8lXpc25lNAs0Z9g8r7Q8yByS9GzhCvi1yQtZZRr8zKwatL6g9-z9BT0FHORQmdeGp_7oUvX-Q990i4v6tU0rTF"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="material-symbols-outlined text-red-500 text-3xl" data-icon="location_on" data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Toast Interaction -->
+<script src="toast.js"></script>
+<script src="app.js"></script>
+</body></html>
