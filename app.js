@@ -67,6 +67,18 @@
         { name: 'Nexus Civil', category: 'Infrastructure', leads: 212, projects: 18 }
     ];
 
+    const DEFAULT_LEAD_COMMENTS = {
+        NexaLogistics: ['Requested a demo for next Thursday at 2PM.', 'Confirmation sent. Preparing slide deck.'],
+        'Quantum Tech': ['Decision committee wants pricing options by Friday.', 'Negotiation call is booked for tomorrow morning.'],
+        'Velocity AI': ['Technical validation complete.', 'Proposal shared with procurement team.']
+    };
+
+    const DEFAULT_LEAD_LOCATIONS = {
+        NexaLogistics: { label: 'San Francisco, CA', lat: '37.7749', lng: '-122.4194' },
+        'Quantum Tech': { label: 'Austin, TX', lat: '30.2672', lng: '-97.7431' },
+        'Velocity AI': { label: 'Seattle, WA', lat: '47.6062', lng: '-122.3321' }
+    };
+
     function qs(selector, scope = document) {
         return scope.querySelector(selector);
     }
@@ -183,6 +195,7 @@
         return {
             id: String(lead.id || `LD-AUTO-${index + 1}`),
             company: lead.company || 'New Lead',
+            clientName: lead.clientName || lead.company || 'New Lead',
             contact: lead.contact || lead.clientName || 'Unknown',
             value: parseNumericValue(lead.value),
             status: lead.status || 'Discovery',
@@ -192,7 +205,12 @@
             currency: DISPLAY_CURRENCY,
             date: parseDateValue(lead.date || Date.now()).toISOString(),
             progress: Number(lead.progress || 0),
-            location: lead.location || getCurrentLocation()
+            location: lead.location || getCurrentLocation(),
+            phone: lead.phone || '',
+            email: lead.email || '',
+            website: lead.website || '',
+            description: lead.description || '',
+            nextAction: lead.nextAction || ''
         };
     }
 
@@ -479,6 +497,92 @@
 
     function findLeadById(id) {
         return getAllLeads().find((lead) => lead.id.toLowerCase() === String(id || '').toLowerCase());
+    }
+
+    function getLeadComments(lead) {
+        return DEFAULT_LEAD_COMMENTS[lead.company] || ['No comments yet for this lead.'];
+    }
+
+    function getLeadLocation(lead) {
+        return lead.location || DEFAULT_LEAD_LOCATIONS[lead.company] || getCurrentLocation();
+    }
+
+    function getLeadsForClient(clientName, category = '') {
+        const normalizedClient = String(clientName || '').trim().toLowerCase();
+        const categoryWords = String(category || '').toLowerCase().split(/[^a-z0-9]+/).filter((word) => word.length > 3);
+
+        return getAllLeads().filter((lead) => {
+            const directClientMatch = String(lead.clientName || '').trim().toLowerCase() === normalizedClient;
+            const companyMatch = lead.company.toLowerCase() === normalizedClient;
+            const categoryMatch = categoryWords.some((word) =>
+                lead.industry.toLowerCase().includes(word) || lead.company.toLowerCase().includes(word)
+            );
+            return directClientMatch || companyMatch || categoryMatch;
+        });
+    }
+
+    function ensureClientProfileForLead(lead) {
+        const clientName = String(lead.clientName || lead.company || '').trim();
+        if (!clientName) {
+            return;
+        }
+
+        const storedClients = getStored(STORAGE_KEYS.clients, []);
+        const existingClients = getAllClients();
+        const alreadyExists = existingClients.some((client) => client.name.toLowerCase() === clientName.toLowerCase());
+        if (alreadyExists) {
+            return;
+        }
+
+        storedClients.unshift({
+            name: clientName,
+            category: lead.industry || lead.lob || 'General',
+            leads: 1,
+            projects: 1
+        });
+        setStored(STORAGE_KEYS.clients, storedClients);
+    }
+
+    function openLeadDetailModal(lead) {
+        const location = getLeadLocation(lead);
+        const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(`${location.lat},${location.lng}`)}&z=14&output=embed`;
+        const comments = getLeadComments(lead);
+        openModal(
+            `${lead.company} Lead`,
+            `<div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Lead ID</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.id)}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Status</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.status)}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Value</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(formatMoney(lead.value, { currency: lead.currency }))}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Publisher</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.source)}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Owner</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.owner)}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Created</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(formatDisplayDate(lead.date))}</p></div>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-4">
+                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Contact</p>
+                    <p class="font-semibold text-slate-900">${escapeHtml(lead.contact)}</p>
+                    <p class="text-sm text-slate-600 mt-1">${escapeHtml(lead.phone || 'No phone saved')}</p>
+                    <p class="text-sm text-slate-600">${escapeHtml(lead.email || 'No email saved')}</p>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-4">
+                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Description</p>
+                    <p class="text-sm text-slate-700">${escapeHtml(lead.description || 'No description added yet.')}</p>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-4">
+                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Comments</p>
+                    <div class="space-y-2">
+                        ${comments.map((comment, index) => `<div class="rounded-lg ${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} p-3"><p class="text-xs font-bold ${index % 2 === 0 ? 'text-slate-600' : 'text-blue-700'} mb-1">${index % 2 === 0 ? escapeHtml(lead.owner) : 'You'}</p><p class="text-sm text-slate-700">${escapeHtml(comment)}</p></div>`).join('')}
+                    </div>
+                </div>
+                <div class="rounded-xl overflow-hidden border border-slate-200">
+                    <iframe src="${mapsUrl}" class="w-full h-[220px]" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div class="rounded-xl bg-slate-50 p-4">
+                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-1">Location</p>
+                    <p class="font-semibold text-slate-900">${escapeHtml(location.label)}</p>
+                </div>
+            </div>`
+        );
     }
 
     function escapeHtml(value) {
@@ -1745,11 +1849,11 @@
             }
 
             const customLeads = getStored(STORAGE_KEYS.leads, []);
-            customLeads.unshift({
+            const leadRecord = {
                 id: `LD-${Math.floor(1000 + Math.random() * 9000)}`,
                 company: organizationInput.value.trim(),
                 contact: contactNameInput.value.trim(),
-                clientName: clientNameInput.value.trim(),
+                clientName: clientNameInput.value.trim() || organizationInput.value.trim(),
                 phone: phoneInput.value.trim(),
                 email: emailInput.value.trim(),
                 lob: lobInput.value.trim(),
@@ -1763,10 +1867,13 @@
                 nextAction: nextActionInput.value.trim(),
                 description: descriptionInput.value.trim(),
                 date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            });
+            };
+            customLeads.unshift(leadRecord);
             captureBrowserLocation((location) => {
                 customLeads[0].location = location;
+                leadRecord.location = location;
                 setStored(STORAGE_KEYS.leads, customLeads);
+                ensureClientProfileForLead(leadRecord);
                 toast('Lead entry created and staged for the rest of the frontend.', 'success');
                 setTimeout(() => {
                     window.location.href = 'manage_leads.html';
@@ -2088,16 +2195,6 @@
         const numberButtons = qsa('button').filter((button) => ['1', '2', '3'].includes(button.textContent.trim())).slice(0, 3);
         const queueHealthCopy = qsa('p').find((paragraph) => paragraph.textContent.includes('Lead processing speed'));
         const filterModes = ['All Leads', 'Hot Leads', 'Qualified Only'];
-        const commentThreads = {
-            NexaLogistics: ['Requested a demo for next Thursday at 2PM.', 'Confirmation sent. Preparing slide deck.'],
-            'Quantum Tech': ['Decision committee wants pricing options by Friday.', 'Negotiation call is booked for tomorrow morning.'],
-            'Velocity AI': ['Technical validation complete.', 'Proposal shared with procurement team.']
-        };
-        const leadLocations = {
-            NexaLogistics: { label: 'San Francisco, CA', lat: '37.7749', lng: '-122.4194' },
-            'Quantum Tech': { label: 'Austin, TX', lat: '30.2672', lng: '-97.7431' },
-            'Velocity AI': { label: 'Seattle, WA', lat: '47.6062', lng: '-122.3321' }
-        };
         let filterIndex = 0;
         let activeRow = rows[0] || null;
 
@@ -2202,7 +2299,7 @@
                 const data = getRowValues(row);
 
                 if (title === 'Comments') {
-                    const thread = commentThreads[data.company] || ['No comments yet for this lead.'];
+                    const thread = getLeadComments(findLeadById(data.id.replace('#', '')) || { company: data.company, owner: data.owner });
                     openModal(
                         `Lead Comments: ${data.company}`,
                         `<div class="space-y-3">
@@ -2226,7 +2323,7 @@
                                             { name: 'note', label: 'Lead Note', type: 'textarea', required: true, placeholder: 'Write the update you want the team to see...' }
                                         ],
                                         onSubmit: ({ note }) => {
-                                            commentThreads[data.company] = (commentThreads[data.company] || []).concat(note);
+                                            DEFAULT_LEAD_COMMENTS[data.company] = (DEFAULT_LEAD_COMMENTS[data.company] || []).concat(note);
                                             toast('Comment added to the lead.', 'success');
                                         }
                                     });
@@ -2282,9 +2379,10 @@
                         ]
                     );
                 } else if (title === 'Location') {
+                    const sourceLead = findLeadById(data.id.replace('#', '')) || { company: data.company, location: row.dataset.leadLocation ? JSON.parse(row.dataset.leadLocation) : null };
                     const location = row.dataset.leadLocation
                         ? JSON.parse(row.dataset.leadLocation)
-                        : (leadLocations[data.company] || getCurrentLocation());
+                        : getLeadLocation(sourceLead);
                     const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(`${location.lat},${location.lng}`)}&z=14&output=embed`;
                     openModal(
                         `Lead Location: ${data.company}`,
@@ -2499,15 +2597,51 @@
             button.addEventListener('click', () => {
                 const card = button.closest('.group');
                 const title = qs('h3', card)?.textContent.trim() || 'Client';
+                const category = qsa('p', card).find((node) => node.className.includes('text-sm'))?.textContent.trim() || '';
                 const details = qsa('span.text-lg', card).map((node) => node.textContent.trim());
+                const relatedLeads = getLeadsForClient(title, category);
                 openModal(
                     `${title} Profile`,
-                    `<p>This frontend profile view is now active and ready for backend data later.</p>
-                     <div class="grid grid-cols-2 gap-4">
-                        <div class="p-3 rounded-xl bg-slate-50"><p class="text-xs uppercase text-slate-400">Total Leads</p><p class="text-lg font-bold text-slate-900">${escapeHtml(details[0] || '0')}</p></div>
-                        <div class="p-3 rounded-xl bg-slate-50"><p class="text-xs uppercase text-slate-400">Active Projects</p><p class="text-lg font-bold text-slate-900">${escapeHtml(details[1] || '0')}</p></div>
-                     </div>`
+                    `<div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-3 rounded-xl bg-slate-50"><p class="text-xs uppercase text-slate-400">Total Leads</p><p class="text-lg font-bold text-slate-900">${escapeHtml(details[0] || '0')}</p></div>
+                            <div class="p-3 rounded-xl bg-slate-50"><p class="text-xs uppercase text-slate-400">Active Projects</p><p class="text-lg font-bold text-slate-900">${escapeHtml(details[1] || '0')}</p></div>
+                        </div>
+                        <div class="rounded-xl bg-slate-50 p-4">
+                            <p class="text-xs uppercase text-slate-400 font-bold mb-3">Leads Under This Client</p>
+                            ${relatedLeads.length ? `
+                                <div class="space-y-3">
+                                    ${relatedLeads.map((lead) => `
+                                        <button type="button" class="client-lead-trigger w-full text-left rounded-xl bg-white border border-slate-200 p-3 hover:border-primary/30 hover:bg-blue-50/40 transition-colors" data-lead-id="${escapeHtml(lead.id)}">
+                                            <div class="flex items-center justify-between gap-3">
+                                                <div>
+                                                    <p class="font-semibold text-slate-900">${escapeHtml(lead.company)}</p>
+                                                    <p class="text-sm text-slate-500 mt-1">${escapeHtml(lead.contact)} • ${escapeHtml(lead.status)}</p>
+                                                </div>
+                                                <div class="text-right">
+                                                    <p class="font-bold text-slate-900">${escapeHtml(formatMoney(lead.value, { currency: lead.currency }))}</p>
+                                                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(lead.owner)}</p>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            ` : '<p class="text-sm text-slate-500">No mapped leads yet for this client in the frontend data.</p>'}
+                        </div>
+                    </div>`
                 );
+                const overlay = document.body.lastElementChild;
+                qsa('.client-lead-trigger', overlay).forEach((leadButton) => {
+                    leadButton.addEventListener('click', () => {
+                        const lead = findLeadById(leadButton.getAttribute('data-lead-id'));
+                        if (!lead) {
+                            toast('Lead details are not available yet.', 'warning');
+                            return;
+                        }
+                        qs('.modal-close', overlay)?.click();
+                        openLeadDetailModal(lead);
+                    });
+                });
             });
         });
 
