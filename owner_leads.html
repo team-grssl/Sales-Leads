@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Owner Leads | Grassroots Intelligence</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="sidebar.js?v=2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#004ac6",
+            "primary-container": "#2563eb",
+            "surface": "#f8f9fa",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f3f4f5",
+            "outline-variant": "#c3c6d7",
+            "on-surface": "#191c1d",
+            "on-surface-variant": "#434655"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface">
+  <app-sidebar active-page="owner_leads.html"></app-sidebar>
+
+  <header class="fixed top-0 left-64 right-0 h-16 bg-white/85 backdrop-blur-md z-40 px-8 flex items-center justify-between shadow-sm border-b border-slate-200/50">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-primary">Team Overview</p>
+      <h2 class="text-xl font-bold tracking-tight">Owner Leads</h2>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <button class="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+        <span class="material-symbols-outlined">help</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="ml-64 pt-24 px-8 pb-12 min-h-screen">
+    <section class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight">Lead Ownership Summary</h1>
+    </section>
+
+    <section id="owner-overview" class="space-y-6"></section>
+    <section id="owner-detail" class="hidden space-y-6"></section>
+  </main>
+
+  <script src="toast.js?v=3"></script>
+  <script src="app.js?v=5"></script>
+</body>
+</html>

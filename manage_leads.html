@@ -117,15 +117,16 @@
 <div class="flex items-center gap-3">
 <select class="bg-slate-50 border-none rounded-lg text-sm pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary/20 text-slate-600 cursor-pointer min-w-[160px]">
 <option>Status: All</option>
-<option>Qualified</option>
-<option>Discovery</option>
-<option>Proposal</option>
+<option>Hot Leads</option>
+<option>Warm Leads</option>
+<option>Cold Leads</option>
+<option>Project in Transition</option>
+<option>Hold</option>
+<option>Deal Won</option>
+<option>Deal Lost</option>
 </select>
-<select class="bg-slate-50 border-none rounded-lg text-sm pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary/20 text-slate-600 cursor-pointer min-w-[170px]">
-<option>Industry: All</option>
-<option>Technology</option>
-<option>Finance</option>
-<option>Healthcare</option>
+<select class="bg-slate-50 border-none rounded-lg text-sm pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary/20 text-slate-600 cursor-pointer min-w-[190px]" id="manage-client-filter">
+<option>Client: All</option>
 </select>
 <button class="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
 <span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
@@ -195,7 +196,7 @@
 <span class="text-sm font-bold text-slate-900">$45,000</span>
 </td>
 <td class="px-4 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-50 text-green-700">Qualified</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-50 text-red-700">Hot Leads</span>
 </td>
 <td class="px-4 py-4">
 <div class="flex flex-wrap gap-1">
@@ -235,7 +236,7 @@
 <span class="text-sm font-bold text-slate-900">$12,800</span>
 </td>
 <td class="px-4 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">Discovery</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700">Cold Leads</span>
 </td>
 <td class="px-4 py-4">
 <div class="flex flex-wrap gap-1">
@@ -274,7 +275,7 @@
 <span class="text-sm font-bold text-slate-900">$22,500</span>
 </td>
 <td class="px-4 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-container text-on-primary-container">Proposal Sent</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Project in Transition</span>
 </td>
 <td class="px-4 py-4">
 <div class="flex flex-wrap gap-1">
@@ -314,7 +315,7 @@
 <span class="text-sm font-bold text-slate-900">$8,400</span>
 </td>
 <td class="px-4 py-4">
-<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600">Nurturing</span>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600">Hold</span>
 </td>
 <td class="px-4 py-4">
 <div class="flex flex-wrap gap-1">
@@ -383,8 +384,6 @@
 <button class="px-3 py-1 rounded-md bg-primary text-white text-sm font-bold shadow-sm">1</button>
 <button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">2</button>
 <button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">3</button>
-<span class="px-2 text-slate-400">...</span>
-<button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">25</button>
 <button class="px-3 py-1 rounded-md border border-slate-200 text-sm font-medium text-slate-500 hover:bg-white transition-colors">Next</button>
 </div>
 </div>

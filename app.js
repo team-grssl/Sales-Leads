@@ -37,7 +37,7 @@
         lng: '-122.4194'
     };
 
-    const statusCycle = ['Draft', 'Discovery', 'Qualified', 'Proposal Sent', 'Negotiation', 'Won', 'Lost'];
+    const statusCycle = ['Cold Leads', 'Warm Leads', 'Hot Leads', 'Project in Transition', 'Hold', 'Deal Won', 'Deal Lost'];
     const DISPLAY_CURRENCY = 'INR';
 
     function daysAgo(days) {
@@ -47,16 +47,16 @@
     }
 
     const DEFAULT_LEADS = [
-        { id: 'LD-9021', company: 'Velocity Media', contact: 'Sarah Jenkins', value: 45000, status: 'Qualified', industry: 'Enterprise', owner: 'John Doe', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(12), progress: 62 },
-        { id: 'LD-8842', company: 'Aura Analytics', contact: 'Michael Chen', value: 12800, status: 'Discovery', industry: 'Follow-up', owner: 'Alice Smith', source: 'Outbound Sales', currency: 'USD', date: daysAgo(18), progress: 28 },
-        { id: 'LD-8701', company: 'Prism Labs', contact: 'Elena Rodri', value: 22500, status: 'Proposal Sent', industry: 'SAAS', owner: 'John Doe', source: 'Website Direct', currency: 'USD', date: daysAgo(7), progress: 71 },
-        { id: 'LD-8650', company: 'Oasis Fintech', contact: 'Tom Vance', value: 8400, status: 'Nurturing', industry: 'SME', owner: 'Alice Smith', source: 'Referrals', currency: 'USD', date: daysAgo(3), progress: 24 },
-        { id: 'LD-8512', company: 'Lumen Systems', contact: 'Gary Oldman', value: 64000, status: 'Lost', industry: 'Enterprise', owner: 'John Doe', source: 'Outbound Sales', currency: 'USD', date: daysAgo(21), progress: 42 },
-        { id: 'L-9402', company: 'NexaLogistics', contact: 'Sarah Jenkins', value: 45000, status: 'Qualified', industry: 'Logistics', owner: 'Alex Rivera', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(2), progress: 67 },
-        { id: 'L-9405', company: 'Quantum Tech', contact: 'Marcus Thorne', value: 128500, status: 'Negotiation', industry: 'Technology', owner: 'Elena Sofia', source: 'Referrals', currency: 'USD', date: daysAgo(5), progress: 84 },
-        { id: 'L-9408', company: 'Velocity AI', contact: 'David Chen', value: 12000, status: 'Proposal Sent', industry: 'AI', owner: 'Alex Rivera', source: 'Website Direct', currency: 'USD', date: daysAgo(9), progress: 74 },
-        { id: 'LD-9104', company: 'Summit Health', contact: 'Priya Raman', value: 98000, status: 'Won', industry: 'Healthcare', owner: 'Alice Smith', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(1), progress: 100 },
-        { id: 'LD-9133', company: 'BluePeak Capital', contact: 'Omar Diaz', value: 76000, status: 'Won', industry: 'Finance', owner: 'John Doe', source: 'Outbound Sales', currency: 'USD', date: daysAgo(6), progress: 100 }
+        { id: 'LD-9021', company: 'Velocity Media', contact: 'Sarah Jenkins', value: 45000, status: 'Hot Leads', industry: 'Enterprise', owner: 'Anitha', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(12), progress: 62 },
+        { id: 'LD-8842', company: 'Aura Analytics', contact: 'Michael Chen', value: 12800, status: 'Cold Leads', industry: 'Follow-up', owner: 'Sudhir Reddy', source: 'Outbound Sales', currency: 'USD', date: daysAgo(18), progress: 28 },
+        { id: 'LD-8701', company: 'Prism Labs', contact: 'Elena Rodri', value: 22500, status: 'Project in Transition', industry: 'SAAS', owner: 'Vijay', source: 'Website Direct', currency: 'USD', date: daysAgo(7), progress: 71 },
+        { id: 'LD-8650', company: 'Oasis Fintech', contact: 'Tom Vance', value: 8400, status: 'Hold', industry: 'SME', owner: 'Sudhir Reddy', source: 'Referrals', currency: 'USD', date: daysAgo(3), progress: 24 },
+        { id: 'LD-8512', company: 'Lumen Systems', contact: 'Gary Oldman', value: 64000, status: 'Deal Lost', industry: 'Enterprise', owner: 'Anitha', source: 'Outbound Sales', currency: 'USD', date: daysAgo(21), progress: 42 },
+        { id: 'L-9402', company: 'NexaLogistics', contact: 'Sarah Jenkins', value: 45000, status: 'Hot Leads', industry: 'Logistics', owner: 'Vijay', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(2), progress: 67 },
+        { id: 'L-9405', company: 'Quantum Tech', contact: 'Marcus Thorne', value: 128500, status: 'Warm Leads', industry: 'Technology', owner: 'Anitha', source: 'Referrals', currency: 'USD', date: daysAgo(5), progress: 84 },
+        { id: 'L-9408', company: 'Velocity AI', contact: 'David Chen', value: 12000, status: 'Project in Transition', industry: 'AI', owner: 'Sudhir Reddy', source: 'Website Direct', currency: 'USD', date: daysAgo(9), progress: 74 },
+        { id: 'LD-9104', company: 'Summit Health', contact: 'Priya Raman', value: 98000, status: 'Deal Won', industry: 'Healthcare', owner: 'Vijay', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(1), progress: 100 },
+        { id: 'LD-9133', company: 'BluePeak Capital', contact: 'Omar Diaz', value: 76000, status: 'Deal Won', industry: 'Finance', owner: 'Anitha', source: 'Outbound Sales', currency: 'USD', date: daysAgo(6), progress: 100 }
     ];
 
     const DEFAULT_CLIENTS = [
@@ -69,8 +69,8 @@
 
     const DEFAULT_LEAD_COMMENTS = {
         NexaLogistics: ['Requested a demo for next Thursday at 2PM.', 'Confirmation sent. Preparing slide deck.'],
-        'Quantum Tech': ['Decision committee wants pricing options by Friday.', 'Negotiation call is booked for tomorrow morning.'],
-        'Velocity AI': ['Technical validation complete.', 'Proposal shared with procurement team.']
+        'Quantum Tech': ['Decision committee wants pricing options by Friday.', 'Warm lead discussion is booked for tomorrow morning.'],
+        'Velocity AI': ['Technical validation complete.', 'Project transition plan shared with procurement team.']
     };
 
     const DEFAULT_LEAD_LOCATIONS = {
@@ -198,7 +198,15 @@
             clientName: lead.clientName || lead.company || 'New Lead',
             contact: lead.contact || lead.clientName || 'Unknown',
             value: parseNumericValue(lead.value),
-            status: lead.status || 'Discovery',
+            status: statusCycle.includes(lead.status) ? lead.status : ({
+                'deal won': 'Deal Won',
+                'deal lost': 'Deal Lost',
+                'project in transition': 'Project in Transition',
+                'hot leads': 'Hot Leads',
+                'warm leads': 'Warm Leads',
+                'hold': 'Hold',
+                'cold leads': 'Cold Leads'
+            }[normalizeStatus(lead.status)] || 'Cold Leads'),
             industry: lead.industry || lead.lob || 'General',
             owner: lead.owner || 'You',
             source: lead.source || 'Website Direct',
@@ -290,16 +298,24 @@
     }
 
     function normalizeStatus(status) {
-        return String(status || '').trim().toLowerCase();
+        const value = String(status || '').trim().toLowerCase();
+        if (!value) return 'cold leads';
+        if (value.includes('deal won') || value === 'won') return 'deal won';
+        if (value.includes('deal lost') || value === 'lost' || value.includes('at risk')) return 'deal lost';
+        if (value.includes('project in transition') || value.includes('proposal')) return 'project in transition';
+        if (value.includes('hot')) return 'hot leads';
+        if (value.includes('warm') || value.includes('negotiation') || value.includes('qualified')) return 'warm leads';
+        if (value.includes('hold') || value.includes('nurturing')) return 'hold';
+        if (value.includes('cold') || value.includes('discovery') || value.includes('draft')) return 'cold leads';
+        return value;
     }
 
     function isWonStatus(status) {
-        return normalizeStatus(status) === 'won';
+        return normalizeStatus(status) === 'deal won';
     }
 
     function isLostStatus(status) {
-        const value = normalizeStatus(status);
-        return value === 'lost' || value === 'at risk';
+        return normalizeStatus(status) === 'deal lost';
     }
 
     function isClosedStatus(status) {
@@ -312,26 +328,27 @@
 
     function stageRank(status) {
         const value = normalizeStatus(status);
-        if (value.includes('won')) return 5;
-        if (value.includes('negotiation')) return 4;
-        if (value.includes('proposal')) return 3;
-        if (value.includes('qualified')) return 2;
-        if (value.includes('nurturing')) return 1;
-        if (value.includes('discovery')) return 1;
-        if (value.includes('lost') || value.includes('risk')) return 0;
+        if (value === 'deal won') return 6;
+        if (value === 'hot leads') return 5;
+        if (value === 'project in transition') return 4;
+        if (value === 'warm leads') return 3;
+        if (value === 'hold') return 2;
+        if (value === 'cold leads') return 1;
+        if (value === 'deal lost') return 0;
         return 1;
     }
 
     function funnelBucket(status) {
         const value = normalizeStatus(status);
-        if (value.includes('won')) return 'Won';
-        if (value.includes('negotiation')) return 'Negotiation';
-        if (value.includes('proposal')) return 'Proposal';
-        return 'Discovery';
+        if (value === 'deal won') return 'Deal Won';
+        if (value === 'project in transition') return 'Project in Transition';
+        if (value === 'hot leads') return 'Hot Leads';
+        if (value === 'warm leads') return 'Warm Leads';
+        return 'Cold Leads';
     }
 
     function isQualifiedOrBeyond(status) {
-        return stageRank(status) >= 2;
+        return stageRank(status) >= 3;
     }
 
     function matchesDateRange(dateValue, range) {
@@ -402,14 +419,15 @@
             .sort((a, b) => b.count - a.count)
             .slice(0, 4);
 
-        const funnelOrder = ['Discovery', 'Proposal', 'Negotiation', 'Won'];
+        const funnelOrder = ['Cold Leads', 'Warm Leads', 'Hot Leads', 'Project in Transition', 'Deal Won'];
         const funnelCounts = {
-            Discovery: leads.filter((lead) => funnelBucket(lead.status) === 'Discovery').length,
-            Proposal: leads.filter((lead) => funnelBucket(lead.status) === 'Proposal').length,
-            Negotiation: leads.filter((lead) => funnelBucket(lead.status) === 'Negotiation').length,
-            Won: wonLeads.length
+            'Cold Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Cold Leads').length,
+            'Warm Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Warm Leads').length,
+            'Hot Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Hot Leads').length,
+            'Project in Transition': leads.filter((lead) => funnelBucket(lead.status) === 'Project in Transition').length,
+            'Deal Won': wonLeads.length
         };
-        const funnelBase = Math.max(1, funnelCounts.Discovery);
+        const funnelBase = Math.max(1, funnelCounts['Cold Leads']);
         const funnel = funnelOrder.map((name) => ({
             name,
             count: funnelCounts[name],
@@ -1044,7 +1062,7 @@
                     { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: 'reports.html', keywords: 'reports funnel team performance export conversion revenue' },
                     { title: 'Settings', subtitle: 'User controls, stages, and notification setup', href: 'settings.html', keywords: 'settings users stages notifications preferences' },
                     { title: 'Profile', subtitle: `${profile.name} â€¢ ${profile.role}`, href: 'profile.html', keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
-                    { title: 'Total Pipeline', subtitle: `${formatMoney(liveAnalytics.pipelineValue, { currency: liveAnalytics.commonCurrency, compact: true })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
+                    { title: 'Total Pipeline', subtitle: `${formatMoney(liveAnalytics.pipelineValue, { currency: liveAnalytics.commonCurrency })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
                     { title: 'Win Rate', subtitle: `${formatPercent(liveAnalytics.winRate, 0)} current close rate`, href: 'dashboard.html', keywords: 'win rate target dashboard close rate' },
                     { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: 'reports.html', keywords: 'team performance ranking leaderboard reports owners revenue' },
                     ...leadEntries,
@@ -1694,7 +1712,7 @@
                 }
                 switch (labelNode.textContent.trim()) {
                     case 'Total Pipeline':
-                        valueNode.textContent = formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency, compact: true });
+                        valueNode.textContent = formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency });
                         break;
                     case 'Deals in Play':
                         valueNode.textContent = String(analytics.activeLeads.length);
@@ -1706,7 +1724,7 @@
                         valueNode.textContent = formatPercent(analytics.winRate, 0);
                         break;
                     case 'Avg Deal Size':
-                        valueNode.textContent = formatMoney(analytics.avgDealSize, { currency: analytics.commonCurrency, compact: true });
+                        valueNode.textContent = formatMoney(analytics.avgDealSize, { currency: analytics.commonCurrency });
                         break;
                     default:
                         break;
@@ -1782,7 +1800,7 @@
                     } else if (labelNode.textContent.trim() === 'Stage Upgrades') {
                         valueNode.textContent = String(analytics.weeklyStageUpgrades);
                     } else if (labelNode.textContent.trim() === 'Revenue Won') {
-                        valueNode.textContent = formatMoney(analytics.weeklyWonRevenue, { currency: analytics.commonCurrency, compact: true });
+                        valueNode.textContent = formatMoney(analytics.weeklyWonRevenue, { currency: analytics.commonCurrency });
                     }
                 });
             }
@@ -1996,7 +2014,7 @@
         }
 
         const statusSelect = qsa('select')[0];
-        const industrySelect = qsa('select')[1];
+        const clientSelect = document.getElementById('manage-client-filter');
         const dateButton = qsa('button').find((button) => button.textContent.includes('Date Range'));
         const deleteButton = qsa('button').find((button) => button.textContent.includes('Delete Selected'));
         const exportButton = qsa('button').find((button) => button.textContent.includes('Export Selected'));
@@ -2005,7 +2023,7 @@
         const selectedLabel = qsa('span').find((span) => span.textContent.includes('Leads Selected'));
         const summaryLabel = qsa('p').find((node) => node.textContent.includes('Showing'));
         const bulkActionsBar = qs('#bulk-actions-bar');
-        const paginationButtons = qsa('button').filter((button) => ['Previous', '1', '2', '3', '25', 'Next'].includes(button.textContent.trim()));
+        const paginationButtons = qsa('button').filter((button) => ['Previous', '1', '2', '3', 'Next'].includes(button.textContent.trim()));
         const prevButton = paginationButtons.find((button) => button.textContent.trim() === 'Previous');
         const nextButton = paginationButtons.find((button) => button.textContent.trim() === 'Next');
         const numberButtons = paginationButtons.filter((button) => /^\d+$/.test(button.textContent.trim())).slice(0, 3);
@@ -2014,11 +2032,20 @@
         const fab = qsa('button').find((button) => button.className.includes('fixed bottom-8 right-8'));
         let activeDateRange = { kind: 'any', label: 'Any time' };
 
+        if (clientSelect) {
+            const clientOptions = ['Client: All', ...getAllClients().map((client) => client.name)];
+            clientSelect.innerHTML = clientOptions
+                .map((name, index) => `<option value="${escapeHtml(name)}"${index === 0 ? ' selected' : ''}>${escapeHtml(name)}</option>`)
+                .join('');
+        }
+
         function rowData(row) {
             const cells = qsa('td', row);
+            const lead = getLeadFromRow(row);
             return {
                 id: (row.dataset.leadId || cells[1]?.innerText.trim() || '').toLowerCase(),
                 company: (row.dataset.leadCompany || cells[2]?.innerText.trim() || '').toLowerCase(),
+                clientName: String(lead?.clientName || lead?.company || cells[2]?.innerText.trim() || '').toLowerCase(),
                 contact: cells[3]?.innerText.trim().toLowerCase() || '',
                 value: String(parseNumericValue(row.dataset.leadValue || cells[4]?.innerText.trim())).toLowerCase(),
                 status: (row.dataset.leadStatus || cells[5]?.innerText.trim() || '').toLowerCase(),
@@ -2044,7 +2071,7 @@
                     return;
                 }
                 if (labelNode.textContent.trim() === 'Pipeline Value') {
-                    valueNode.textContent = formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency, compact: true });
+                    valueNode.textContent = formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency });
                 } else if (labelNode.textContent.trim() === 'Active Leads') {
                     valueNode.textContent = String(analytics.activeLeads.length);
                 } else if (labelNode.textContent.trim() === 'High Potential') {
@@ -2072,10 +2099,10 @@
             predicate: (row, query) => {
                 const data = rowData(row);
                 const statusMatch = !statusSelect || statusSelect.selectedIndex === 0 || data.status.includes(statusSelect.value.toLowerCase());
-                const industryMatch = !industrySelect || industrySelect.selectedIndex === 0 || data.tags.includes(industrySelect.value.toLowerCase());
+                const clientMatch = !clientSelect || clientSelect.selectedIndex === 0 || data.clientName === clientSelect.value.toLowerCase();
                 const searchMatch = !query || Object.values(data).some((value) => value.includes(query));
                 const dateMatch = matchesDateRange(data.dateIso, activeDateRange);
-                return statusMatch && industryMatch && searchMatch && dateMatch;
+                return statusMatch && clientMatch && searchMatch && dateMatch;
             },
             summaryLabel,
             prevButton,
@@ -2085,7 +2112,7 @@
             onRender: () => updateSelectedCount()
         });
 
-        [statusSelect, industrySelect].forEach((select) => {
+        [statusSelect, clientSelect].forEach((select) => {
             if (select) {
                 select.addEventListener('change', () => pager.render());
             }
@@ -2191,7 +2218,7 @@
                     description: 'Choose the status to apply to all selected leads.',
                     submitLabel: 'Update Status',
                     fields: [
-                        { name: 'status', label: 'New Status', type: 'select', value: 'Qualified', required: true, options: statusCycle }
+                        { name: 'status', label: 'New Status', type: 'select', value: 'Hot Leads', required: true, options: statusCycle }
                     ],
                     onSubmit: ({ status }) => {
                         selectedRows.forEach((row) => {
@@ -2265,7 +2292,7 @@
                                     description: 'Choose the next status for this lead.',
                                     submitLabel: 'Apply Status',
                                     fields: [
-                                        { name: 'status', label: 'Lead Status', type: 'select', value: rowData(row).status || 'Discovery', required: true, options: statusCycle }
+                                        { name: 'status', label: 'Lead Status', type: 'select', value: rowData(row).status || 'Cold Leads', required: true, options: statusCycle }
                                     ],
                                     onSubmit: ({ status }) => {
                                         const badge = qsa('td', row)[5]?.querySelector('span');
@@ -2325,7 +2352,7 @@
         }
 
         const rows = qsa('tbody tr').filter((row) => row.querySelector('td'));
-        const filterButton = qsa('button').find((button) => button.textContent.includes('Filter'));
+        const filterSelect = qsa('select').find((select) => select.options[0]?.textContent.includes('Filter:'));
         const exportButton = qsa('button').find((button) => button.textContent.includes('Export'));
         const updateModelButton = qsa('button').find((button) => button.textContent.includes('Update Model'));
         const summaryLabel = qsa('span').find((span) => span.textContent.includes('Showing 1-3'));
@@ -2333,7 +2360,7 @@
         const nextButton = qsa('button').find((button) => button.textContent.trim() === 'Next');
         const numberButtons = qsa('button').filter((button) => ['1', '2', '3'].includes(button.textContent.trim())).slice(0, 3);
         const queueHealthCopy = qsa('p').find((paragraph) => paragraph.textContent.includes('Lead processing speed'));
-        const filterModes = ['All Leads', 'Hot Leads', 'Qualified Only'];
+        const filterModes = ['All Leads', 'Cold Leads', 'Hold', 'Hot Leads', 'Warm Leads', 'Project in Transition', 'Deal Won', 'Deal Lost'];
         let filterIndex = 0;
         let activeRow = rows[0] || null;
 
@@ -2389,9 +2416,9 @@
                 const data = getRowValues(row);
                 const haystack = Object.values(data).join(' ').toLowerCase();
                 const queryMatch = !query || haystack.includes(query);
-                const filterMatch = filterIndex === 0
-                    || (filterIndex === 1 && row.innerText.toLowerCase().includes('hot lead'))
-                    || (filterIndex === 2 && data.status.toLowerCase().includes('qualified'));
+                const selectedMode = filterModes[filterIndex] || 'All Leads';
+                const filterMatch = selectedMode === 'All Leads'
+                    || normalizeStatus(data.status) === normalizeStatus(selectedMode);
                 return queryMatch && filterMatch;
             },
             summaryLabel,
@@ -2408,10 +2435,9 @@
             }
         });
 
-        if (filterButton) {
-            filterButton.addEventListener('click', () => {
-                filterIndex = (filterIndex + 1) % filterModes.length;
-                toast(`Review filter: ${filterModes[filterIndex]}`, 'success');
+        if (filterSelect) {
+            filterSelect.addEventListener('change', () => {
+                filterIndex = Math.max(0, filterModes.findIndex((mode) => mode.toLowerCase() === filterSelect.value.toLowerCase()));
                 pager.render();
             });
         }
@@ -2922,7 +2948,7 @@
                 'Total Revenue Generated',
                 'Avg. Deal Cycle',
                 'Conversion Rate',
-                'Lead-to-Qualified Ratio'
+                'Lead-to-Warm Ratio'
             ].includes(node.textContent.replace(/\s+/g, ' ').trim()));
 
             const avgDealCycleDays = analytics.wonLeads.length
@@ -2941,7 +2967,7 @@
                     valueNode.textContent = `${Math.max(1, Math.round(avgDealCycleDays))} Days`;
                 } else if (label === 'Conversion Rate') {
                     valueNode.textContent = formatPercent(analytics.winRate, 1);
-                } else if (label === 'Lead-to-Qualified Ratio') {
+                } else if (label === 'Lead-to-Warm Ratio') {
                     valueNode.textContent = formatPercent(analytics.qualifiedRate, 1);
                 }
             });
@@ -2987,7 +3013,15 @@
                         barFill.style.width = `${Math.max(10, Math.round(stage.percent))}%`;
                     }
                     if (countLabel) {
-                        const suffix = stage.name === 'Won' ? 'Deals' : stage.name === 'Proposal' ? 'Opportunities' : stage.name === 'Negotiation' ? 'Pipeline' : 'Leads';
+                        const suffix = stage.name === 'Deal Won'
+                            ? 'Deals'
+                            : stage.name === 'Project in Transition'
+                                ? 'Projects'
+                                : stage.name === 'Hot Leads'
+                                    ? 'Priority Leads'
+                                    : stage.name === 'Warm Leads'
+                                        ? 'Active Leads'
+                                        : 'Leads';
                         countLabel.textContent = `${stage.count.toLocaleString('en-US')} ${suffix}`;
                     }
                     if (percentLabel) {
@@ -3228,6 +3262,216 @@
 
     }
 
+    function initOwnerLeadsPage() {
+        const overviewHost = document.getElementById('owner-overview');
+        const detailHost = document.getElementById('owner-detail');
+        if (!overviewHost || !detailHost) {
+            return;
+        }
+
+        const ownerNames = ['Anitha', 'Sudhir Reddy', 'Vijay'];
+        const leads = getAllLeads();
+        const searchParams = new URLSearchParams(window.location.search);
+
+        function ownerLeads(owner) {
+            return leads.filter((lead) => String(lead.owner || '').trim().toLowerCase() === owner.toLowerCase());
+        }
+
+        function ownerStats(owner) {
+            const records = ownerLeads(owner);
+            return {
+                owner,
+                leads: records,
+                totalAmount: records.reduce((sum, lead) => sum + lead.value, 0),
+                total: records.length,
+                cold: records.filter((lead) => normalizeStatus(lead.status) === 'cold leads').length,
+                warm: records.filter((lead) => normalizeStatus(lead.status) === 'warm leads').length,
+                hot: records.filter((lead) => normalizeStatus(lead.status) === 'hot leads').length,
+                transition: records.filter((lead) => normalizeStatus(lead.status) === 'project in transition').length,
+                hold: records.filter((lead) => normalizeStatus(lead.status) === 'hold').length,
+                won: records.filter((lead) => normalizeStatus(lead.status) === 'deal won').length,
+                lost: records.filter((lead) => normalizeStatus(lead.status) === 'deal lost').length
+            };
+        }
+
+        function openOwner(owner) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('owner', owner);
+            window.location.href = url.toString();
+        }
+
+        function renderOverview() {
+            const cards = ownerNames.map((owner) => {
+                const stats = ownerStats(owner);
+                return `
+                    <button type="button" class="owner-overview-card text-left bg-surface-container-lowest rounded-[28px] border border-outline-variant/15 shadow-sm overflow-hidden hover:shadow-[0_18px_36px_rgba(15,23,42,0.12)] transition-all" data-owner-name="${escapeHtml(owner)}">
+                        <div class="grid grid-cols-1 lg:grid-cols-[340px_minmax(0,1fr)]">
+                            <div class="px-7 py-7 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.2),transparent_35%),linear-gradient(135deg,#004ac6_0%,#2563eb_65%,#7aa5ff_100%)] text-white">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <p class="text-[11px] uppercase tracking-[0.24em] text-white/70 font-bold">Lead Owner</p>
+                                        <h3 class="mt-3 text-[2rem] leading-tight font-bold">${escapeHtml(owner)}</h3>
+                                        <p class="mt-2 text-sm text-white/80">Owner-specific pipeline snapshot and live performance.</p>
+                                    </div>
+                                    <div class="w-16 h-16 rounded-[20px] bg-white/15 border border-white/20 flex items-center justify-center text-2xl font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">${escapeHtml(owner.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase())}</div>
+                                </div>
+                                <div class="mt-8 space-y-4">
+                                    <div class="rounded-2xl bg-white/10 border border-white/15 px-4 py-4">
+                                        <p class="text-[11px] uppercase tracking-[0.18em] text-white/70 font-bold">Total Amount</p>
+                                        <p class="mt-2 text-[1.9rem] leading-tight font-bold">${escapeHtml(formatMoney(stats.totalAmount, { currency: DISPLAY_CURRENCY }))}</p>
+                                    </div>
+                                    <div class="rounded-2xl bg-white/10 border border-white/15 px-4 py-4">
+                                        <p class="text-[11px] uppercase tracking-[0.18em] text-white/70 font-bold">Total Leads</p>
+                                        <p class="mt-2 text-[1.9rem] leading-tight font-bold">${stats.total}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-6 lg:p-7 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)]">
+                                <div class="flex items-center justify-between mb-5">
+                                    <div>
+                                        <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400 font-bold">Status Mix</p>
+                                        <h4 class="mt-2 text-lg font-bold text-slate-900">Current Lead Distribution</h4>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Click to open</span>
+                                </div>
+                                <div class="grid grid-cols-2 xl:grid-cols-3 gap-3.5 text-sm">
+                                    <div class="rounded-2xl border border-amber-100 bg-amber-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Cold</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.cold}</p></div>
+                                    <div class="rounded-2xl border border-orange-100 bg-orange-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Warm</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.warm}</p></div>
+                                    <div class="rounded-2xl border border-red-100 bg-red-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-red-700">Hot</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.hot}</p></div>
+                                    <div class="rounded-2xl border border-blue-100 bg-blue-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Transition</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.transition}</p></div>
+                                    <div class="rounded-2xl border border-slate-200 bg-slate-100/90 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-700">Hold</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.hold}</p></div>
+                                    <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Won</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.won}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            overviewHost.innerHTML = `
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold">Team Members</h3>                    </div>
+                    <div class="grid grid-cols-1 gap-6">${cards}</div>
+                </div>
+            `;
+
+            qsa('.owner-overview-card', overviewHost).forEach((button) => {
+                button.addEventListener('click', () => openOwner(button.getAttribute('data-owner-name') || ''));
+            });
+        }
+
+        function renderDetail(owner) {
+            const stats = ownerStats(owner);
+            let activeFilter = 'All Leads';
+
+            overviewHost.classList.add('hidden');
+            detailHost.classList.remove('hidden');
+
+            detailHost.innerHTML = `
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <button type="button" id="owner-back-button" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+                            <span class="material-symbols-outlined text-base">arrow_back</span>
+                            Back to Team Overview
+                        </button>
+                        <h3 class="mt-4 text-3xl font-bold tracking-tight">${escapeHtml(owner)}</h3>
+                        <p class="text-sm text-on-surface-variant mt-2">Analytics and lead list for this owner.</p>
+                    </div>
+                    <div class="rounded-3xl bg-white px-6 py-5 border border-outline-variant/15 shadow-sm">
+                        <p class="text-xs uppercase tracking-[0.18em] text-on-surface-variant font-bold">Total Amount (Rs)</p>
+                        <p class="mt-2 text-3xl font-bold">${escapeHtml(formatMoney(stats.totalAmount, { currency: DISPLAY_CURRENCY }))}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="rounded-3xl bg-white p-5 border border-outline-variant/15 shadow-sm"><p class="text-xs uppercase font-bold text-on-surface-variant">Total Leads</p><p class="mt-3 text-3xl font-bold">${stats.total}</p></div>
+                    <div class="rounded-3xl bg-amber-50 p-5 border border-amber-100"><p class="text-xs uppercase font-bold text-amber-700">Cold Leads</p><p class="mt-3 text-3xl font-bold">${stats.cold}</p></div>
+                    <div class="rounded-3xl bg-orange-50 p-5 border border-orange-100"><p class="text-xs uppercase font-bold text-orange-700">Warm Leads</p><p class="mt-3 text-3xl font-bold">${stats.warm}</p></div>
+                    <div class="rounded-3xl bg-red-50 p-5 border border-red-100"><p class="text-xs uppercase font-bold text-red-700">Hot Leads</p><p class="mt-3 text-3xl font-bold">${stats.hot}</p></div>
+                    <div class="rounded-3xl bg-blue-50 p-5 border border-blue-100"><p class="text-xs uppercase font-bold text-blue-700">Project in Transition</p><p class="mt-3 text-3xl font-bold">${stats.transition}</p></div>
+                    <div class="rounded-3xl bg-slate-100 p-5 border border-slate-200"><p class="text-xs uppercase font-bold text-slate-700">Hold</p><p class="mt-3 text-3xl font-bold">${stats.hold}</p></div>
+                    <div class="rounded-3xl bg-emerald-50 p-5 border border-emerald-100"><p class="text-xs uppercase font-bold text-emerald-700">Deal Won</p><p class="mt-3 text-3xl font-bold">${stats.won}</p></div>
+                    <div class="rounded-3xl bg-rose-50 p-5 border border-rose-100"><p class="text-xs uppercase font-bold text-rose-700">Deal Lost</p><p class="mt-3 text-3xl font-bold">${stats.lost}</p></div>
+                </div>
+                <div class="bg-white rounded-[28px] border border-outline-variant/15 shadow-sm overflow-hidden">
+                    <div class="px-6 py-5 border-b border-outline-variant/15 flex items-center justify-between gap-4">
+                        <div>
+                            <h4 class="text-xl font-bold">Assigned Leads</h4>
+                            <p class="text-sm text-on-surface-variant mt-1">Filter this owner's lead list by status.</p>
+                        </div>
+                        <select id="owner-status-filter" class="min-w-[220px] bg-surface-container-low border-none rounded-2xl px-4 pr-10 py-3 text-sm font-medium focus:ring-2 focus:ring-primary/20">
+                            <option>All Leads</option>
+                            <option>Cold Leads</option>
+                            <option>Warm Leads</option>
+                            <option>Hot Leads</option>
+                            <option>Project in Transition</option>
+                            <option>Hold</option>
+                            <option>Deal Won</option>
+                            <option>Deal Lost</option>
+                        </select>
+                    </div>
+                    <div id="owner-leads-list" class="p-6 space-y-3"></div>
+                </div>
+            `;
+
+            const listHost = document.getElementById('owner-leads-list');
+            const filterSelect = document.getElementById('owner-status-filter');
+            const backButton = document.getElementById('owner-back-button');
+
+            function renderLeadList() {
+                const visibleLeads = stats.leads.filter((lead) => activeFilter === 'All Leads' || normalizeStatus(lead.status) === normalizeStatus(activeFilter));
+                listHost.innerHTML = visibleLeads.length
+                    ? visibleLeads.map((lead) => `
+                        <button type="button" class="owner-detail-lead w-full text-left rounded-2xl border border-outline-variant/15 bg-surface-container-low p-4 hover:border-primary/30 hover:bg-blue-50/40 transition-colors" data-lead-id="${escapeHtml(lead.id)}">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="font-semibold text-on-surface">${escapeHtml(lead.company)}</p>
+                                    <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(lead.contact)} • ${escapeHtml(lead.status)} • ${escapeHtml(lead.clientName || lead.company)}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-on-surface">${escapeHtml(formatMoney(lead.value, { currency: lead.currency }))}</p>
+                                    <p class="text-xs text-on-surface-variant mt-1">${escapeHtml(formatDisplayDate(lead.date))}</p>
+                                </div>
+                            </div>
+                        </button>
+                    `).join('')
+                    : '<div class="rounded-2xl bg-surface-container-low p-4 text-sm text-on-surface-variant">No leads match this filter yet.</div>';
+
+                qsa('.owner-detail-lead', listHost).forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const lead = findLeadById(button.getAttribute('data-lead-id'));
+                        if (!lead) {
+                            toast('Lead details are not available yet.', 'warning');
+                            return;
+                        }
+                        openLeadDetailModal(lead);
+                    });
+                });
+            }
+
+            filterSelect?.addEventListener('change', () => {
+                activeFilter = filterSelect.value;
+                renderLeadList();
+            });
+
+            backButton?.addEventListener('click', () => {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('owner');
+                window.location.href = url.toString();
+            });
+
+            renderLeadList();
+        }
+
+        const selectedOwner = searchParams.get('owner');
+        if (selectedOwner && ownerNames.some((owner) => owner.toLowerCase() === selectedOwner.toLowerCase())) {
+            renderDetail(ownerNames.find((owner) => owner.toLowerCase() === selectedOwner.toLowerCase()) || selectedOwner);
+        } else {
+            detailHost.classList.add('hidden');
+            overviewHost.classList.remove('hidden');
+            renderOverview();
+        }
+    }
     function initSettingsPage() {
         const addUserButton = qsa('button').find((button) => button.textContent.includes('Add User'));
         const userTableBody = qs('tbody');
@@ -3266,12 +3510,22 @@
         }
 
         if (storedStages && storedStages.length && stageCards.length) {
+            const normalizedStages = storedStages.map((stage) => ({
+                'deal won': 'Deal Won',
+                'deal lost': 'Deal Lost',
+                'project in transition': 'Project in Transition',
+                'hot leads': 'Hot Leads',
+                'warm leads': 'Warm Leads',
+                'hold': 'Hold',
+                'cold leads': 'Cold Leads'
+            }[normalizeStatus(stage)] || stage));
             stageCards.forEach((card, index) => {
                 const label = qsa('span', card).find((span) => span.className.includes('flex-1'));
-                if (label && storedStages[index]) {
-                    label.textContent = storedStages[index];
+                if (label && normalizedStages[index]) {
+                    label.textContent = normalizedStages[index];
                 }
             });
+            setStored(STORAGE_KEYS.stages, normalizedStages);
         }
 
         notificationCheckboxes.forEach((checkbox, index) => {
@@ -3329,7 +3583,7 @@
                     description: 'Create a new stage in the sales cycle.',
                     submitLabel: 'Add Stage',
                     fields: [
-                        { name: 'label', label: 'Stage Name', value: 'Negotiation', required: true }
+                        { name: 'label', label: 'Stage Name', value: 'Project in Transition', required: true }
                     ],
                     onSubmit: ({ label }) => {
                         const card = document.createElement('div');
@@ -3407,6 +3661,8 @@
             initClientsPage();
         } else if (currentPage === 'reports.html') {
             initReportsPage();
+        } else if (currentPage === 'owner_leads.html') {
+            initOwnerLeadsPage();
         } else if (currentPage === 'profile.html') {
             initProfilePage();
         } else if (currentPage === 'settings.html') {
@@ -3414,4 +3670,8 @@
         }
     });
 })();
+
+
+
+
 

@@ -130,7 +130,7 @@
       <div class="lg:col-span-8 space-y-8">
         <!-- Step 1: Company Details -->
         <section
-          class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(25,28,29,0.04)] relative overflow-hidden">
+          class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(25,28,29,0.04)] relative">
           <div class="absolute top-0 right-0 p-8 opacity-5">
             <span class="material-symbols-outlined text-8xl" data-icon="corporate_fare">corporate_fare</span>
           </div>
@@ -160,7 +160,7 @@
                   class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                   id="client-name-input" autocomplete="off" placeholder="Select or type a client name" type="text" />
                 <div id="client-name-suggestions"
-                  class="absolute left-0 right-0 top-[calc(100%+0.5rem)] hidden rounded-xl border border-outline-variant/20 bg-white shadow-[0px_16px_32px_rgba(25,28,29,0.10)] overflow-hidden z-20">
+                  class="absolute left-0 right-0 top-[calc(100%+0.5rem)] hidden max-h-64 overflow-y-auto rounded-xl border border-outline-variant/20 bg-white shadow-[0px_16px_32px_rgba(25,28,29,0.10)] z-30">
                 </div>
               </div>
             </div>
@@ -258,10 +258,13 @@
                 <label class="text-xs font-bold text-outline uppercase tracking-wider">Lead Status</label>
                 <select
                   class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface appearance-none transition-all">
-                  <option>Discovery</option>
-                  <option>Qualification</option>
-                  <option>Proposal</option>
-                  <option>Negotiation</option>
+                  <option>Cold Leads</option>
+                  <option>Warm Leads</option>
+                  <option>Hot Leads</option>
+                  <option>Project in Transition</option>
+                  <option>Hold</option>
+                  <option>Deal Won</option>
+                  <option>Deal Lost</option>
                 </select>
               </div>
             </div>

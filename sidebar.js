@@ -13,6 +13,10 @@ class AppSidebar extends HTMLElement {
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                     <span>Dashboard</span>
                 </a>
+                <a class="sidebar-link flex items-center gap-3 px-3 py-2 text-sm font-medium font-inter rounded-lg transition-all duration-200 cursor-pointer" href="owner_leads.html">
+                    <span class="material-symbols-outlined" data-icon="supervisor_account">supervisor_account</span>
+                    <span>Owner Leads</span>
+                </a>
                 <a class="sidebar-link flex items-center gap-3 px-3 py-2 text-sm font-medium font-inter rounded-lg transition-all duration-200 cursor-pointer" href="add_lead.html">
                     <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
                     <span>Add New Lead</span>
