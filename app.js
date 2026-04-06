@@ -1767,27 +1767,46 @@
         const selects = qsa('main select');
         const textareas = qsa('main textarea');
         const createButton = qsa('main button').find((button) => button.textContent.includes('Create Lead Entry'));
-        const existingClientToggle = qsa('main button').find((button) => button.className.includes('inline-flex h-6 w-11'));
         const progressInput = qsa('input[type="range"]')[0];
         const progressLabel = progressInput ? progressInput.parentElement.querySelector('span') : null;
         const aiTitle = qsa('h4').find((heading) => heading.textContent.includes('Lead Score'));
         const aiCopy = aiTitle ? aiTitle.nextElementSibling : null;
         const mobileLinks = qsa('nav a[href="#"]');
+        const clientNameInput = document.getElementById('client-name-input');
+        const clientNameOptions = document.getElementById('client-name-options');
 
-        if (existingClientToggle) {
-            existingClientToggle.dataset.enabled = 'false';
-            existingClientToggle.addEventListener('click', () => {
-                const active = existingClientToggle.dataset.enabled === 'true';
-                existingClientToggle.dataset.enabled = String(!active);
-                existingClientToggle.classList.toggle('bg-primary', !active);
-                existingClientToggle.classList.toggle('bg-outline-variant/30', active);
-                const knob = existingClientToggle.querySelector('span');
-                if (knob) {
-                    knob.classList.toggle('translate-x-1', active);
-                    knob.classList.toggle('translate-x-6', !active);
-                }
-                toast(`Existing client ${!active ? 'enabled' : 'disabled'}.`, 'success');
-            });
+        function updateClientNameOptions(query = '') {
+            if (!clientNameOptions) {
+                return;
+            }
+
+            const normalizedQuery = String(query || '').trim().toLowerCase();
+            const names = getAllClients()
+                .map((client) => String(client.name || '').trim())
+                .filter(Boolean)
+                .filter((name, index, list) => list.findIndex((entry) => entry.toLowerCase() === name.toLowerCase()) === index);
+
+            const matchingStartsWith = names
+                .filter((name) => !normalizedQuery || name.toLowerCase().startsWith(normalizedQuery))
+                .sort((left, right) => left.localeCompare(right));
+
+            const matchingIncludes = normalizedQuery
+                ? names
+                    .filter((name) => !name.toLowerCase().startsWith(normalizedQuery) && name.toLowerCase().includes(normalizedQuery))
+                    .sort((left, right) => left.localeCompare(right))
+                : [];
+
+            clientNameOptions.innerHTML = [...matchingStartsWith, ...matchingIncludes]
+                .slice(0, 12)
+                .map((name) => `<option value="${escapeHtml(name)}"></option>`)
+                .join('');
+        }
+
+        if (clientNameInput) {
+            updateClientNameOptions();
+            clientNameInput.addEventListener('focus', () => updateClientNameOptions(clientNameInput.value));
+            clientNameInput.addEventListener('click', () => updateClientNameOptions(clientNameInput.value));
+            clientNameInput.addEventListener('input', () => updateClientNameOptions(clientNameInput.value));
         }
 
         if (progressInput && progressLabel) {
@@ -1823,7 +1842,7 @@
             const [
                 organizationInput,
                 lobInput,
-                clientNameInput,
+                currentClientInput,
                 contactNameInput,
                 phoneInput,
                 emailInput,
@@ -1857,7 +1876,7 @@
                 id: `LD-${Math.floor(1000 + Math.random() * 9000)}`,
                 company: organizationInput.value.trim(),
                 contact: contactNameInput.value.trim(),
-                clientName: clientNameInput.value.trim() || organizationInput.value.trim(),
+                clientName: currentClientInput.value.trim() || organizationInput.value.trim(),
                 phone: phoneInput.value.trim(),
                 email: emailInput.value.trim(),
                 lob: lobInput.value.trim(),
@@ -2274,6 +2293,11 @@
             row.classList.add('ring-2', 'ring-primary/30');
         }
 
+        function getLeadFromReviewRow(row) {
+            const data = getRowValues(row);
+            return findLeadById(data.id.replace('#', ''));
+        }
+
         const pager = wireTableSearchAndPagination({
             searchInput,
             rows,
@@ -2341,13 +2365,29 @@
                     const thread = getLeadComments(findLeadById(data.id.replace('#', '')) || { company: data.company, owner: data.owner });
                     openModal(
                         `Lead Comments: ${data.company}`,
-                        `<div class="space-y-3">
+                        `<div class="space-y-4">
+                            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div>
+                                        <p class="text-xs uppercase tracking-[0.2em] text-slate-500 font-bold">Conversation</p>
+                                        <p class="mt-2 text-sm text-slate-600">Notes and internal updates for this lead.</p>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+                                        <span class="material-symbols-outlined">forum</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
                             ${thread.map((comment, index) => `
-                                <div class="rounded-xl ${index % 2 === 0 ? 'bg-slate-50' : 'bg-blue-50'} p-3">
-                                    <p class="text-xs font-bold ${index % 2 === 0 ? 'text-slate-600' : 'text-blue-700'} mb-1">${index % 2 === 0 ? data.owner : 'You'}</p>
-                                    <p>${escapeHtml(comment)}</p>
+                                <div class="rounded-2xl ${index % 2 === 0 ? 'bg-slate-50 border border-slate-200' : 'bg-blue-50 border border-blue-100'} p-4">
+                                    <div class="flex items-center justify-between gap-3 mb-2">
+                                        <p class="text-xs font-bold uppercase tracking-[0.18em] ${index % 2 === 0 ? 'text-slate-600' : 'text-blue-700'}">${index % 2 === 0 ? data.owner : 'You'}</p>
+                                        <span class="text-[11px] text-slate-400">${index === 0 ? 'Latest' : 'Team Note'}</span>
+                                    </div>
+                                    <p class="text-sm leading-relaxed text-slate-700">${escapeHtml(comment)}</p>
                                 </div>
                             `).join('')}
+                            </div>
                         </div>`,
                         [
                             {
@@ -2370,17 +2410,39 @@
                             }
                         ]
                     );
-                } else if (title === 'Timeline') {
+                                } else if (title === 'Timeline') {
                     openModal(
                         `Activity Timeline: ${data.company}`,
                         `<div class="space-y-4">
-                            <div class="rounded-xl bg-slate-50 p-4">
-                                <p class="font-semibold text-slate-900">${escapeHtml(data.status)} Follow-up</p>
-                                <p class="text-xs text-slate-500 mt-1">${escapeHtml(data.date)} • ${escapeHtml(data.owner)}</p>
+                            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                                <p class="text-xs uppercase tracking-[0.2em] text-slate-500 font-bold">Activity Timeline</p>
+                                <p class="mt-2 text-sm text-slate-600">A polished snapshot of the lead journey so far.</p>
                             </div>
-                            <div class="rounded-xl bg-slate-50 p-4">
-                                <p class="font-semibold text-slate-900">Lead Created</p>
-                                <p class="text-xs text-slate-500 mt-1">${escapeHtml(data.date)} • System</p>
+                            <div class="relative pl-8 space-y-5 before:absolute before:left-[13px] before:top-2 before:bottom-2 before:w-px before:bg-slate-200">
+                                <div class="relative rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+                                    <div class="absolute -left-[25px] top-5 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center ring-4 ring-white">
+                                        <span class="material-symbols-outlined text-sm">flag</span>
+                                    </div>
+                                    <p class="font-semibold text-slate-900">${escapeHtml(data.status)} Follow-up</p>
+                                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(data.date)} | ${escapeHtml(data.owner)}</p>
+                                    <p class="text-sm text-slate-600 mt-2">The lead is currently progressing through the ${escapeHtml(data.status)} stage.</p>
+                                </div>
+                                <div class="relative rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+                                    <div class="absolute -left-[25px] top-5 w-6 h-6 rounded-full bg-slate-700 text-white flex items-center justify-center ring-4 ring-white">
+                                        <span class="material-symbols-outlined text-sm">person_add</span>
+                                    </div>
+                                    <p class="font-semibold text-slate-900">Ownership Confirmed</p>
+                                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(data.date)} | ${escapeHtml(data.owner)}</p>
+                                    <p class="text-sm text-slate-600 mt-2">This opportunity is currently assigned to ${escapeHtml(data.owner)}.</p>
+                                </div>
+                                <div class="relative rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+                                    <div class="absolute -left-[25px] top-5 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-4 ring-white">
+                                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                                    </div>
+                                    <p class="font-semibold text-slate-900">Lead Created</p>
+                                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(data.date)} | System</p>
+                                    <p class="text-sm text-slate-600 mt-2">The lead record was created and added to the review queue.</p>
+                                </div>
                             </div>
                         </div>`
                     );
@@ -2388,11 +2450,20 @@
                     openModal(
                         `Reassign Lead: ${data.company}`,
                         `<div class="space-y-4">
-                            <div class="rounded-xl bg-slate-50 p-4">
-                                <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">Current Owner</p>
-                                <p class="mt-2 font-semibold text-slate-900">${escapeHtml(data.owner)}</p>
+                            <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+                                <div class="flex items-center justify-between gap-3">
+                                    <div>
+                                        <p class="text-xs uppercase tracking-[0.2em] text-slate-500 font-bold">Current Owner</p>
+                                        <p class="mt-2 font-semibold text-slate-900">${escapeHtml(data.owner)}</p>
+                                    </div>
+                                    <div class="w-11 h-11 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+                                        <span class="material-symbols-outlined">person_add</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-sm text-slate-600">Use the action below to assign this lead to a different teammate.</p>
+                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                <p class="text-sm text-slate-600 leading-relaxed">Use the transfer action below to assign this lead to a different teammate while keeping the lead history intact.</p>
+                            </div>
                         </div>`,
                         [
                             {
@@ -2416,8 +2487,7 @@
                                 }
                             }
                         ]
-                    );
-                } else if (title === 'Location') {
+                    );                } else if (title === 'Location') {
                     const sourceLead = findLeadById(data.id.replace('#', '')) || { company: data.company, location: row.dataset.leadLocation ? JSON.parse(row.dataset.leadLocation) : null };
                     const location = row.dataset.leadLocation
                         ? JSON.parse(row.dataset.leadLocation)
@@ -2439,6 +2509,22 @@
 
                 toast(`${title} opened for ${data.company}.`, 'success');
             });
+        });
+
+        rows.forEach((row) => {
+            row.addEventListener('click', (event) => {
+                if (event.target.closest('button') || event.target.closest('a')) {
+                    return;
+                }
+                setActiveRow(row);
+                const lead = getLeadFromReviewRow(row);
+                if (!lead) {
+                    toast('Lead details are not available yet.', 'warning');
+                    return;
+                }
+                openLeadDetailModal(lead);
+            });
+            row.style.cursor = 'pointer';
         });
 
         setActiveRow(rows[0]);
@@ -2560,7 +2646,7 @@
 
         function render() {
             const filtered = visibleCards();
-            const pageSize = Number(pageSizeSelect?.value || 3);
+            const pageSize = Number(pageSizeSelect?.value || 9);
             const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
             currentPage = Math.min(currentPage, totalPages);
             cards.forEach((card) => { card.style.display = 'none'; });
@@ -3227,3 +3313,4 @@
         }
     });
 })();
+
