@@ -730,7 +730,7 @@
         return Promise.resolve();
     }
 
-    function captureBrowserLocation(onComplete) {
+    function captureBrowserLocation(onComplete, options = {}) {
         if (!navigator.geolocation) {
             onComplete(getCurrentLocation());
             return;
@@ -749,7 +749,11 @@
             () => {
                 onComplete(getCurrentLocation());
             },
-            { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
+            {
+                enableHighAccuracy: Boolean(options.highAccuracy),
+                timeout: options.timeout || 7000,
+                maximumAge: options.useCache === false ? 0 : 300000
+            }
         );
     }
 
@@ -757,14 +761,14 @@
         const overlay = document.createElement('div');
         overlay.className = 'fixed inset-0 z-[10000] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4';
         overlay.innerHTML = `
-            <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="w-full max-w-lg max-h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
                 <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
                     <h3 class="text-lg font-bold text-slate-900">${escapeHtml(title)}</h3>
                     <button type="button" class="modal-close p-2 rounded-lg hover:bg-slate-100 transition-colors">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
-                <div class="px-6 py-5 text-sm text-slate-600 space-y-4">${bodyHtml}</div>
+                <div class="px-6 py-5 text-sm text-slate-600 space-y-4 overflow-y-auto">${bodyHtml}</div>
                 <div class="modal-actions px-6 py-4 bg-slate-50 flex justify-end gap-3"></div>
             </div>
         `;
@@ -1546,7 +1550,7 @@
             toast('Signing you in...', 'success');
             // Capture location opportunistically, but never block the redirect.
             try {
-                captureBrowserLocation(() => { });
+                captureBrowserLocation(() => { }, { highAccuracy: false, useCache: true });
             } catch (error) {
                 // no-op
             }
@@ -1878,7 +1882,7 @@
                 setTimeout(() => {
                     window.location.href = 'manage_leads.html';
                 }, 700);
-            });
+            }, { highAccuracy: true, useCache: false, timeout: 10000 });
         });
     }
 
@@ -1926,6 +1930,10 @@
 
         function getSelectedRows() {
             return rows.filter((row) => row.isConnected && row.querySelector('input[type="checkbox"]')?.checked);
+        }
+
+        function getLeadFromRow(row) {
+            return findLeadById(row.dataset.leadId || qsa('td', row)[1]?.textContent.trim());
         }
 
         function refreshQuickMetrics() {
@@ -2115,6 +2123,18 @@
                     '<p>Choose an action for this lead.</p>',
                     [
                         {
+                            label: 'View Lead',
+                            className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                            onClick: () => {
+                                const lead = row ? getLeadFromRow(row) : null;
+                                if (!lead) {
+                                    toast('Lead details are not available yet.', 'warning');
+                                    return;
+                                }
+                                openLeadDetailModal(lead);
+                            }
+                        },
+                        {
                             label: 'Delete Selected',
                             className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
                             onClick: () => {
@@ -2164,6 +2184,25 @@
                     ]
                 );
             });
+        });
+
+        rows.forEach((row) => {
+            row.addEventListener('click', (event) => {
+                if (
+                    event.target.closest('input[type="checkbox"]')
+                    || event.target.closest('button')
+                    || event.target.closest('a')
+                ) {
+                    return;
+                }
+                const lead = getLeadFromRow(row);
+                if (!lead) {
+                    toast('Lead details are not available yet.', 'warning');
+                    return;
+                }
+                openLeadDetailModal(lead);
+            });
+            row.style.cursor = 'pointer';
         });
 
         if (fab) {
@@ -2610,7 +2649,7 @@
                         <div class="rounded-xl bg-slate-50 p-4">
                             <p class="text-xs uppercase text-slate-400 font-bold mb-3">Leads Under This Client</p>
                             ${relatedLeads.length ? `
-                                <div class="space-y-3">
+                                <div class="space-y-3 max-h-[320px] overflow-y-auto pr-1">
                                     ${relatedLeads.map((lead) => `
                                         <button type="button" class="client-lead-trigger w-full text-left rounded-xl bg-white border border-slate-200 p-3 hover:border-primary/30 hover:bg-blue-50/40 transition-colors" data-lead-id="${escapeHtml(lead.id)}">
                                             <div class="flex items-center justify-between gap-3">
