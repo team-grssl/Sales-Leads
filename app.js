@@ -1015,6 +1015,117 @@
             });
         });
 
+        const workspaceSearchInput = qs('input[placeholder="Search leads, tasks, or reports..."]');
+        if (workspaceSearchInput && !workspaceSearchInput.dataset.globalSearchBound) {
+            workspaceSearchInput.dataset.globalSearchBound = 'true';
+            let searchDropdownHandle = null;
+
+            const buildSearchEntries = () => {
+                const liveAnalytics = computeAnalytics();
+                const leadEntries = getAllLeads().slice(0, 24).map((lead) => ({
+                    title: lead.company,
+                    subtitle: `Lead • ${lead.status} • ${lead.owner}`,
+                    href: 'review_leads.html',
+                    keywords: [lead.company, lead.contact, lead.clientName, lead.status, lead.owner, lead.industry, lead.id].join(' ').toLowerCase()
+                }));
+                const clientEntries = getAllClients().slice(0, 24).map((client) => ({
+                    title: client.name,
+                    subtitle: `Client • ${client.category}`,
+                    href: 'clients.html',
+                    keywords: [client.name, client.category, 'clients client profile'].join(' ').toLowerCase()
+                }));
+
+                return [
+                    { title: 'Intelligence Dashboard', subtitle: 'Dashboard overview and live KPIs', href: 'dashboard.html', keywords: 'dashboard intelligence overview kpi pipeline win rate weekly activity reports' },
+                    { title: 'Add New Lead', subtitle: 'Create and stage a new opportunity', href: 'add_lead.html', keywords: 'add new lead create opportunity intake form client' },
+                    { title: 'Review Leads', subtitle: 'Comments, timeline, owner changes, and location', href: 'review_leads.html', keywords: 'review leads comments timeline owner change location queue' },
+                    { title: 'Manage Leads', subtitle: 'Search, pipeline actions, exports, and status updates', href: 'manage_leads.html', keywords: 'manage leads status export pipeline bulk actions industry' },
+                    { title: 'Clients', subtitle: 'Client profiles and related lead details', href: 'clients.html', keywords: 'clients client profiles related leads' },
+                    { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: 'reports.html', keywords: 'reports funnel team performance export conversion revenue' },
+                    { title: 'Settings', subtitle: 'User controls, stages, and notification setup', href: 'settings.html', keywords: 'settings users stages notifications preferences' },
+                    { title: 'Profile', subtitle: `${profile.name} • ${profile.role}`, href: 'profile.html', keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
+                    { title: 'Total Pipeline', subtitle: `${formatMoney(liveAnalytics.pipelineValue, { currency: liveAnalytics.commonCurrency, compact: true })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
+                    { title: 'Win Rate', subtitle: `${formatPercent(liveAnalytics.winRate, 0)} current close rate`, href: 'dashboard.html', keywords: 'win rate target dashboard close rate' },
+                    { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: 'reports.html', keywords: 'team performance ranking leaderboard reports owners revenue' },
+                    ...leadEntries,
+                    ...clientEntries
+                ];
+            };
+
+            const getSearchMatches = (query) => {
+                const normalizedQuery = String(query || '').trim().toLowerCase();
+                const entries = buildSearchEntries();
+                if (!normalizedQuery) {
+                    return entries.slice(0, 8);
+                }
+                const startsWith = entries.filter((entry) => entry.title.toLowerCase().startsWith(normalizedQuery) || entry.keywords.startsWith(normalizedQuery));
+                const includes = entries.filter((entry) => !startsWith.includes(entry) && (entry.title.toLowerCase().includes(normalizedQuery) || entry.subtitle.toLowerCase().includes(normalizedQuery) || entry.keywords.includes(normalizedQuery)));
+                return [...startsWith, ...includes].slice(0, 8);
+            };
+
+            const closeSearchDropdown = () => {
+                if (searchDropdownHandle) {
+                    searchDropdownHandle.close();
+                    searchDropdownHandle = null;
+                }
+            };
+
+            const navigateToSearchEntry = (entry) => {
+                if (!entry) {
+                    return;
+                }
+                closeSearchDropdown();
+                window.location.href = entry.href;
+            };
+
+            const renderSearchDropdown = (query) => {
+                const matches = getSearchMatches(query);
+                if (!matches.length) {
+                    closeSearchDropdown();
+                    return;
+                }
+                const trigger = workspaceSearchInput.parentElement || workspaceSearchInput;
+                searchDropdownHandle = openAnchoredDropdown(
+                    trigger,
+                    `<div class="py-2">
+                        <div class="px-4 pb-2">
+                            <p class="text-[11px] uppercase tracking-[0.2em] text-slate-400 font-bold">Search Results</p>
+                        </div>
+                        <div class="space-y-1">
+                            ${matches.map((entry) => `
+                                <button type="button" class="workspace-search-result w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors">
+                                    <p class="font-semibold text-slate-900">${escapeHtml(entry.title)}</p>
+                                    <p class="text-xs text-slate-500 mt-1">${escapeHtml(entry.subtitle)}</p>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>`
+                );
+
+                qsa('.workspace-search-result', searchDropdownHandle.dropdown).forEach((button, index) => {
+                    const entry = matches[index];
+                    button.addEventListener('click', () => navigateToSearchEntry(entry));
+                });
+            };
+
+            workspaceSearchInput.addEventListener('focus', () => renderSearchDropdown(workspaceSearchInput.value));
+            workspaceSearchInput.addEventListener('input', () => renderSearchDropdown(workspaceSearchInput.value));
+            workspaceSearchInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    navigateToSearchEntry(getSearchMatches(workspaceSearchInput.value)[0]);
+                } else if (event.key === 'Escape') {
+                    closeSearchDropdown();
+                }
+            });
+            document.addEventListener('click', (event) => {
+                if (workspaceSearchInput.contains(event.target) || workspaceSearchInput.parentElement?.contains(event.target)) {
+                    return;
+                }
+                closeSearchDropdown();
+            });
+        }
+
         qsa('button').forEach((button) => {
             const icon = button.querySelector('.material-symbols-outlined')?.textContent.trim();
             if (icon === 'notifications' && !button.dataset.boundAction) {
@@ -1561,101 +1672,9 @@
     }
 
     function initDashboardPage() {
-        const profile = getProfile();
         const searchInput = qs('input[placeholder="Search leads, tasks, or reports..."]');
         const generateReportButton = qsa('button').find((button) => button.textContent.trim() === 'Generate Report');
         const updatePipelineButton = qsa('button').find((button) => button.textContent.trim() === 'Update Pipeline');
-        let searchDropdownHandle = null;
-
-        function closeSearchDropdown() {
-            if (searchDropdownHandle) {
-                searchDropdownHandle.close();
-                searchDropdownHandle = null;
-            }
-        }
-
-        function buildSearchEntries() {
-            const analytics = computeAnalytics();
-            const leadEntries = getAllLeads().slice(0, 20).map((lead) => ({
-                title: lead.company,
-                subtitle: `Lead • ${lead.status} • ${lead.owner}`,
-                href: 'review_leads.html',
-                keywords: [lead.company, lead.contact, lead.clientName, lead.status, lead.owner, lead.industry, lead.id].join(' ').toLowerCase()
-            }));
-            const clientEntries = getAllClients().slice(0, 20).map((client) => ({
-                title: client.name,
-                subtitle: `Client • ${client.category}`,
-                href: 'clients.html',
-                keywords: [client.name, client.category, 'clients client profile'].join(' ').toLowerCase()
-            }));
-
-            return [
-                { title: 'Intelligence Dashboard', subtitle: 'Dashboard overview and live KPIs', href: 'dashboard.html', keywords: 'dashboard intelligence overview kpi pipeline win rate weekly activity reports' },
-                { title: 'Add New Lead', subtitle: 'Create and stage a new opportunity', href: 'add_lead.html', keywords: 'add new lead create opportunity intake form client' },
-                { title: 'Review Leads', subtitle: 'Comments, timeline, owner changes, and location', href: 'review_leads.html', keywords: 'review leads comments timeline owner change location queue' },
-                { title: 'Manage Leads', subtitle: 'Search, pipeline actions, exports, and status updates', href: 'manage_leads.html', keywords: 'manage leads status export pipeline bulk actions industry' },
-                { title: 'Clients', subtitle: 'Client profiles and related lead details', href: 'clients.html', keywords: 'clients client profiles related leads' },
-                { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: 'reports.html', keywords: 'reports funnel team performance export conversion revenue' },
-                { title: 'Settings', subtitle: 'User controls, stages, and notification setup', href: 'settings.html', keywords: 'settings users stages notifications preferences' },
-                { title: 'Profile', subtitle: `${profile.name} • ${profile.role}`, href: 'profile.html', keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
-                { title: 'Total Pipeline', subtitle: `${formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency, compact: true })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
-                { title: 'Win Rate', subtitle: `${formatPercent(analytics.winRate, 0)} current close rate`, href: 'dashboard.html', keywords: 'win rate target dashboard close rate' },
-                { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: 'reports.html', keywords: 'team performance ranking leaderboard reports owners revenue' },
-                ...leadEntries,
-                ...clientEntries
-            ];
-        }
-
-        function getSearchMatches(query) {
-            const normalizedQuery = String(query || '').trim().toLowerCase();
-            if (!normalizedQuery) {
-                return buildSearchEntries().slice(0, 8);
-            }
-            const entries = buildSearchEntries();
-            const startsWith = entries.filter((entry) => entry.title.toLowerCase().startsWith(normalizedQuery) || entry.keywords.startsWith(normalizedQuery));
-            const includes = entries.filter((entry) => !startsWith.includes(entry) && (entry.title.toLowerCase().includes(normalizedQuery) || entry.subtitle.toLowerCase().includes(normalizedQuery) || entry.keywords.includes(normalizedQuery)));
-            return [...startsWith, ...includes].slice(0, 8);
-        }
-
-        function navigateToSearchEntry(entry) {
-            if (!entry) {
-                return;
-            }
-            closeSearchDropdown();
-            window.location.href = entry.href;
-        }
-
-        function renderSearchDropdown(query) {
-            if (!searchInput) {
-                return;
-            }
-            const matches = getSearchMatches(query);
-            if (!matches.length) {
-                closeSearchDropdown();
-                return;
-            }
-            const trigger = searchInput.parentElement || searchInput;
-            searchDropdownHandle = openAnchoredDropdown(
-                trigger,
-                `<div class="py-2">
-                    <div class="px-4 pb-2">
-                        <p class="text-[11px] uppercase tracking-[0.2em] text-slate-400 font-bold">Search Results</p>
-                    </div>
-                    <div class="space-y-1">
-                        ${matches.map((entry) => `
-                            <button type="button" class="dashboard-search-result w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors" data-search-href="${escapeHtml(entry.href)}" data-search-title="${escapeHtml(entry.title)}">
-                                <p class="font-semibold text-slate-900">${escapeHtml(entry.title)}</p>
-                                <p class="text-xs text-slate-500 mt-1">${escapeHtml(entry.subtitle)}</p>
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>`
-            );
-            qsa('.dashboard-search-result', searchDropdownHandle.dropdown).forEach((button, index) => {
-                const entry = matches[index];
-                button.addEventListener('click', () => navigateToSearchEntry(entry));
-            });
-        }
 
         function renderDashboardAnalytics() {
             const analytics = computeAnalytics();
@@ -1769,26 +1788,7 @@
             }
         }
 
-        if (searchInput) {
-            searchInput.addEventListener('focus', () => renderSearchDropdown(searchInput.value));
-            searchInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    navigateToSearchEntry(getSearchMatches(searchInput.value)[0]);
-                } else if (event.key === 'Escape') {
-                    closeSearchDropdown();
-                }
-            });
-            searchInput.addEventListener('input', () => {
-                renderSearchDropdown(searchInput.value);
-            });
-            document.addEventListener('click', (event) => {
-                if (searchInput.contains(event.target) || searchInput.parentElement?.contains(event.target)) {
-                    return;
-                }
-                closeSearchDropdown();
-            });
-        }
+        void searchInput;
 
         if (generateReportButton) {
             generateReportButton.addEventListener('click', () => {
