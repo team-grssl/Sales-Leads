@@ -982,16 +982,19 @@
 
     function initCommon() {
         const profile = getProfile();
+        const analytics = computeAnalytics();
         const notifications = [
             {
-                title: 'Review a lead',
-                body: 'NexaLogistics is waiting in the review queue.',
-                actionLabel: 'Open Lead',
-                targetLead: 'NexaLogistics'
+                title: 'Lead pipeline refreshed',
+                body: `${analytics.totalLeads} total leads are now active across the workspace.`
             },
             {
-                title: 'Pipeline updated',
-                body: 'This quarter metrics were refreshed successfully.'
+                title: 'Client directory synced',
+                body: `${getAllClients().length} client profiles are currently available in the frontend.`
+            },
+            {
+                title: 'Profile workspace ready',
+                body: 'Your shared profile details are active across the header and profile page.'
             }
         ];
 
@@ -1018,7 +1021,7 @@
                 button.dataset.boundAction = 'true';
                 button.addEventListener('click', () => {
                     openModal(
-                        'Notifications',
+                        'Recent Updates',
                         `<div class="space-y-3">
                             ${notifications.map((item, index) => `
                                 <div class="p-4 rounded-xl ${index === 0 ? 'bg-blue-50 border border-blue-100' : 'bg-slate-50'}">
@@ -1026,16 +1029,7 @@
                                     <p class="text-xs text-slate-500 mt-1">${escapeHtml(item.body)}</p>
                                 </div>
                             `).join('')}
-                        </div>`,
-                        notifications[0].targetLead ? [
-                            {
-                                label: notifications[0].actionLabel,
-                                onClick: () => {
-                                    sessionStorage.setItem('grassroots_target_review_lead', notifications[0].targetLead);
-                                    window.location.href = 'review_leads.html';
-                                }
-                            }
-                        ] : []
+                        </div>`
                     );
                 });
             }
@@ -1567,12 +1561,101 @@
     }
 
     function initDashboardPage() {
+        const profile = getProfile();
         const searchInput = qs('input[placeholder="Search leads, tasks, or reports..."]');
         const generateReportButton = qsa('button').find((button) => button.textContent.trim() === 'Generate Report');
         const updatePipelineButton = qsa('button').find((button) => button.textContent.trim() === 'Update Pipeline');
-        const searchableNodes = [
-            ...qsa('main h2, main h3, main h4, main p, main span')
-        ];
+        let searchDropdownHandle = null;
+
+        function closeSearchDropdown() {
+            if (searchDropdownHandle) {
+                searchDropdownHandle.close();
+                searchDropdownHandle = null;
+            }
+        }
+
+        function buildSearchEntries() {
+            const analytics = computeAnalytics();
+            const leadEntries = getAllLeads().slice(0, 20).map((lead) => ({
+                title: lead.company,
+                subtitle: `Lead • ${lead.status} • ${lead.owner}`,
+                href: 'review_leads.html',
+                keywords: [lead.company, lead.contact, lead.clientName, lead.status, lead.owner, lead.industry, lead.id].join(' ').toLowerCase()
+            }));
+            const clientEntries = getAllClients().slice(0, 20).map((client) => ({
+                title: client.name,
+                subtitle: `Client • ${client.category}`,
+                href: 'clients.html',
+                keywords: [client.name, client.category, 'clients client profile'].join(' ').toLowerCase()
+            }));
+
+            return [
+                { title: 'Intelligence Dashboard', subtitle: 'Dashboard overview and live KPIs', href: 'dashboard.html', keywords: 'dashboard intelligence overview kpi pipeline win rate weekly activity reports' },
+                { title: 'Add New Lead', subtitle: 'Create and stage a new opportunity', href: 'add_lead.html', keywords: 'add new lead create opportunity intake form client' },
+                { title: 'Review Leads', subtitle: 'Comments, timeline, owner changes, and location', href: 'review_leads.html', keywords: 'review leads comments timeline owner change location queue' },
+                { title: 'Manage Leads', subtitle: 'Search, pipeline actions, exports, and status updates', href: 'manage_leads.html', keywords: 'manage leads status export pipeline bulk actions industry' },
+                { title: 'Clients', subtitle: 'Client profiles and related lead details', href: 'clients.html', keywords: 'clients client profiles related leads' },
+                { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: 'reports.html', keywords: 'reports funnel team performance export conversion revenue' },
+                { title: 'Settings', subtitle: 'User controls, stages, and notification setup', href: 'settings.html', keywords: 'settings users stages notifications preferences' },
+                { title: 'Profile', subtitle: `${profile.name} • ${profile.role}`, href: 'profile.html', keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
+                { title: 'Total Pipeline', subtitle: `${formatMoney(analytics.pipelineValue, { currency: analytics.commonCurrency, compact: true })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
+                { title: 'Win Rate', subtitle: `${formatPercent(analytics.winRate, 0)} current close rate`, href: 'dashboard.html', keywords: 'win rate target dashboard close rate' },
+                { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: 'reports.html', keywords: 'team performance ranking leaderboard reports owners revenue' },
+                ...leadEntries,
+                ...clientEntries
+            ];
+        }
+
+        function getSearchMatches(query) {
+            const normalizedQuery = String(query || '').trim().toLowerCase();
+            if (!normalizedQuery) {
+                return buildSearchEntries().slice(0, 8);
+            }
+            const entries = buildSearchEntries();
+            const startsWith = entries.filter((entry) => entry.title.toLowerCase().startsWith(normalizedQuery) || entry.keywords.startsWith(normalizedQuery));
+            const includes = entries.filter((entry) => !startsWith.includes(entry) && (entry.title.toLowerCase().includes(normalizedQuery) || entry.subtitle.toLowerCase().includes(normalizedQuery) || entry.keywords.includes(normalizedQuery)));
+            return [...startsWith, ...includes].slice(0, 8);
+        }
+
+        function navigateToSearchEntry(entry) {
+            if (!entry) {
+                return;
+            }
+            closeSearchDropdown();
+            window.location.href = entry.href;
+        }
+
+        function renderSearchDropdown(query) {
+            if (!searchInput) {
+                return;
+            }
+            const matches = getSearchMatches(query);
+            if (!matches.length) {
+                closeSearchDropdown();
+                return;
+            }
+            const trigger = searchInput.parentElement || searchInput;
+            searchDropdownHandle = openAnchoredDropdown(
+                trigger,
+                `<div class="py-2">
+                    <div class="px-4 pb-2">
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-slate-400 font-bold">Search Results</p>
+                    </div>
+                    <div class="space-y-1">
+                        ${matches.map((entry) => `
+                            <button type="button" class="dashboard-search-result w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors" data-search-href="${escapeHtml(entry.href)}" data-search-title="${escapeHtml(entry.title)}">
+                                <p class="font-semibold text-slate-900">${escapeHtml(entry.title)}</p>
+                                <p class="text-xs text-slate-500 mt-1">${escapeHtml(entry.subtitle)}</p>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>`
+            );
+            qsa('.dashboard-search-result', searchDropdownHandle.dropdown).forEach((button, index) => {
+                const entry = matches[index];
+                button.addEventListener('click', () => navigateToSearchEntry(entry));
+            });
+        }
 
         function renderDashboardAnalytics() {
             const analytics = computeAnalytics();
@@ -1686,47 +1769,24 @@
             }
         }
 
-        function runDashboardSearch() {
-            const query = searchInput?.value.trim().toLowerCase() || '';
-            searchableNodes.forEach((node) => {
-                node.style.outline = '';
-                node.style.background = '';
-            });
-
-            if (!query) {
-                toast('Enter a search term to scan the dashboard.', 'warning');
-                return;
-            }
-
-            const matches = searchableNodes.filter((node) => node.textContent.toLowerCase().includes(query));
-            matches.slice(0, 6).forEach((node) => {
-                node.style.outline = '2px solid rgba(37, 99, 235, 0.25)';
-                node.style.background = 'rgba(219, 225, 255, 0.45)';
-            });
-
-            if (matches[0]) {
-                matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                toast(`Found ${matches.length} dashboard match(es) for "${query}".`, 'success');
-            } else {
-                toast(`No dashboard results found for "${query}".`, 'warning');
-            }
-        }
-
         if (searchInput) {
+            searchInput.addEventListener('focus', () => renderSearchDropdown(searchInput.value));
             searchInput.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
-                    runDashboardSearch();
+                    event.preventDefault();
+                    navigateToSearchEntry(getSearchMatches(searchInput.value)[0]);
+                } else if (event.key === 'Escape') {
+                    closeSearchDropdown();
                 }
             });
             searchInput.addEventListener('input', () => {
-                if (!searchInput.value.trim()) {
-                    searchableNodes.forEach((node) => {
-                        node.style.outline = '';
-                        node.style.background = '';
-                    });
-                } else if (searchInput.value.trim().length >= 2) {
-                    runDashboardSearch();
+                renderSearchDropdown(searchInput.value);
+            });
+            document.addEventListener('click', (event) => {
+                if (searchInput.contains(event.target) || searchInput.parentElement?.contains(event.target)) {
+                    return;
                 }
+                closeSearchDropdown();
             });
         }
 
@@ -2338,7 +2398,7 @@
             prevButton,
             nextButton,
             numberButtons,
-            pageSize: 2,
+            pageSize: 15,
             onRender: (visibleRows, pagedRows) => {
                 if (pagedRows[0]) {
                     setActiveRow(pagedRows[0]);
@@ -3061,11 +3121,9 @@
         const profile = getProfile();
         const heading = qsa('h1, h2').find((node) => node.textContent.includes('Alex Sterling') || node.textContent.includes('Profile'));
         const editButton = qsa('button').find((button) => button.textContent.includes('Edit Profile'));
-        const saveButton = qsa('button').find((button) => button.textContent.includes('Save Preferences'));
+        const saveButton = qsa('button').find((button) => button.textContent.includes('Save Profile') || button.textContent.includes('Save Preferences'));
         const copyEmailButton = qsa('button').find((button) => button.textContent.includes('Copy Email'));
-        const availabilityButton = qsa('button').find((button) => button.textContent.includes('Toggle Availability'));
         const textInputs = qsa('input, textarea').filter((field) => !['checkbox'].includes(field.type));
-        const checkboxes = qsa('input[type="checkbox"]');
 
         if (heading) {
             heading.textContent = profile.name;
@@ -3093,6 +3151,29 @@
             }
         });
 
+        function syncProfileView() {
+            const bindings = {
+                '[data-profile="name"]': profile.name,
+                '[data-profile="role"]': profile.role,
+                '[data-profile="email"]': profile.email,
+                '[data-profile="phone"]': profile.phone,
+                '[data-profile="location"]': profile.location,
+                '[data-profile="bio"]': profile.bio,
+                '[data-profile="focus"]': profile.focus,
+                '[data-profile="initials"]': profile.initials
+            };
+
+            Object.entries(bindings).forEach(([selector, value]) => {
+                qsa(selector).forEach((node) => {
+                    if ('value' in node) {
+                        node.value = value;
+                    } else {
+                        node.textContent = value;
+                    }
+                });
+            });
+        }
+
         if (editButton) {
             editButton.addEventListener('click', () => {
                 openFormModal({
@@ -3101,19 +3182,25 @@
                     submitLabel: 'Save Profile',
                     fields: [
                         { name: 'name', label: 'Full Name', value: profile.name, required: true },
+                        { name: 'email', label: 'Email', type: 'email', value: profile.email, required: true },
                         { name: 'role', label: 'Role', value: profile.role, required: true },
                         { name: 'phone', label: 'Phone', value: profile.phone, required: true },
-                        { name: 'location', label: 'Location', value: profile.location, required: true }
+                        { name: 'location', label: 'Location', value: profile.location, required: true },
+                        { name: 'focus', label: 'Focus Area', value: profile.focus, required: true },
+                        { name: 'bio', label: 'Bio', type: 'textarea', value: profile.bio, required: true }
                     ],
-                    onSubmit: ({ name, role, phone, location }) => {
+                    onSubmit: ({ name, email, role, phone, location, focus, bio }) => {
                         profile.name = name;
+                        profile.email = email;
                         profile.role = role;
                         profile.phone = phone;
                         profile.location = location;
+                        profile.focus = focus;
+                        profile.bio = bio;
                         profile.initials = name.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
                         setProfile(profile);
+                        syncProfileView();
                         toast('Profile details updated.', 'success');
-                        window.location.reload();
                     }
                 });
             });
@@ -3128,7 +3215,8 @@
                 profile.focus = focusInput?.value.trim() || profile.focus;
                 profile.bio = bioInput?.value.trim() || profile.bio;
                 setProfile(profile);
-                toast('Profile preferences saved.', 'success');
+                syncProfileView();
+                toast('Profile saved successfully.', 'success');
             });
         }
 
@@ -3138,20 +3226,6 @@
             });
         }
 
-        if (availabilityButton) {
-            availabilityButton.addEventListener('click', () => {
-                availabilityButton.dataset.state = availabilityButton.dataset.state === 'away' ? 'online' : 'away';
-                const isOnline = availabilityButton.dataset.state !== 'away';
-                availabilityButton.textContent = isOnline ? 'Set As Away' : 'Set As Online';
-                toast(`Availability updated to ${isOnline ? 'online' : 'away'}.`, 'success');
-            });
-        }
-
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                toast('Preference updated.', 'success');
-            });
-        });
     }
 
     function initSettingsPage() {

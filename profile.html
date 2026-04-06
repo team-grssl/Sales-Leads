@@ -24,9 +24,7 @@
                         "outline-variant": "#c3c6d7",
                         "outline": "#737686",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#434655",
-                        "secondary-container": "#acbfff",
-                        "error": "#ba1a1a"
+                        "on-surface-variant": "#434655"
                     }
                 }
             }
@@ -63,35 +61,40 @@
     <main class="ml-64 pt-24 px-8 pb-12 min-h-screen">
         <section class="grid grid-cols-1 xl:grid-cols-12 gap-8">
             <div class="xl:col-span-4 space-y-8">
-                <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/15 overflow-hidden">
-                    <div class="h-28 bg-gradient-to-br from-primary to-primary-container"></div>
-                    <div class="px-8 pb-8 -mt-12">
-                        <div class="w-24 h-24 rounded-2xl bg-white shadow-lg flex items-center justify-center text-3xl font-extrabold text-primary mb-5" data-profile="initials">AS</div>
-                        <h1 class="text-3xl font-bold tracking-tight" data-profile="name">Alex Sterling</h1>
-                        <p class="text-on-surface-variant mt-2" data-profile="role">Administrator</p>
-                        <div class="grid grid-cols-2 gap-3 mt-6">
-                            <button class="px-4 py-3 rounded-xl bg-slate-900 text-white font-semibold text-sm">Copy Email</button>
-                            <button class="px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-semibold text-sm">Set As Away</button>
+                <div class="bg-surface-container-lowest rounded-[28px] shadow-sm border border-outline-variant/15 overflow-hidden">
+                    <div class="h-36 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.25),_transparent_35%),linear-gradient(135deg,#004ac6_0%,#2563eb_65%,#84a8ff_100%)]"></div>
+                    <div class="px-8 pb-8 -mt-14">
+                        <div class="w-28 h-28 rounded-[26px] bg-white shadow-[0px_18px_40px_rgba(0,74,198,0.18)] flex items-center justify-center text-3xl font-extrabold text-primary mb-5" data-profile="initials">AS</div>
+                        <h1 class="text-[2rem] font-bold tracking-tight leading-tight" data-profile="name">Alex Sterling</h1>
+                        <p class="text-on-surface-variant mt-2 text-base" data-profile="role">Administrator</p>
+                        <div class="mt-6 rounded-2xl bg-surface-container-low p-4 border border-outline-variant/10">
+                            <p class="text-[11px] uppercase tracking-[0.2em] text-on-surface-variant font-bold">Primary Contact</p>
+                            <p class="mt-3 font-semibold text-on-surface break-all" data-profile="email">alex.sterling@grassroots.ai</p>
+                            <p class="mt-1 text-sm text-on-surface-variant" data-profile="phone">+1 (555) 014-8294</p>
                         </div>
+                        <button class="mt-5 w-full px-4 py-3 rounded-2xl bg-slate-900 text-white font-semibold text-sm hover:bg-slate-800 transition-colors">Copy Email</button>
                     </div>
                 </div>
 
-                <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/15 p-6 space-y-4">
-                    <h3 class="text-lg font-bold">Quick Stats</h3>
+                <div class="bg-surface-container-lowest rounded-[28px] shadow-sm border border-outline-variant/15 p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold">Performance Snapshot</h3>
+                        <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Live</span>
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="rounded-2xl bg-surface-container-low p-4">
                             <p class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Active Leads</p>
                             <p class="text-3xl font-bold mt-2">42</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="rounded-2xl bg-surface-container-low p-4">
                             <p class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Win Rate</p>
                             <p class="text-3xl font-bold mt-2">29%</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="rounded-2xl bg-surface-container-low p-4">
                             <p class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Reports</p>
                             <p class="text-3xl font-bold mt-2">18</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="rounded-2xl bg-surface-container-low p-4">
                             <p class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">Tasks Closed</p>
                             <p class="text-3xl font-bold mt-2">87</p>
                         </div>
@@ -100,87 +103,38 @@
             </div>
 
             <div class="xl:col-span-8 space-y-8">
-                <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/15 p-8">
+                <div class="bg-surface-container-lowest rounded-[28px] shadow-sm border border-outline-variant/15 p-8">
                     <div class="flex items-center justify-between mb-8">
                         <div>
-                            <h3 class="text-xl font-bold">Profile Details</h3>
-                            <p class="text-sm text-on-surface-variant mt-1">Keep your personal and team-facing information current.</p>
+                            <h3 class="text-2xl font-bold tracking-tight">Profile Details</h3>
+                            <p class="text-sm text-on-surface-variant mt-2">Keep your personal and team-facing information current across the workspace.</p>
                         </div>
-                        <button class="px-5 py-2.5 rounded-xl bg-primary text-white font-semibold shadow-sm">Save Preferences</button>
+                        <button class="px-5 py-2.5 rounded-2xl bg-primary text-white font-semibold shadow-sm hover:bg-primary-container transition-colors">Save Profile</button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <label class="space-y-2">
                             <span class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Email</span>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3" data-profile="email" type="email" value="alex.sterling@grassroots.ai" />
+                            <input class="w-full rounded-2xl bg-surface-container-low border-none px-4 py-3.5" data-profile="email" type="email" value="alex.sterling@grassroots.ai" />
                         </label>
                         <label class="space-y-2">
                             <span class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Phone</span>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3" data-profile="phone" type="text" value="+1 (555) 014-8294" />
+                            <input class="w-full rounded-2xl bg-surface-container-low border-none px-4 py-3.5" data-profile="phone" type="text" value="+1 (555) 014-8294" />
                         </label>
                         <label class="space-y-2">
                             <span class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Location</span>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3" data-profile="location" type="text" value="San Francisco, CA" />
+                            <input class="w-full rounded-2xl bg-surface-container-low border-none px-4 py-3.5" data-profile="location" type="text" value="San Francisco, CA" />
                         </label>
                         <label class="space-y-2">
                             <span class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Focus Area</span>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3" data-profile="focus" type="text" value="Enterprise pipeline acceleration" />
+                            <input class="w-full rounded-2xl bg-surface-container-low border-none px-4 py-3.5" data-profile="focus" type="text" value="Enterprise pipeline acceleration" />
                         </label>
                         <label class="space-y-2 md:col-span-2">
                             <span class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Bio</span>
-                            <textarea class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 min-h-[140px]" data-profile="bio">Revenue operations lead shaping the Grassroots sales intelligence workflow.</textarea>
+                            <textarea class="w-full rounded-2xl bg-surface-container-low border-none px-4 py-3.5 min-h-[160px]" data-profile="bio">Revenue operations lead shaping the Grassroots sales intelligence workflow.</textarea>
                         </label>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/15 p-8">
-                        <h3 class="text-xl font-bold mb-6">Preferences</h3>
-                        <div class="space-y-5">
-                            <label class="flex items-center justify-between gap-4">
-                                <div>
-                                    <p class="font-semibold">Email summaries</p>
-                                    <p class="text-sm text-on-surface-variant">Receive a morning recap of lead activity.</p>
-                                </div>
-                                <input checked class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" type="checkbox" />
-                            </label>
-                            <label class="flex items-center justify-between gap-4">
-                                <div>
-                                    <p class="font-semibold">Priority alerts</p>
-                                    <p class="text-sm text-on-surface-variant">Highlight hot leads and urgent status changes.</p>
-                                </div>
-                                <input checked class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" type="checkbox" />
-                            </label>
-                            <label class="flex items-center justify-between gap-4">
-                                <div>
-                                    <p class="font-semibold">Calendar sync</p>
-                                    <p class="text-sm text-on-surface-variant">Prepare upcoming calls and follow-ups.</p>
-                                </div>
-                                <input class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" type="checkbox" />
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-950 text-white rounded-2xl shadow-xl p-8">
-                        <div class="flex items-center gap-3 mb-6">
-                            <span class="material-symbols-outlined text-blue-300">shield_lock</span>
-                            <h3 class="text-xl font-bold">Security Snapshot</h3>
-                        </div>
-                        <div class="space-y-4 text-sm">
-                            <div class="rounded-xl bg-white/5 p-4">
-                                <p class="font-semibold">2-step verification</p>
-                                <p class="text-slate-300 mt-1">Enabled for mobile sign-in and privileged actions.</p>
-                            </div>
-                            <div class="rounded-xl bg-white/5 p-4">
-                                <p class="font-semibold">Last password update</p>
-                                <p class="text-slate-300 mt-1">14 days ago</p>
-                            </div>
-                            <div class="rounded-xl bg-white/5 p-4">
-                                <p class="font-semibold">Recovery contact</p>
-                                <p class="text-slate-300 mt-1" data-profile="email">alex.sterling@grassroots.ai</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
