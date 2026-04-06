@@ -1767,19 +1767,11 @@
         const selects = qsa('main select');
         const textareas = qsa('main textarea');
         const createButton = qsa('main button').find((button) => button.textContent.includes('Create Lead Entry'));
-        const progressInput = qsa('input[type="range"]')[0];
-        const progressLabel = progressInput ? progressInput.parentElement.querySelector('span') : null;
-        const aiTitle = qsa('h4').find((heading) => heading.textContent.includes('Lead Score'));
-        const aiCopy = aiTitle ? aiTitle.nextElementSibling : null;
         const mobileLinks = qsa('nav a[href="#"]');
         const clientNameInput = document.getElementById('client-name-input');
-        const clientNameOptions = document.getElementById('client-name-options');
+        const clientNameSuggestions = document.getElementById('client-name-suggestions');
 
-        function updateClientNameOptions(query = '') {
-            if (!clientNameOptions) {
-                return;
-            }
-
+        function getClientNameMatches(query = '') {
             const normalizedQuery = String(query || '').trim().toLowerCase();
             const names = getAllClients()
                 .map((client) => String(client.name || '').trim())
@@ -1796,34 +1788,64 @@
                     .sort((left, right) => left.localeCompare(right))
                 : [];
 
-            clientNameOptions.innerHTML = [...matchingStartsWith, ...matchingIncludes]
-                .slice(0, 12)
-                .map((name) => `<option value="${escapeHtml(name)}"></option>`)
-                .join('');
+            return [...matchingStartsWith, ...matchingIncludes].slice(0, 8);
+        }
+
+        function hideClientSuggestions() {
+            if (!clientNameSuggestions) {
+                return;
+            }
+            clientNameSuggestions.classList.add('hidden');
+            clientNameSuggestions.innerHTML = '';
+        }
+
+        function renderClientSuggestions(query = '') {
+            if (!clientNameSuggestions || !clientNameInput) {
+                return;
+            }
+
+            const matches = getClientNameMatches(query);
+            if (!matches.length) {
+                hideClientSuggestions();
+                return;
+            }
+
+            clientNameSuggestions.innerHTML = matches.map((name, index) => `
+                <button
+                    type="button"
+                    class="client-name-option flex w-full items-center justify-between px-4 py-3 text-left transition-colors ${index === 0 ? 'bg-blue-50/70 text-slate-900' : 'bg-white text-slate-700'} hover:bg-blue-50"
+                    data-client-name="${escapeHtml(name)}"
+                >
+                    <span class="font-medium">${escapeHtml(name)}</span>
+                    <span class="text-xs uppercase tracking-[0.18em] text-slate-400">Client</span>
+                </button>
+            `).join('');
+
+            clientNameSuggestions.classList.remove('hidden');
+            qsa('.client-name-option', clientNameSuggestions).forEach((optionButton) => {
+                optionButton.addEventListener('click', () => {
+                    clientNameInput.value = optionButton.getAttribute('data-client-name') || '';
+                    hideClientSuggestions();
+                    clientNameInput.focus();
+                });
+            });
         }
 
         if (clientNameInput) {
-            updateClientNameOptions();
-            clientNameInput.addEventListener('focus', () => updateClientNameOptions(clientNameInput.value));
-            clientNameInput.addEventListener('click', () => updateClientNameOptions(clientNameInput.value));
-            clientNameInput.addEventListener('input', () => updateClientNameOptions(clientNameInput.value));
-        }
-
-        if (progressInput && progressLabel) {
-            progressInput.min = '0';
-            progressInput.max = '100';
-            progressInput.value = '25';
-            progressInput.addEventListener('input', () => {
-                progressLabel.textContent = `${progressInput.value}%`;
-                if (aiTitle && aiCopy) {
-                    const score = Math.min(98, Math.max(18, Number(progressInput.value) + 22));
-                    aiTitle.textContent = `Lead Score: ${score}`;
-                    aiCopy.textContent = score > 70
-                        ? 'This opportunity is shaping up as a strong priority lead.'
-                        : 'Keep enriching the lead to improve confidence and forecast quality.';
+            clientNameInput.addEventListener('focus', () => renderClientSuggestions(clientNameInput.value));
+            clientNameInput.addEventListener('click', () => renderClientSuggestions(clientNameInput.value));
+            clientNameInput.addEventListener('input', () => renderClientSuggestions(clientNameInput.value));
+            clientNameInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    hideClientSuggestions();
                 }
             });
-            progressInput.dispatchEvent(new Event('input'));
+            document.addEventListener('click', (event) => {
+                if (clientNameInput.contains(event.target) || clientNameSuggestions?.contains(event.target)) {
+                    return;
+                }
+                hideClientSuggestions();
+            });
         }
 
         mobileLinks.forEach((link, index) => {
@@ -1849,7 +1871,6 @@
                 industryInput,
                 websiteInput,
                 annualValueInput,
-                progressRangeInput,
                 nextActionInput
             ] = inputs;
             const [sourceSelect, currencySelect, statusSelect] = selects;
@@ -1886,7 +1907,7 @@
                 value: annualValueInput.value.trim(),
                 currency: currencySelect.value,
                 status: statusSelect.value,
-                progress: progressRangeInput ? progressRangeInput.value : '25',
+                progress: '25',
                 nextAction: nextActionInput.value.trim(),
                 description: descriptionInput.value.trim(),
                 date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -2295,7 +2316,10 @@
 
         function getLeadFromReviewRow(row) {
             const data = getRowValues(row);
-            return findLeadById(data.id.replace('#', ''));
+            const cleanedId = data.id.replace('#', '').trim();
+            return findLeadById(row.dataset.leadId || cleanedId)
+                || getAllLeads().find((lead) => String(lead.company || '').toLowerCase() === data.company.toLowerCase())
+                || null;
         }
 
         const pager = wireTableSearchAndPagination({
@@ -2512,6 +2536,9 @@
         });
 
         rows.forEach((row) => {
+            qsa('td', row).slice(0, -1).forEach((cell) => {
+                cell.classList.add('cursor-pointer');
+            });
             row.addEventListener('click', (event) => {
                 if (event.target.closest('button') || event.target.closest('a')) {
                     return;

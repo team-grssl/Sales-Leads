@@ -155,11 +155,14 @@
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Client Name</label>
-              <input
-                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                id="client-name-input" list="client-name-options" placeholder="Select or type a client name"
-                type="text" />
-              <datalist id="client-name-options"></datalist>
+              <div class="relative">
+                <input
+                  class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
+                  id="client-name-input" autocomplete="off" placeholder="Select or type a client name" type="text" />
+                <div id="client-name-suggestions"
+                  class="absolute left-0 right-0 top-[calc(100%+0.5rem)] hidden rounded-xl border border-outline-variant/20 bg-white shadow-[0px_16px_32px_rgba(25,28,29,0.10)] overflow-hidden z-20">
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -260,15 +263,6 @@
                   <option>Proposal</option>
                   <option>Negotiation</option>
                 </select>
-              </div>
-              <div class="space-y-2">
-                <label class="text-xs font-bold text-outline uppercase tracking-wider">Present Progress</label>
-                <div class="flex items-center gap-4 bg-surface-container px-4 py-3 rounded-xl">
-                  <input
-                    class="w-full h-1.5 bg-outline-variant/30 rounded-lg appearance-none cursor-pointer accent-primary"
-                    type="range" />
-                  <span class="text-sm font-bold text-primary min-w-[3ch]">25%</span>
-                </div>
               </div>
             </div>
             <div class="space-y-2">
