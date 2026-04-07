@@ -37,7 +37,8 @@
         lng: '-122.4194'
     };
 
-    const statusCycle = ['Cold Leads', 'Warm Leads', 'Hot Leads', 'Project in Transition', 'Hold', 'Deal Won', 'Deal Lost'];
+    const statusCycle = ['Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Deal Won', 'Deal Lost'];
+    const lifecycleCycle = ['Active', 'Hold'];
     const DISPLAY_CURRENCY = 'INR';
 
     function daysAgo(days) {
@@ -47,16 +48,22 @@
     }
 
     const DEFAULT_LEADS = [
-        { id: 'LD-9021', company: 'Velocity Media', contact: 'Sarah Jenkins', value: 45000, status: 'Hot Leads', industry: 'Enterprise', owner: 'Anitha', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(12), progress: 62 },
-        { id: 'LD-8842', company: 'Aura Analytics', contact: 'Michael Chen', value: 12800, status: 'Cold Leads', industry: 'Follow-up', owner: 'Sudhir Reddy', source: 'Outbound Sales', currency: 'USD', date: daysAgo(18), progress: 28 },
-        { id: 'LD-8701', company: 'Prism Labs', contact: 'Elena Rodri', value: 22500, status: 'Project in Transition', industry: 'SAAS', owner: 'Vijay', source: 'Website Direct', currency: 'USD', date: daysAgo(7), progress: 71 },
-        { id: 'LD-8650', company: 'Oasis Fintech', contact: 'Tom Vance', value: 8400, status: 'Hold', industry: 'SME', owner: 'Sudhir Reddy', source: 'Referrals', currency: 'USD', date: daysAgo(3), progress: 24 },
-        { id: 'LD-8512', company: 'Lumen Systems', contact: 'Gary Oldman', value: 64000, status: 'Deal Lost', industry: 'Enterprise', owner: 'Anitha', source: 'Outbound Sales', currency: 'USD', date: daysAgo(21), progress: 42 },
-        { id: 'L-9402', company: 'NexaLogistics', contact: 'Sarah Jenkins', value: 45000, status: 'Hot Leads', industry: 'Logistics', owner: 'Vijay', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(2), progress: 67 },
-        { id: 'L-9405', company: 'Quantum Tech', contact: 'Marcus Thorne', value: 128500, status: 'Warm Leads', industry: 'Technology', owner: 'Anitha', source: 'Referrals', currency: 'USD', date: daysAgo(5), progress: 84 },
-        { id: 'L-9408', company: 'Velocity AI', contact: 'David Chen', value: 12000, status: 'Project in Transition', industry: 'AI', owner: 'Sudhir Reddy', source: 'Website Direct', currency: 'USD', date: daysAgo(9), progress: 74 },
-        { id: 'LD-9104', company: 'Summit Health', contact: 'Priya Raman', value: 98000, status: 'Deal Won', industry: 'Healthcare', owner: 'Vijay', source: 'Inbound Marketing', currency: 'USD', date: daysAgo(1), progress: 100 },
-        { id: 'LD-9133', company: 'BluePeak Capital', contact: 'Omar Diaz', value: 76000, status: 'Deal Won', industry: 'Finance', owner: 'Anitha', source: 'Outbound Sales', currency: 'USD', date: daysAgo(6), progress: 100 }
+        { id: 'LD-9021', company: 'Velocity Media', clientName: 'Velocity Media', contact: 'Sarah Jenkins', phone: '+91 98100 22011', email: 'sarah.jenkins@velocitymedia.com', value: 45000, status: 'Negotiation', lifecycle: 'Active', industry: 'Enterprise', owner: 'Anitha', source: 'Inbound Marketing', currency: 'INR', date: daysAgo(12), progress: 62 },
+        { id: 'LD-8842', company: 'Aura Analytics', clientName: 'Aura Analytics', contact: 'Michael Chen', phone: '+91 98220 48115', email: 'michael.chen@auraanalytics.com', value: 12800, status: 'Prospecting', lifecycle: 'Active', industry: 'Follow-up', owner: 'Sudhir Reddy', source: 'Outbound Sales', currency: 'INR', date: daysAgo(18), progress: 28 },
+        { id: 'LD-8701', company: 'Prism Labs', clientName: 'Prism Labs', contact: 'Elena Rodri', phone: '+91 98410 31842', email: 'elena@prismlabs.ai', value: 22500, status: 'Proposal', lifecycle: 'Active', industry: 'SAAS', owner: 'Vijay', source: 'Website Direct', currency: 'INR', date: daysAgo(7), progress: 71 },
+        { id: 'LD-8650', company: 'Oasis Fintech', clientName: 'Oasis Fintech', contact: 'Tom Vance', phone: '+91 98670 21555', email: 'tom.vance@oasisfintech.com', value: 8400, status: 'Qualification', lifecycle: 'Hold', industry: 'SME', owner: 'Sudhir Reddy', source: 'Referrals', currency: 'INR', date: daysAgo(3), progress: 24 },
+        { id: 'LD-8512', company: 'Lumen Systems', clientName: 'Lumen Systems', contact: 'Gary Oldman', phone: '+91 98990 11442', email: 'gary.oldman@lumensystems.com', value: 64000, status: 'Deal Lost', lifecycle: 'Closed', industry: 'Enterprise', owner: 'Anitha', source: 'Outbound Sales', currency: 'INR', date: daysAgo(21), progress: 42 },
+        { id: 'L-9402', company: 'NexaLogistics', clientName: 'NexaLogistics', contact: 'Sarah Jenkins', phone: '+91 98451 11993', email: 'sarah@nexalogistics.com', value: 45000, status: 'Negotiation', lifecycle: 'Active', industry: 'Logistics', owner: 'Vijay', source: 'Inbound Marketing', currency: 'INR', date: daysAgo(2), progress: 67 },
+        { id: 'L-9405', company: 'Quantum Tech', clientName: 'Quantum Tech', contact: 'Marcus Thorne', phone: '+91 98887 20441', email: 'marcus.thorne@quantumtech.io', value: 128500, status: 'Qualification', lifecycle: 'Active', industry: 'Technology', owner: 'Anitha', source: 'Referrals', currency: 'INR', date: daysAgo(5), progress: 84 },
+        { id: 'L-9408', company: 'Velocity AI', clientName: 'Velocity AI', contact: 'David Chen', phone: '+91 98112 77184', email: 'david.chen@velocityai.com', value: 12000, status: 'Proposal', lifecycle: 'Active', industry: 'AI', owner: 'Sudhir Reddy', source: 'Website Direct', currency: 'INR', date: daysAgo(9), progress: 74 },
+        { id: 'LD-9104', company: 'Summit Health', clientName: 'Summit Health', contact: 'Priya Raman', phone: '+91 98761 22411', email: 'priya.raman@summithealth.com', value: 98000, status: 'Deal Won', lifecycle: 'Closed', industry: 'Healthcare', owner: 'Vijay', source: 'Inbound Marketing', currency: 'INR', date: daysAgo(1), progress: 100 },
+        { id: 'LD-9133', company: 'BluePeak Capital', clientName: 'BluePeak Capital', contact: 'Omar Diaz', phone: '+91 98177 55590', email: 'omar.diaz@bluepeakcapital.com', value: 76000, status: 'Deal Won', lifecycle: 'Closed', industry: 'Finance', owner: 'Anitha', source: 'Outbound Sales', currency: 'INR', date: daysAgo(6), progress: 100 }
+    ];
+
+    const DEFAULT_TEAM_USERS = [
+        { name: 'Anitha', email: 'anitha@grassroots.ai', role: 'Administrator', initials: 'AN' },
+        { name: 'Sudhir Reddy', email: 'sudhir.reddy@grassroots.ai', role: 'Lead Manager', initials: 'SR' },
+        { name: 'Vijay', email: 'vijay@grassroots.ai', role: 'Viewer', initials: 'VJ' }
     ];
 
     const DEFAULT_CLIENTS = [
@@ -192,21 +199,29 @@
     }
 
     function normalizeLead(lead, index = 0) {
+        const rawStatus = String(lead.status || '').trim();
+        const resolvedStatus = statusCycle.includes(rawStatus) ? rawStatus : ({
+            'deal won': 'Deal Won',
+            'deal lost': 'Deal Lost',
+            'negotiation': 'Negotiation',
+            'proposal': 'Proposal',
+            'qualification': 'Qualification',
+            'prospecting': 'Prospecting'
+        }[normalizeStatus(rawStatus)] || 'Prospecting');
+        const explicitLifecycle = String(lead.lifecycle || lead.state || '').trim();
+        const inferredHold = /hold|nurtur/i.test(explicitLifecycle) || /hold|nurtur/i.test(rawStatus);
+        const resolvedLifecycle = isClosedStatus(resolvedStatus)
+            ? 'Closed'
+            : ({ hold: 'Hold', active: 'Active' }[normalizeLifecycle(explicitLifecycle)] || (inferredHold ? 'Hold' : 'Active'));
+
         return {
-            id: String(lead.id || `LD-AUTO-${index + 1}`),
+            id: String(lead.id || ('LD-AUTO-' + (index + 1))),
             company: lead.company || 'New Lead',
             clientName: lead.clientName || lead.company || 'New Lead',
             contact: lead.contact || lead.clientName || 'Unknown',
             value: parseNumericValue(lead.value),
-            status: statusCycle.includes(lead.status) ? lead.status : ({
-                'deal won': 'Deal Won',
-                'deal lost': 'Deal Lost',
-                'project in transition': 'Project in Transition',
-                'hot leads': 'Hot Leads',
-                'warm leads': 'Warm Leads',
-                'hold': 'Hold',
-                'cold leads': 'Cold Leads'
-            }[normalizeStatus(lead.status)] || 'Cold Leads'),
+            status: resolvedStatus,
+            lifecycle: resolvedLifecycle,
             industry: lead.industry || lead.lob || 'General',
             owner: lead.owner || 'You',
             source: lead.source || 'Website Direct',
@@ -299,15 +314,21 @@
 
     function normalizeStatus(status) {
         const value = String(status || '').trim().toLowerCase();
-        if (!value) return 'cold leads';
+        if (!value) return 'prospecting';
         if (value.includes('deal won') || value === 'won') return 'deal won';
         if (value.includes('deal lost') || value === 'lost' || value.includes('at risk')) return 'deal lost';
-        if (value.includes('project in transition') || value.includes('proposal')) return 'project in transition';
-        if (value.includes('hot')) return 'hot leads';
-        if (value.includes('warm') || value.includes('negotiation') || value.includes('qualified')) return 'warm leads';
-        if (value.includes('hold') || value.includes('nurturing')) return 'hold';
-        if (value.includes('cold') || value.includes('discovery') || value.includes('draft')) return 'cold leads';
+        if (value.includes('negotiation') || value.includes('hot')) return 'negotiation';
+        if (value.includes('proposal') || value.includes('project in transition')) return 'proposal';
+        if (value.includes('qualification') || value.includes('warm') || value.includes('qualified')) return 'qualification';
+        if (value.includes('prospecting') || value.includes('cold') || value.includes('discovery') || value.includes('draft')) return 'prospecting';
         return value;
+    }
+
+    function normalizeLifecycle(value) {
+        const normalized = String(value || '').trim().toLowerCase();
+        if (normalized.includes('hold')) return 'hold';
+        if (normalized.includes('closed')) return 'closed';
+        return 'active';
     }
 
     function isWonStatus(status) {
@@ -322,18 +343,48 @@
         return isWonStatus(status) || isLostStatus(status);
     }
 
-    function isActiveStatus(status) {
-        return !isClosedStatus(status);
+    function leadLifecycleLabel(lead) {
+        if (!lead) {
+            return 'Active';
+        }
+        if (isClosedStatus(lead.status)) {
+            return 'Closed';
+        }
+        return normalizeLifecycle(lead.lifecycle) === 'hold' ? 'Hold' : 'Active';
+    }
+
+    function isLeadOpen(lead) {
+        return Boolean(lead) && !isClosedStatus(lead.status);
+    }
+
+    function isLeadActive(lead) {
+        return isLeadOpen(lead) && leadLifecycleLabel(lead) === 'Active';
+    }
+
+    function canCommentOnLead(lead) {
+        return isLeadOpen(lead);
+    }
+
+    function canEditLead(lead, ownerContext = '') {
+        if (!isLeadOpen(lead)) {
+            return false;
+        }
+        const profile = getProfile();
+        const profileName = String(profile.name || '').trim().toLowerCase();
+        const leadOwner = String(lead?.owner || '').trim().toLowerCase();
+        const contextOwnerName = String(ownerContext || '').trim().toLowerCase();
+        return String(profile.role || '').trim().toLowerCase() === 'administrator'
+            || (profileName && profileName === leadOwner)
+            || (contextOwnerName && contextOwnerName === leadOwner);
     }
 
     function stageRank(status) {
         const value = normalizeStatus(status);
-        if (value === 'deal won') return 6;
-        if (value === 'hot leads') return 5;
-        if (value === 'project in transition') return 4;
-        if (value === 'warm leads') return 3;
-        if (value === 'hold') return 2;
-        if (value === 'cold leads') return 1;
+        if (value === 'deal won') return 5;
+        if (value === 'negotiation') return 4;
+        if (value === 'proposal') return 3;
+        if (value === 'qualification') return 2;
+        if (value === 'prospecting') return 1;
         if (value === 'deal lost') return 0;
         return 1;
     }
@@ -341,14 +392,14 @@
     function funnelBucket(status) {
         const value = normalizeStatus(status);
         if (value === 'deal won') return 'Deal Won';
-        if (value === 'project in transition') return 'Project in Transition';
-        if (value === 'hot leads') return 'Hot Leads';
-        if (value === 'warm leads') return 'Warm Leads';
-        return 'Cold Leads';
+        if (value === 'negotiation') return 'Negotiation';
+        if (value === 'proposal') return 'Proposal';
+        if (value === 'qualification') return 'Qualification';
+        return 'Prospecting';
     }
 
     function isQualifiedOrBeyond(status) {
-        return stageRank(status) >= 3;
+        return stageRank(status) >= 2;
     }
 
     function matchesDateRange(dateValue, range) {
@@ -386,22 +437,24 @@
 
     function computeAnalytics(leads = getAllLeads(), clients = getAllClients()) {
         const totalLeads = leads.length;
-        const activeLeads = leads.filter((lead) => isActiveStatus(lead.status));
+        const openLeads = leads.filter((lead) => isLeadOpen(lead));
+        const activeLeads = openLeads.filter((lead) => isLeadActive(lead));
+        const holdLeads = openLeads.filter((lead) => leadLifecycleLabel(lead) === 'Hold');
         const wonLeads = leads.filter((lead) => isWonStatus(lead.status));
         const lostLeads = leads.filter((lead) => isLostStatus(lead.status));
-        const pipelineValue = activeLeads.reduce((sum, lead) => sum + lead.value, 0);
+        const pipelineValue = openLeads.reduce((sum, lead) => sum + lead.value, 0);
         const wonRevenue = wonLeads.reduce((sum, lead) => sum + lead.value, 0);
-        const avgDealSize = activeLeads.length ? pipelineValue / activeLeads.length : 0;
+        const avgDealSize = openLeads.length ? pipelineValue / openLeads.length : 0;
         const qualifiedLeads = leads.filter((lead) => isQualifiedOrBeyond(lead.status));
         const totalClosed = wonLeads.length + lostLeads.length;
         const winRate = totalClosed ? (wonLeads.length / totalClosed) * 100 : 0;
         const qualifiedRate = totalLeads ? (qualifiedLeads.length / totalLeads) * 100 : 0;
         const commonCurrency = DISPLAY_CURRENCY;
-        const highPotential = activeLeads.filter((lead) => lead.value >= avgDealSize && stageRank(lead.status) >= 2);
-        const hotLeads = activeLeads.filter((lead) => lead.value >= avgDealSize && stageRank(lead.status) >= 3);
+        const highPotential = openLeads.filter((lead) => lead.value >= avgDealSize && stageRank(lead.status) >= 2);
+        const hotLeads = openLeads.filter((lead) => lead.value >= avgDealSize && stageRank(lead.status) >= 3);
         const now = Date.now();
-        const avgResponseHours = activeLeads.length
-            ? activeLeads.reduce((sum, lead) => sum + Math.min((now - parseDateValue(lead.date).getTime()) / 36e5, 72), 0) / activeLeads.length
+        const avgResponseHours = openLeads.length
+            ? openLeads.reduce((sum, lead) => sum + Math.min((now - parseDateValue(lead.date).getTime()) / 36e5, 72), 0) / openLeads.length
             : 0;
         const closedWonThisWeek = wonLeads.filter((lead) => (now - parseDateValue(lead.date).getTime()) <= (7 * 24 * 36e5)).length;
 
@@ -419,15 +472,15 @@
             .sort((a, b) => b.count - a.count)
             .slice(0, 4);
 
-        const funnelOrder = ['Cold Leads', 'Warm Leads', 'Hot Leads', 'Project in Transition', 'Deal Won'];
+        const funnelOrder = ['Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Deal Won'];
         const funnelCounts = {
-            'Cold Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Cold Leads').length,
-            'Warm Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Warm Leads').length,
-            'Hot Leads': leads.filter((lead) => funnelBucket(lead.status) === 'Hot Leads').length,
-            'Project in Transition': leads.filter((lead) => funnelBucket(lead.status) === 'Project in Transition').length,
+            Prospecting: leads.filter((lead) => funnelBucket(lead.status) === 'Prospecting').length,
+            Qualification: leads.filter((lead) => funnelBucket(lead.status) === 'Qualification').length,
+            Proposal: leads.filter((lead) => funnelBucket(lead.status) === 'Proposal').length,
+            Negotiation: leads.filter((lead) => funnelBucket(lead.status) === 'Negotiation').length,
             'Deal Won': wonLeads.length
         };
-        const funnelBase = Math.max(1, funnelCounts['Cold Leads']);
+        const funnelBase = Math.max(1, funnelCounts.Prospecting);
         const funnel = funnelOrder.map((name) => ({
             name,
             count: funnelCounts[name],
@@ -486,7 +539,9 @@
             leads,
             clients,
             totalLeads,
+            openLeads,
             activeLeads,
+            holdLeads,
             wonLeads,
             lostLeads,
             totalClients,
@@ -500,7 +555,7 @@
             hotLeads,
             avgResponseHours,
             closedWonThisWeek,
-            pendingReview: activeLeads.length,
+            pendingReview: openLeads.length,
             commonCurrency,
             sourceDistribution,
             funnel,
@@ -561,23 +616,87 @@
         setStored(STORAGE_KEYS.clients, storedClients);
     }
 
-    function openLeadDetailModal(lead) {
+    function openLeadEditModal(lead, options = {}) {
+        if (!canEditLead(lead, options.ownerContext)) {
+            toast('Only the lead owner can edit open leads.', 'warning');
+            return;
+        }
+
+        openFormModal({
+            title: `Edit Lead: ${lead.company}`,
+            description: 'Update the total contract value and contact information for this lead.',
+            submitLabel: 'Save Changes',
+            fields: [
+                { name: 'value', label: 'Total Contract Value', value: String(lead.value || ''), required: true, placeholder: 'Enter contract value' },
+                { name: 'contact', label: 'Contact Person', value: lead.contact || '', required: true, placeholder: 'Enter contact person name' },
+                { name: 'phone', label: 'Phone Number', value: lead.phone || '', placeholder: 'Enter phone number' },
+                { name: 'email', label: 'Email Address', type: 'email', value: lead.email || '', placeholder: 'Enter email address' }
+            ],
+            onSubmit: ({ value, contact, phone, email }) => {
+                const patch = {
+                    value: parseNumericValue(value),
+                    contact: String(contact || '').trim(),
+                    phone: String(phone || '').trim(),
+                    email: String(email || '').trim()
+                };
+                saveLeadPatch(lead.id, patch);
+                if (typeof options.onSave === 'function') {
+                    options.onSave(findLeadById(lead.id));
+                }
+                toast('Lead details updated.', 'success');
+            }
+        });
+    }
+
+    function openLeadDetailModal(lead, options = {}) {
         const location = getLeadLocation(lead);
+        const lifecycle = leadLifecycleLabel(lead);
         const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(`${location.lat},${location.lng}`)}&z=14&output=embed`;
         const comments = getLeadComments(lead);
+        const actions = [];
+
+        if (canEditLead(lead, options.ownerContext)) {
+            actions.push({
+                label: 'Edit Lead',
+                className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                onClick: (close) => {
+                    close();
+                    openLeadEditModal(lead, options);
+                }
+            });
+        }
+
+        if (isLeadOpen(lead)) {
+            actions.push({
+                label: lifecycle === 'Hold' ? 'Mark Active' : 'Move to Hold',
+                className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                onClick: (close) => {
+                    const nextLifecycle = lifecycle === 'Hold' ? 'Active' : 'Hold';
+                    saveLeadPatch(lead.id, { lifecycle: nextLifecycle });
+                    if (typeof options.onSave === 'function') {
+                        options.onSave(findLeadById(lead.id));
+                    }
+                    toast(`Lead moved to ${nextLifecycle}.`, 'success');
+                    close();
+                }
+            });
+        }
+
         openModal(
             `${lead.company} Lead`,
             `<div class="space-y-4">
                 <div class="grid grid-cols-2 gap-3">
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Lead ID</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.id)}</p></div>
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Status</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.status)}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">State</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lifecycle)}</p></div>
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Value</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(formatMoney(lead.value, { currency: lead.currency }))}</p></div>
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Publisher</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.source)}</p></div>
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Owner</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.owner)}</p></div>
                     <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Created</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(formatDisplayDate(lead.date))}</p></div>
+                    <div class="rounded-xl bg-slate-50 p-3"><p class="text-[11px] uppercase text-slate-500 font-bold">Client</p><p class="mt-1 font-semibold text-slate-900">${escapeHtml(lead.clientName || lead.company)}</p></div>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-4">
-                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Contact</p>
+                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Contact Information</p>
                     <p class="font-semibold text-slate-900">${escapeHtml(lead.contact)}</p>
                     <p class="text-sm text-slate-600 mt-1">${escapeHtml(lead.phone || 'No phone saved')}</p>
                     <p class="text-sm text-slate-600">${escapeHtml(lead.email || 'No email saved')}</p>
@@ -587,7 +706,10 @@
                     <p class="text-sm text-slate-700">${escapeHtml(lead.description || 'No description added yet.')}</p>
                 </div>
                 <div class="rounded-xl bg-slate-50 p-4">
-                    <p class="text-[11px] uppercase text-slate-500 font-bold mb-2">Comments</p>
+                    <div class="flex items-center justify-between gap-3 mb-2">
+                        <p class="text-[11px] uppercase text-slate-500 font-bold">Comments</p>
+                        <span class="text-[11px] font-bold uppercase tracking-[0.18em] ${canCommentOnLead(lead) ? 'text-emerald-600' : 'text-slate-400'}">${canCommentOnLead(lead) ? 'Enabled' : 'Disabled'}</span>
+                    </div>
                     <div class="space-y-2">
                         ${comments.map((comment, index) => `<div class="rounded-lg ${index % 2 === 0 ? 'bg-white' : 'bg-blue-50'} p-3"><p class="text-xs font-bold ${index % 2 === 0 ? 'text-slate-600' : 'text-blue-700'} mb-1">${index % 2 === 0 ? escapeHtml(lead.owner) : 'You'}</p><p class="text-sm text-slate-700">${escapeHtml(comment)}</p></div>`).join('')}
                     </div>
@@ -599,7 +721,8 @@
                     <p class="text-[11px] uppercase text-slate-500 font-bold mb-1">Location</p>
                     <p class="font-semibold text-slate-900">${escapeHtml(location.label)}</p>
                 </div>
-            </div>`
+            </div>`,
+            actions
         );
     }
 
@@ -618,23 +741,78 @@
         }
     }
 
-    function applyLeadToManageRow(row, lead) {
-        const cells = qsa('td', row);
-        if (cells.length < 9 || !lead) {
+    function statusBadgeClass(status) {
+        return ({
+            Prospecting: 'bg-amber-50 text-amber-700',
+            Qualification: 'bg-sky-50 text-sky-700',
+            Proposal: 'bg-indigo-50 text-indigo-700',
+            Negotiation: 'bg-purple-50 text-purple-700',
+            'Deal Won': 'bg-emerald-50 text-emerald-700',
+            'Deal Lost': 'bg-rose-50 text-rose-700'
+        }[status] || 'bg-slate-100 text-slate-700');
+    }
+
+    function lifecycleBadgeClass(lifecycle) {
+        return ({
+            Active: 'bg-emerald-50 text-emerald-700',
+            Hold: 'bg-slate-100 text-slate-700',
+            Closed: 'bg-slate-200 text-slate-600'
+        }[lifecycle] || 'bg-slate-100 text-slate-700');
+    }
+
+    function ensureLeadLifecycleColumns(pageType) {
+        const headerRow = qs('thead tr');
+        if (!headerRow) {
             return;
         }
+
+        const headerLabels = qsa('th', headerRow).map((cell) => cell.textContent.trim());
+        const targetIndex = pageType === 'review' ? 5 : 6;
+        if (!headerLabels.includes('State')) {
+            const headerCell = document.createElement('th');
+            headerCell.className = pageType === 'review'
+                ? 'px-6 py-3 text-[0.6875rem] font-bold text-on-surface-variant uppercase tracking-widest'
+                : 'px-4 py-4 border-b border-slate-100 text-[11px] uppercase tracking-wider font-bold text-slate-500';
+            headerCell.textContent = 'State';
+            headerRow.insertBefore(headerCell, qsa('th', headerRow)[targetIndex] || null);
+        }
+
+        qsa('tbody tr').forEach((row) => {
+            const cells = qsa('td', row);
+            const expectedLength = pageType === 'review' ? 9 : 11;
+            if (cells.length >= expectedLength) {
+                return;
+            }
+            const cell = document.createElement('td');
+            cell.className = pageType === 'review' ? 'px-6 py-4' : 'px-4 py-4';
+            cell.innerHTML = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">Active</span>';
+            row.insertBefore(cell, cells[targetIndex] || null);
+        });
+    }
+
+    function applyLeadToManageRow(row, lead) {
+        const cells = qsa('td', row);
+        if (cells.length < 10 || !lead) {
+            return;
+        }
+        const lifecycle = leadLifecycleLabel(lead);
         setNodeText(cells[1], lead.id);
         setNodeText(qs('.text-sm.font-semibold', cells[2]), lead.company);
         setNodeText(qs('.text-sm', cells[3]), lead.contact);
         setNodeText(qs('.text-sm.font-bold', cells[4]), formatMoney(lead.value, { currency: lead.currency }));
         const statusNode = qs('span', cells[5]);
         setNodeText(statusNode, lead.status);
-        setNodeText(qs('.text-sm.text-slate-600', cells[7]), lead.owner);
-        setNodeText(cells[8], formatDisplayDate(lead.date));
+        statusNode.className = `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${statusBadgeClass(lead.status)}`;
+        const lifecycleNode = qs('span', cells[6]);
+        setNodeText(lifecycleNode, lifecycle);
+        lifecycleNode.className = `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${lifecycleBadgeClass(lifecycle)}`;
+        setNodeText(qs('.text-sm.text-slate-600', cells[8]), lead.owner);
+        setNodeText(cells[9], formatDisplayDate(lead.date));
         row.dataset.leadId = lead.id;
         row.dataset.leadDateIso = parseDateValue(lead.date).toISOString();
         row.dataset.leadValue = String(lead.value);
         row.dataset.leadStatus = lead.status;
+        row.dataset.leadLifecycle = lifecycle;
         row.dataset.leadOwner = lead.owner;
         row.dataset.leadCompany = lead.company;
     }
@@ -644,17 +822,34 @@
         if (cells.length < 8 || !lead) {
             return;
         }
+        const lifecycle = leadLifecycleLabel(lead);
         setNodeText(cells[0], `#${lead.id}`);
         setNodeText(qs('.text-sm.font-semibold', cells[1]), lead.company);
         setNodeText(qs('.text-sm.font-medium', cells[2]), lead.contact);
         setNodeText(qs('.text-xs', cells[2]), lead.industry);
         setNodeText(cells[3], formatMoney(lead.value, { currency: lead.currency }));
-        setNodeText(qs('span', cells[4]), lead.status);
-        setNodeText(qs('.text-sm.text-on-surface', cells[5]), lead.owner);
-        setNodeText(cells[6], formatDisplayDate(lead.date));
+        const statusNode = qs('span', cells[4]);
+        setNodeText(statusNode, lead.status);
+        statusNode.className = `px-2 py-1 rounded-full text-[10px] font-bold uppercase ${statusBadgeClass(lead.status)}`;
+        const lifecycleNode = qs('span', cells[5]);
+        setNodeText(lifecycleNode, lifecycle);
+        lifecycleNode.className = `px-2 py-1 rounded-full text-[10px] font-bold uppercase ${lifecycleBadgeClass(lifecycle)}`;
+        setNodeText(qs('.text-sm.text-on-surface', cells[6]), lead.owner);
+        setNodeText(cells[7], formatDisplayDate(lead.date));
         row.dataset.leadId = lead.id;
         row.dataset.leadDateIso = parseDateValue(lead.date).toISOString();
+        row.dataset.leadStatus = lead.status;
+        row.dataset.leadLifecycle = lifecycle;
         row.dataset.leadLocation = JSON.stringify(lead.location || getCurrentLocation());
+
+        const commentButton = qsa('button[title]', row).find((button) => button.getAttribute('title') === 'Comments');
+        if (commentButton) {
+            const enabled = canCommentOnLead(lead);
+            commentButton.disabled = !enabled;
+            commentButton.classList.toggle('opacity-40', !enabled);
+            commentButton.classList.toggle('cursor-not-allowed', !enabled);
+            commentButton.title = enabled ? 'Comments' : 'Comments disabled for closed leads';
+        }
     }
 
     function syncSeedLeadRows(pageType) {
@@ -1424,7 +1619,10 @@
                     <span class="text-sm font-bold text-slate-900">${escapeHtml(formatMoney(normalizedLead.value, { currency: normalizedLead.currency }))}</span>
                 </td>
                 <td class="px-4 py-4">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700">${escapeHtml(normalizedLead.status)}</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${statusBadgeClass(normalizedLead.status)}">${escapeHtml(normalizedLead.status)}</span>
+                </td>
+                <td class="px-4 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${lifecycleBadgeClass(leadLifecycleLabel(normalizedLead))}">${escapeHtml(leadLifecycleLabel(normalizedLead))}</span>
                 </td>
                 <td class="px-4 py-4">
                     <div class="flex flex-wrap gap-1">
@@ -1495,7 +1693,10 @@
                 </td>
                 <td class="px-6 py-4 text-sm font-semibold text-on-surface">${escapeHtml(formatMoney(normalizedLead.value, { currency: normalizedLead.currency }))}</td>
                 <td class="px-6 py-4">
-                    <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase bg-blue-100 text-blue-700">${escapeHtml(normalizedLead.status)}</span>
+                    <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${statusBadgeClass(normalizedLead.status)}">${escapeHtml(normalizedLead.status)}</span>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="px-2 py-1 rounded-full text-[10px] font-bold uppercase ${lifecycleBadgeClass(leadLifecycleLabel(normalizedLead))}">${escapeHtml(leadLifecycleLabel(normalizedLead))}</span>
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
@@ -1693,6 +1894,45 @@
         const searchInput = qs('input[placeholder="Search leads, tasks, or reports..."]');
         const generateReportButton = qsa('button').find((button) => button.textContent.trim() === 'Generate Report');
         const updatePipelineButton = qsa('button').find((button) => button.textContent.trim() === 'Update Pipeline');
+        const dashboardValueNodes = () => qsa('.dashboard-kpi-value');
+
+        function fitDashboardValue(node) {
+            if (!node) {
+                return;
+            }
+            node.style.fontSize = '';
+            node.style.letterSpacing = '';
+            const container = node.parentElement;
+            if (!container) {
+                return;
+            }
+            const availableWidth = container.clientWidth;
+            if (!availableWidth) {
+                return;
+            }
+
+            let fontSize = 23;
+            const minFontSize = 10.5;
+            node.style.fontSize = fontSize + 'px';
+            node.style.letterSpacing = '-0.02em';
+
+            while (node.scrollWidth > availableWidth && fontSize > minFontSize) {
+                fontSize -= 0.5;
+                node.style.fontSize = fontSize + 'px';
+            }
+
+            if (node.scrollWidth > availableWidth) {
+                node.style.letterSpacing = '-0.04em';
+                while (node.scrollWidth > availableWidth && fontSize > 9) {
+                    fontSize -= 0.25;
+                    node.style.fontSize = fontSize + 'px';
+                }
+            }
+        }
+
+        function fitDashboardValues() {
+            dashboardValueNodes().forEach(fitDashboardValue);
+        }
 
         function renderDashboardAnalytics() {
             const analytics = computeAnalytics();
@@ -1730,6 +1970,8 @@
                         break;
                 }
             });
+
+            requestAnimationFrame(fitDashboardValues);
 
             const winRatePanel = qsa('h4').find((node) => node.textContent.trim() === 'Win Rate Trend vs Target')?.closest('div[class*="col-span"]');
             if (winRatePanel) {
@@ -1826,6 +2068,7 @@
         if (updatePipelineButton) {
             updatePipelineButton.addEventListener('click', () => {
                 renderDashboardAnalytics();
+        window.addEventListener('resize', fitDashboardValues);
                 toast('Pipeline metrics refreshed on the dashboard.', 'success');
             });
         }
@@ -1838,6 +2081,7 @@
         }
 
         renderDashboardAnalytics();
+        window.addEventListener('resize', fitDashboardValues);
     }
 
     function initAddLeadPage() {
@@ -2005,6 +2249,7 @@
     }
 
     function initManageLeadsPage() {
+        ensureLeadLifecycleColumns('manage');
         addStoredLeadToManageTable();
         syncSeedLeadRows('manage');
 
@@ -2049,9 +2294,10 @@
                 contact: cells[3]?.innerText.trim().toLowerCase() || '',
                 value: String(parseNumericValue(row.dataset.leadValue || cells[4]?.innerText.trim())).toLowerCase(),
                 status: (row.dataset.leadStatus || cells[5]?.innerText.trim() || '').toLowerCase(),
-                tags: cells[6]?.innerText.trim().toLowerCase() || '',
-                owner: (row.dataset.leadOwner || cells[7]?.innerText.trim() || '').toLowerCase(),
-                dateIso: row.dataset.leadDateIso || parseDateValue(cells[8]?.innerText.trim()).toISOString()
+                lifecycle: (row.dataset.leadLifecycle || cells[6]?.innerText.trim() || '').toLowerCase(),
+                tags: cells[7]?.innerText.trim().toLowerCase() || '',
+                owner: (row.dataset.leadOwner || cells[8]?.innerText.trim() || '').toLowerCase(),
+                dateIso: row.dataset.leadDateIso || parseDateValue(cells[9]?.innerText.trim()).toISOString()
             };
         }
 
@@ -2061,6 +2307,13 @@
 
         function getLeadFromRow(row) {
             return findLeadById(row.dataset.leadId || qsa('td', row)[1]?.textContent.trim());
+        }
+
+        function refreshRow(row) {
+            const refreshedLead = getLeadFromRow(row);
+            if (refreshedLead) {
+                applyLeadToManageRow(row, refreshedLead);
+            }
         }
 
         function refreshQuickMetrics() {
@@ -2199,9 +2452,9 @@
                 }
                 const exportRows = selectedRows.map((row) => {
                     const cells = qsa('td', row);
-                    return [1, 2, 3, 4, 5, 7].map((index) => cells[index].innerText.trim());
+                    return [1, 2, 3, 4, 5, 6, 8].map((index) => cells[index].innerText.trim());
                 });
-                downloadExcelTable('selected-leads.xls', ['Lead ID', 'Company', 'Contact', 'Value', 'Status', 'Owner'], exportRows, 'Selected Leads');
+                downloadExcelTable('selected-leads.xls', ['Lead ID', 'Company', 'Contact', 'Value', 'Status', 'State', 'Owner'], exportRows, 'Selected Leads');
                 toast('Selected leads exported as an Excel sheet.', 'success');
             });
         }
@@ -2218,14 +2471,12 @@
                     description: 'Choose the status to apply to all selected leads.',
                     submitLabel: 'Update Status',
                     fields: [
-                        { name: 'status', label: 'New Status', type: 'select', value: 'Hot Leads', required: true, options: statusCycle }
+                        { name: 'status', label: 'New Status', type: 'select', value: 'Prospecting', required: true, options: statusCycle }
                     ],
                     onSubmit: ({ status }) => {
                         selectedRows.forEach((row) => {
-                            const badge = qsa('td', row)[5].querySelector('span');
-                            badge.textContent = status;
-                            row.dataset.leadStatus = status;
                             saveLeadPatch(row.dataset.leadId || qsa('td', row)[1]?.textContent.trim(), { status });
+                            refreshRow(row);
                         });
                         toast(`Selected leads moved to ${status}.`, 'success');
                         pager.render();
@@ -2244,71 +2495,99 @@
         qsa('tbody button').forEach((button) => {
             button.addEventListener('click', () => {
                 const row = button.closest('tr');
-                const company = row ? qsa('td', row)[2].innerText.trim() : 'lead';
+                const lead = row ? getLeadFromRow(row) : null;
+                const company = lead?.company || (row ? qsa('td', row)[2].innerText.trim() : 'lead');
+                const actions = [
+                    {
+                        label: 'View Lead',
+                        className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                        onClick: () => {
+                            if (!lead) {
+                                toast('Lead details are not available yet.', 'warning');
+                                return;
+                            }
+                            openLeadDetailModal(lead, { onSave: () => { refreshRow(row); pager.render(); refreshQuickMetrics(); } });
+                        }
+                    }
+                ];
+
+                if (lead && canEditLead(lead)) {
+                    actions.push({
+                        label: 'Edit Lead',
+                        className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                        onClick: () => {
+                            openLeadEditModal(lead, { onSave: () => { refreshRow(row); pager.render(); refreshQuickMetrics(); } });
+                        }
+                    });
+                }
+
+                if (lead && isLeadOpen(lead)) {
+                    actions.push({
+                        label: leadLifecycleLabel(lead) === 'Hold' ? 'Mark Active' : 'Move to Hold',
+                        className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                        onClick: () => {
+                            saveLeadPatch(lead.id, { lifecycle: leadLifecycleLabel(lead) === 'Hold' ? 'Active' : 'Hold' });
+                            refreshRow(row);
+                            pager.render();
+                            refreshQuickMetrics();
+                            toast(`Lead moved to ${leadLifecycleLabel(findLeadById(lead.id))}.`, 'success');
+                        }
+                    });
+                }
+
+                actions.push(
+                    {
+                        label: 'Delete Selected',
+                        className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                        onClick: () => {
+                            deleteLeadFromState(row?.dataset.leadId || qsa('td', row)[1]?.textContent.trim());
+                            row?.remove();
+                            pager.render();
+                            refreshQuickMetrics();
+                            toast('Lead removed from the table.', 'success');
+                        }
+                    },
+                    {
+                        label: 'Export Selected',
+                        className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
+                        onClick: () => {
+                            const checkbox = row?.querySelector('input[type="checkbox"]');
+                            if (checkbox) {
+                                checkbox.checked = true;
+                                updateSelectedCount();
+                            }
+                            exportButton?.click();
+                        }
+                    },
+                    {
+                        label: 'Change Status',
+                        onClick: () => {
+                            openFormModal({
+                                title: 'Change Lead Status',
+                                description: 'Choose the next status for this lead.',
+                                submitLabel: 'Apply Status',
+                                fields: [
+                                    { name: 'status', label: 'Lead Status', type: 'select', value: lead?.status || 'Prospecting', required: true, options: statusCycle }
+                                ],
+                                onSubmit: ({ status }) => {
+                                    if (!lead) {
+                                        return;
+                                    }
+                                    saveLeadPatch(lead.id, { status });
+                                    refreshRow(row);
+                                    pager.render();
+                                    refreshQuickMetrics();
+                                    toast(`Lead status moved to ${status}.`, 'success');
+                                }
+                            });
+                        }
+                    }
+                );
+
                 openModal(
                     `Lead Actions: ${company}`,
                     '<p>Choose an action for this lead.</p>',
-                    [
-                        {
-                            label: 'View Lead',
-                            className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
-                            onClick: () => {
-                                const lead = row ? getLeadFromRow(row) : null;
-                                if (!lead) {
-                                    toast('Lead details are not available yet.', 'warning');
-                                    return;
-                                }
-                                openLeadDetailModal(lead);
-                            }
-                        },
-                        {
-                            label: 'Delete Selected',
-                            className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
-                            onClick: () => {
-                                deleteLeadFromState(row?.dataset.leadId || qsa('td', row)[1]?.textContent.trim());
-                                row?.remove();
-                                pager.render();
-                                refreshQuickMetrics();
-                                toast('Lead removed from the table.', 'success');
-                            }
-                        },
-                        {
-                            label: 'Export Selected',
-                            className: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold bg-white',
-                            onClick: () => {
-                                const checkbox = row?.querySelector('input[type="checkbox"]');
-                                if (checkbox) {
-                                    checkbox.checked = true;
-                                    updateSelectedCount();
-                                }
-                                exportButton?.click();
-                            }
-                        },
-                        {
-                            label: 'Change Status',
-                            onClick: () => {
-                                openFormModal({
-                                    title: 'Change Lead Status',
-                                    description: 'Choose the next status for this lead.',
-                                    submitLabel: 'Apply Status',
-                                    fields: [
-                                        { name: 'status', label: 'Lead Status', type: 'select', value: rowData(row).status || 'Cold Leads', required: true, options: statusCycle }
-                                    ],
-                                    onSubmit: ({ status }) => {
-                                        const badge = qsa('td', row)[5]?.querySelector('span');
-                                        if (badge) {
-                                            badge.textContent = status;
-                                        }
-                                        row.dataset.leadStatus = status;
-                                        saveLeadPatch(row.dataset.leadId || qsa('td', row)[1]?.textContent.trim(), { status });
-                                        pager.render();
-                                        refreshQuickMetrics();
-                                        toast(`Lead status moved to ${status}.`, 'success');
-                                    }
-                                });
-                            }
-                        }
-                    ]
+                    actions
                 );
             });
         });
@@ -2327,7 +2606,7 @@
                     toast('Lead details are not available yet.', 'warning');
                     return;
                 }
-                openLeadDetailModal(lead);
+                openLeadDetailModal(lead, { onSave: () => { refreshRow(row); pager.render(); refreshQuickMetrics(); } });
             });
             row.style.cursor = 'pointer';
         });
@@ -2343,6 +2622,7 @@
     }
 
     function initReviewLeadsPage() {
+        ensureLeadLifecycleColumns('review');
         addStoredLeadToReviewTable();
         syncSeedLeadRows('review');
 
@@ -2360,7 +2640,7 @@
         const nextButton = qsa('button').find((button) => button.textContent.trim() === 'Next');
         const numberButtons = qsa('button').filter((button) => ['1', '2', '3'].includes(button.textContent.trim())).slice(0, 3);
         const queueHealthCopy = qsa('p').find((paragraph) => paragraph.textContent.includes('Lead processing speed'));
-        const filterModes = ['All Leads', 'Cold Leads', 'Hold', 'Hot Leads', 'Warm Leads', 'Project in Transition', 'Deal Won', 'Deal Lost'];
+        const filterModes = ['All Leads', 'Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Deal Won', 'Deal Lost'];
         let filterIndex = 0;
         let activeRow = rows[0] || null;
 
@@ -2390,8 +2670,9 @@
                 contact: cells[2]?.innerText.trim() || '',
                 value: cells[3]?.innerText.trim() || '',
                 status: cells[4]?.innerText.trim() || '',
-                owner: cells[5]?.innerText.trim() || '',
-                date: cells[6]?.innerText.trim() || ''
+                lifecycle: cells[5]?.innerText.trim() || '',
+                owner: cells[6]?.innerText.trim() || '',
+                date: cells[7]?.innerText.trim() || ''
             };
         }
 
@@ -2447,7 +2728,7 @@
                 const exportRows = rows
                     .filter((row) => row.style.display !== 'none')
                     .map((row) => Object.values(getRowValues(row)));
-                downloadExcelTable('review-queue.xls', ['Lead ID', 'Company', 'Contact', 'Value', 'Status', 'Owner', 'Date'], exportRows, 'Review Queue');
+                downloadExcelTable('review-queue.xls', ['Lead ID', 'Company', 'Contact', 'Value', 'Status', 'State', 'Owner', 'Date'], exportRows, 'Review Queue');
                 toast('Review queue exported as an Excel sheet.', 'success');
             });
         }
@@ -2472,7 +2753,12 @@
                 const data = getRowValues(row);
 
                 if (title === 'Comments') {
-                    const thread = getLeadComments(findLeadById(data.id.replace('#', '')) || { company: data.company, owner: data.owner });
+                    const sourceLead = getLeadFromReviewRow(row) || findLeadById(data.id.replace('#', '')) || { company: data.company, owner: data.owner, status: data.status, lifecycle: data.lifecycle };
+                    if (!canCommentOnLead(sourceLead)) {
+                        toast('Comments are disabled once a lead is won or lost.', 'warning');
+                        return;
+                    }
+                    const thread = getLeadComments(sourceLead);
                     openModal(
                         `Lead Comments: ${data.company}`,
                         `<div class="space-y-4">
@@ -2588,7 +2874,7 @@
                                             { name: 'owner', label: 'New Owner', value: data.owner, required: true, placeholder: 'Enter teammate name' }
                                         ],
                                         onSubmit: ({ owner }) => {
-                                            qsa('td', activeRow)[5].querySelector('span.text-sm').textContent = owner;
+                                            qsa('td', activeRow)[6].querySelector('span.text-sm').textContent = owner;
                                             saveLeadPatch(data.id, { owner });
                                             refreshQueueHealth();
                                             toast(`Lead transferred to ${owner}.`, 'success');
@@ -2635,7 +2921,7 @@
                     toast('Lead details are not available yet.', 'warning');
                     return;
                 }
-                openLeadDetailModal(lead);
+                openLeadDetailModal(lead, { onSave: () => { applyLeadToReviewRow(row, findLeadById(lead.id)); refreshQueueHealth(); pager.render(); } });
             });
             row.style.cursor = 'pointer';
         });
@@ -2918,23 +3204,90 @@
         }
 
         const dateTrigger = qs('#reports-date-trigger');
+        const datePanel = qs('#reports-date-panel');
+        const dateFilterHost = qs('#reports-date-filter');
+        const quarterSelect = qs('#reports-quarter-select');
+        const monthSelect = qs('#reports-month-select');
+        const yearSelect = qs('#reports-year-select');
+        const monthWrap = qs('#reports-month-wrap');
+        const yearWrap = qs('#reports-year-wrap');
         const exportButton = qsa('button').find((button) => button.textContent.includes('Export Report'));
         const teamPerformanceButton = qsa('button').find((button) => button.textContent.includes('Download Team Performance'));
         const viewAllButton = qsa('button').find((button) => button.textContent.includes('View All Members'));
         const deepDiveButton = qsa('button').find((button) => button.textContent.includes('Generate Deep-Dive Comparison'));
-        const ranges = [
-            { label: 'Last 7 Days', kind: 'custom', from: new Date(Date.now() - (6 * 24 * 36e5)).toISOString().slice(0, 10), to: new Date().toISOString().slice(0, 10) },
-            { label: 'Last 30 Days', kind: 'last30' },
-            { label: 'Quarter to Date', kind: 'quarter' },
-            { label: 'This Year', kind: 'year' }
-        ];
-        let activeRange = ranges[1];
+        const fiscalQuarterMap = {
+            Q1: { label: 'Quarter 1 (Q1)', shortLabel: 'Q1', months: [{ label: 'April', value: '3' }, { label: 'May', value: '4' }, { label: 'June', value: '5' }] },
+            Q2: { label: 'Quarter 2 (Q2)', shortLabel: 'Q2', months: [{ label: 'July', value: '6' }, { label: 'August', value: '7' }, { label: 'September', value: '8' }] },
+            Q3: { label: 'Quarter 3 (Q3)', shortLabel: 'Q3', months: [{ label: 'October', value: '9' }, { label: 'November', value: '10' }, { label: 'December', value: '11' }] },
+            Q4: { label: 'Quarter 4 (Q4)', shortLabel: 'Q4', months: [{ label: 'January', value: '0' }, { label: 'February', value: '1' }, { label: 'March', value: '2' }] }
+        };
+        let activeRange = { label: 'All Time', kind: 'any' };
 
         function rangeDisplayLabel(range) {
-            if (range.kind === 'custom' && range.from && range.to) {
-                return `${range.label}: ${range.from} - ${range.to}`;
+            if (range.kind === 'custom' && range.label) {
+                return range.label;
             }
             return range.label;
+        }
+
+        function populateYearOptions(selectedYear) {
+            if (!yearSelect) {
+                return;
+            }
+            const currentYear = new Date().getFullYear();
+            const baseYear = Number(selectedYear || currentYear);
+            const years = [];
+            for (let year = currentYear - 2; year <= currentYear + 3; year += 1) {
+                years.push(year);
+            }
+            if (!years.includes(baseYear)) {
+                years.push(baseYear);
+                years.sort((left, right) => left - right);
+            }
+            yearSelect.innerHTML = years.map((year) => '<option value="' + year + '" ' + (year === baseYear ? 'selected' : '') + '>' + year + '</option>').join('');
+        }
+
+        function populateMonthOptions(quarterKey) {
+            if (!monthSelect) {
+                return;
+            }
+            const quarter = fiscalQuarterMap[quarterKey];
+            if (!quarter) {
+                monthSelect.innerHTML = '';
+                return;
+            }
+            monthSelect.innerHTML = ['<option value="">All months in ' + quarter.shortLabel + '</option>']
+                .concat(quarter.months.map((month) => '<option value="' + month.value + '">' + month.label + '</option>'))
+                .join('');
+        }
+
+        function applyReportDateSelection() {
+            const quarterKey = quarterSelect?.value;
+            const selectedYear = Number(yearSelect?.value || new Date().getFullYear());
+            if (!quarterKey || !fiscalQuarterMap[quarterKey]) {
+                return;
+            }
+
+            const quarter = fiscalQuarterMap[quarterKey];
+            const selectedMonthValue = monthSelect?.value || '';
+            let startMonth = Number(quarter.months[0].value);
+            let endMonth = Number(quarter.months[quarter.months.length - 1].value);
+            let label = quarter.shortLabel + ' ' + selectedYear;
+
+            if (selectedMonthValue !== '') {
+                const monthMeta = quarter.months.find((month) => month.value === selectedMonthValue);
+                if (monthMeta) {
+                    startMonth = Number(monthMeta.value);
+                    endMonth = Number(monthMeta.value);
+                    label = quarter.shortLabel + ' • ' + monthMeta.label + ' ' + selectedYear;
+                }
+            }
+
+            const from = new Date(selectedYear, startMonth, 1).toISOString().slice(0, 10);
+            const to = new Date(selectedYear, endMonth + 1, 0).toISOString().slice(0, 10);
+            activeRange = { kind: 'custom', label, from, to };
+            renderReports();
+            filterRows();
         }
 
         function scopedAnalytics() {
@@ -3015,12 +3368,12 @@
                     if (countLabel) {
                         const suffix = stage.name === 'Deal Won'
                             ? 'Deals'
-                            : stage.name === 'Project in Transition'
-                                ? 'Projects'
-                                : stage.name === 'Hot Leads'
-                                    ? 'Priority Leads'
-                                    : stage.name === 'Warm Leads'
-                                        ? 'Active Leads'
+                            : stage.name === 'Negotiation'
+                                ? 'Priority Leads'
+                                : stage.name === 'Proposal'
+                                    ? 'Proposals'
+                                    : stage.name === 'Qualification'
+                                        ? 'Qualified Leads'
                                         : 'Leads';
                         countLabel.textContent = `${stage.count.toLocaleString('en-US')} ${suffix}`;
                     }
@@ -3058,39 +3411,39 @@
                 `).join('');
             }
 
-            if (dateTrigger) {
-                const labelNode = qsa('span', dateTrigger)[1];
-                setNodeText(labelNode, rangeDisplayLabel(activeRange));
-            }
         }
 
-        function filterRows() {
-            const query = searchInput.value.trim().toLowerCase();
-            qsa('tbody tr').filter((row) => row.querySelector('td')).forEach((row) => {
-                row.style.display = !query || row.innerText.toLowerCase().includes(query) ? '' : 'none';
-            });
-        }
-
-        searchInput.addEventListener('input', filterRows);
-
-        if (dateTrigger) {
-            dateTrigger.addEventListener('click', () => {
-                openFormModal({
-                    title: 'Report Date Range',
-                    description: 'Choose the reporting window.',
-                    submitLabel: 'Apply Range',
-                    fields: [
-                        { name: 'range', label: 'Range', type: 'select', value: activeRange.label, required: true, options: ranges.map((range) => range.label) }
-                    ],
-                    onSubmit: ({ range }) => {
-                        activeRange = ranges.find((item) => item.label === range) || activeRange;
-                        renderReports();
-                        filterRows();
-                        toast(`Report range switched to ${rangeDisplayLabel(activeRange)}.`, 'success');
+        if (quarterSelect) {
+            quarterSelect.addEventListener('change', () => {
+                const selectedQuarter = quarterSelect.value;
+                if (!selectedQuarter || !fiscalQuarterMap[selectedQuarter]) {
+                    monthWrap?.classList.add('hidden');
+                    yearWrap?.classList.add('hidden');
+                    if (monthSelect) {
+                        monthSelect.innerHTML = '';
                     }
-                });
+                    return;
+                }
+                populateMonthOptions(selectedQuarter);
+                populateYearOptions(yearSelect?.value);
+                monthWrap?.classList.remove('hidden');
+                yearWrap?.classList.remove('hidden');
+                applyReportDateSelection();
             });
         }
+
+        if (monthSelect) {
+            monthSelect.addEventListener('change', () => {
+                applyReportDateSelection();
+            });
+        }
+
+        if (yearSelect) {
+            yearSelect.addEventListener('change', () => {
+                applyReportDateSelection();
+            });
+        }
+
 
         if (exportButton) {
             exportButton.addEventListener('click', () => {
@@ -3284,13 +3637,37 @@
                 leads: records,
                 totalAmount: records.reduce((sum, lead) => sum + lead.value, 0),
                 total: records.length,
-                cold: records.filter((lead) => normalizeStatus(lead.status) === 'cold leads').length,
-                warm: records.filter((lead) => normalizeStatus(lead.status) === 'warm leads').length,
-                hot: records.filter((lead) => normalizeStatus(lead.status) === 'hot leads').length,
-                transition: records.filter((lead) => normalizeStatus(lead.status) === 'project in transition').length,
-                hold: records.filter((lead) => normalizeStatus(lead.status) === 'hold').length,
+                prospecting: records.filter((lead) => normalizeStatus(lead.status) === 'prospecting').length,
+                qualification: records.filter((lead) => normalizeStatus(lead.status) === 'qualification').length,
+                proposal: records.filter((lead) => normalizeStatus(lead.status) === 'proposal').length,
+                negotiation: records.filter((lead) => normalizeStatus(lead.status) === 'negotiation').length,
+                hold: records.filter((lead) => leadLifecycleLabel(lead) === 'Hold').length,
                 won: records.filter((lead) => normalizeStatus(lead.status) === 'deal won').length,
                 lost: records.filter((lead) => normalizeStatus(lead.status) === 'deal lost').length
+            };
+        }
+
+        function ownerTrend(owner) {
+            const records = ownerLeads(owner).slice().sort((left, right) => parseDateValue(left.date) - parseDateValue(right.date));
+            const labels = ['P1', 'P2', 'P3', 'P4', 'P5'];
+            const targetRate = 70;
+            const buckets = labels.map((label, index) => {
+                const cutoff = Math.max(1, Math.ceil(((index + 1) / labels.length) * Math.max(records.length, 1)));
+                const subset = records.slice(0, cutoff);
+                const closed = subset.filter((lead) => isClosedStatus(lead.status));
+                const won = subset.filter((lead) => isWonStatus(lead.status));
+                return {
+                    label,
+                    winRate: closed.length ? (won.length / closed.length) * 100 : 0,
+                    target: targetRate
+                };
+            });
+            const finalClosed = records.filter((lead) => isClosedStatus(lead.status));
+            const finalWon = records.filter((lead) => isWonStatus(lead.status));
+            return {
+                targetRate,
+                actualRate: finalClosed.length ? (finalWon.length / finalClosed.length) * 100 : 0,
+                buckets
             };
         }
 
@@ -3335,10 +3712,10 @@
                                     <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">Click to open</span>
                                 </div>
                                 <div class="grid grid-cols-2 xl:grid-cols-3 gap-3.5 text-sm">
-                                    <div class="rounded-2xl border border-amber-100 bg-amber-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Cold</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.cold}</p></div>
-                                    <div class="rounded-2xl border border-orange-100 bg-orange-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Warm</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.warm}</p></div>
-                                    <div class="rounded-2xl border border-red-100 bg-red-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-red-700">Hot</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.hot}</p></div>
-                                    <div class="rounded-2xl border border-blue-100 bg-blue-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Transition</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.transition}</p></div>
+                                    <div class="rounded-2xl border border-amber-100 bg-amber-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Prospecting</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.prospecting}</p></div>
+                                    <div class="rounded-2xl border border-orange-100 bg-orange-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Qualification</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.qualification}</p></div>
+                                    <div class="rounded-2xl border border-red-100 bg-red-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-red-700">Negotiation</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.negotiation}</p></div>
+                                    <div class="rounded-2xl border border-blue-100 bg-blue-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Proposal</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.proposal}</p></div>
                                     <div class="rounded-2xl border border-slate-200 bg-slate-100/90 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-700">Hold</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.hold}</p></div>
                                     <div class="rounded-2xl border border-emerald-100 bg-emerald-50/80 px-4 py-4"><p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">Won</p><p class="mt-3 text-2xl font-bold text-slate-900">${stats.won}</p></div>
                                 </div>
@@ -3363,6 +3740,7 @@
 
         function renderDetail(owner) {
             const stats = ownerStats(owner);
+            const trend = ownerTrend(owner);
             let activeFilter = 'All Leads';
 
             overviewHost.classList.add('hidden');
@@ -3385,13 +3763,40 @@
                 </div>
                 <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
                     <div class="rounded-3xl bg-white p-5 border border-outline-variant/15 shadow-sm"><p class="text-xs uppercase font-bold text-on-surface-variant">Total Leads</p><p class="mt-3 text-3xl font-bold">${stats.total}</p></div>
-                    <div class="rounded-3xl bg-amber-50 p-5 border border-amber-100"><p class="text-xs uppercase font-bold text-amber-700">Cold Leads</p><p class="mt-3 text-3xl font-bold">${stats.cold}</p></div>
-                    <div class="rounded-3xl bg-orange-50 p-5 border border-orange-100"><p class="text-xs uppercase font-bold text-orange-700">Warm Leads</p><p class="mt-3 text-3xl font-bold">${stats.warm}</p></div>
-                    <div class="rounded-3xl bg-red-50 p-5 border border-red-100"><p class="text-xs uppercase font-bold text-red-700">Hot Leads</p><p class="mt-3 text-3xl font-bold">${stats.hot}</p></div>
-                    <div class="rounded-3xl bg-blue-50 p-5 border border-blue-100"><p class="text-xs uppercase font-bold text-blue-700">Project in Transition</p><p class="mt-3 text-3xl font-bold">${stats.transition}</p></div>
+                    <div class="rounded-3xl bg-amber-50 p-5 border border-amber-100"><p class="text-xs uppercase font-bold text-amber-700">Prospecting</p><p class="mt-3 text-3xl font-bold">${stats.prospecting}</p></div>
+                    <div class="rounded-3xl bg-orange-50 p-5 border border-orange-100"><p class="text-xs uppercase font-bold text-orange-700">Qualification</p><p class="mt-3 text-3xl font-bold">${stats.qualification}</p></div>
+                    <div class="rounded-3xl bg-red-50 p-5 border border-red-100"><p class="text-xs uppercase font-bold text-red-700">Negotiation</p><p class="mt-3 text-3xl font-bold">${stats.negotiation}</p></div>
+                    <div class="rounded-3xl bg-blue-50 p-5 border border-blue-100"><p class="text-xs uppercase font-bold text-blue-700">Proposal</p><p class="mt-3 text-3xl font-bold">${stats.proposal}</p></div>
                     <div class="rounded-3xl bg-slate-100 p-5 border border-slate-200"><p class="text-xs uppercase font-bold text-slate-700">Hold</p><p class="mt-3 text-3xl font-bold">${stats.hold}</p></div>
                     <div class="rounded-3xl bg-emerald-50 p-5 border border-emerald-100"><p class="text-xs uppercase font-bold text-emerald-700">Deal Won</p><p class="mt-3 text-3xl font-bold">${stats.won}</p></div>
                     <div class="rounded-3xl bg-rose-50 p-5 border border-rose-100"><p class="text-xs uppercase font-bold text-rose-700">Deal Lost</p><p class="mt-3 text-3xl font-bold">${stats.lost}</p></div>
+                </div>
+                <div class="bg-white rounded-[28px] border border-outline-variant/15 shadow-sm overflow-hidden p-6 lg:p-7">
+                    <div class="flex items-start justify-between gap-4 mb-6">
+                        <div>
+                            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400 font-bold">Performance Trend</p>
+                            <h4 class="mt-2 text-xl font-bold text-slate-900">Win Rate Trend vs Target</h4>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Current</p>
+                            <p class="mt-2 text-2xl font-bold text-slate-900">${formatPercent(trend.actualRate, 0)}</p>
+                        </div>
+                    </div>
+                    <div class="rounded-[24px] bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] border border-outline-variant/10 p-4">
+                        <div class="overflow-x-auto">
+                            <svg viewBox="0 0 420 190" class="w-full min-w-[340px] h-[220px]" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="34" x2="420" y2="34" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4"/>
+                                <path d="M${trend.buckets.map((bucket, index) => { const x = index * 105; const y = 160 - Math.min(126, Math.max(0, bucket.winRate) * 1.8); return `${x} ${y}`; }).join(' L ')}" stroke="#1D4ED8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                ${trend.buckets.map((bucket, index) => { const x = index * 105; const y = 160 - Math.min(126, Math.max(0, bucket.winRate) * 1.8); return `<circle cx="${x}" cy="${y}" r="5" fill="#1D4ED8"/>`; }).join('')}
+                                <text x="420" y="28" text-anchor="end" fill="#94A3B8" font-size="11" font-weight="700">TARGET (${formatPercent(trend.targetRate, 0)})</text>
+                                ${trend.buckets.map((bucket, index) => { const x = index * 105; const anchor = index === trend.buckets.length - 1 ? 'end' : 'start'; return `<text x="${x}" y="182" text-anchor="${anchor}" fill="#94A3B8" font-size="11" font-weight="700">${bucket.label}</text>`; }).join('')}
+                            </svg>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between gap-4 text-sm">
+                            <span class="font-medium text-slate-700">Actual: ${formatPercent(trend.actualRate, 0)}</span>
+                            <span class="font-medium text-slate-400">Target: ${formatPercent(trend.targetRate, 0)}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="bg-white rounded-[28px] border border-outline-variant/15 shadow-sm overflow-hidden">
                     <div class="px-6 py-5 border-b border-outline-variant/15 flex items-center justify-between gap-4">
@@ -3401,11 +3806,10 @@
                         </div>
                         <select id="owner-status-filter" class="min-w-[220px] bg-surface-container-low border-none rounded-2xl px-4 pr-10 py-3 text-sm font-medium focus:ring-2 focus:ring-primary/20">
                             <option>All Leads</option>
-                            <option>Cold Leads</option>
-                            <option>Warm Leads</option>
-                            <option>Hot Leads</option>
-                            <option>Project in Transition</option>
-                            <option>Hold</option>
+                            <option>Prospecting</option>
+                            <option>Qualification</option>
+                            <option>Proposal</option>
+                            <option>Negotiation</option>
                             <option>Deal Won</option>
                             <option>Deal Lost</option>
                         </select>
@@ -3426,7 +3830,7 @@
                             <div class="flex items-start justify-between gap-4">
                                 <div>
                                     <p class="font-semibold text-on-surface">${escapeHtml(lead.company)}</p>
-                                    <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(lead.contact)} • ${escapeHtml(lead.status)} • ${escapeHtml(lead.clientName || lead.company)}</p>
+                                    <p class="text-sm text-on-surface-variant mt-1">${escapeHtml(lead.contact)} • ${escapeHtml(lead.status)} • ${escapeHtml(leadLifecycleLabel(lead))} • ${escapeHtml(lead.clientName || lead.company)}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold text-on-surface">${escapeHtml(formatMoney(lead.value, { currency: lead.currency }))}</p>
@@ -3444,7 +3848,7 @@
                             toast('Lead details are not available yet.', 'warning');
                             return;
                         }
-                        openLeadDetailModal(lead);
+                        openLeadDetailModal(lead, { ownerContext: owner });
                     });
                 });
             }
@@ -3473,16 +3877,17 @@
         }
     }
     function initSettingsPage() {
-        const addUserButton = qsa('button').find((button) => button.textContent.includes('Add User'));
         const userTableBody = qs('tbody');
         const stageCards = qsa('#lead-stages .group');
         const stageSettingsButton = qsa('button').find((button) => button.querySelector('[data-icon="settings_suggest"]'));
         const notificationCheckboxes = qsa('input.sr-only.peer');
         const settings = getStored(STORAGE_KEYS.settings, DEFAULT_SETTINGS);
-        const users = getStored(STORAGE_KEYS.users, []);
+        const users = DEFAULT_TEAM_USERS;
         const storedStages = getStored(STORAGE_KEYS.stages, null);
 
         if (users.length && userTableBody) {
+            userTableBody.innerHTML = '';
+            setStored(STORAGE_KEYS.users, users);
             users.forEach((user) => {
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-surface-container-low/30 transition-colors';
@@ -3513,11 +3918,10 @@
             const normalizedStages = storedStages.map((stage) => ({
                 'deal won': 'Deal Won',
                 'deal lost': 'Deal Lost',
-                'project in transition': 'Project in Transition',
-                'hot leads': 'Hot Leads',
-                'warm leads': 'Warm Leads',
-                'hold': 'Hold',
-                'cold leads': 'Cold Leads'
+                negotiation: 'Negotiation',
+                proposal: 'Proposal',
+                qualification: 'Qualification',
+                prospecting: 'Prospecting'
             }[normalizeStatus(stage)] || stage));
             stageCards.forEach((card, index) => {
                 const label = qsa('span', card).find((span) => span.className.includes('flex-1'));
@@ -3538,33 +3942,6 @@
             });
         });
 
-        if (addUserButton && userTableBody) {
-            addUserButton.addEventListener('click', () => {
-                openFormModal({
-                    title: 'Add User',
-                    description: 'Invite a teammate into the workspace.',
-                    submitLabel: 'Add User',
-                    fields: [
-                        { name: 'name', label: 'Full Name', required: true, placeholder: 'e.g. Sarah Chen' },
-                        { name: 'email', label: 'Email Address', required: true, placeholder: 'sarah.chen@grassroots.ai' },
-                        { name: 'role', label: 'Role', value: 'Lead Manager', required: true }
-                    ],
-                    onSubmit: ({ name, email, role }) => {
-                        const newUser = {
-                            name,
-                            email,
-                            role,
-                            initials: name.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
-                        };
-                        const storedUsers = getStored(STORAGE_KEYS.users, []);
-                        storedUsers.push(newUser);
-                        setStored(STORAGE_KEYS.users, storedUsers);
-                        toast(`${name} added to the team.`, 'success');
-                        window.location.reload();
-                    }
-                });
-            });
-        }
 
         qsa('tbody button').forEach((button) => {
             button.addEventListener('click', () => {
@@ -3583,7 +3960,7 @@
                     description: 'Create a new stage in the sales cycle.',
                     submitLabel: 'Add Stage',
                     fields: [
-                        { name: 'label', label: 'Stage Name', value: 'Project in Transition', required: true }
+                        { name: 'label', label: 'Stage Name', value: 'Proposal', required: true }
                     ],
                     onSubmit: ({ label }) => {
                         const card = document.createElement('div');
@@ -3670,6 +4047,39 @@
         }
     });
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

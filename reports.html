@@ -133,23 +133,37 @@
     <!-- Main Content Canvas -->
     <main class="ml-64 pt-24 p-8 min-h-screen">
         <!-- Page Header -->
-        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
+        <header class="mb-8 flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4 xl:gap-6">
+            <div class="xl:max-w-sm">
                 <h1 class="text-3xl font-bold text-on-surface tracking-tight font-headline">Reports</h1>
                 <p class="text-on-surface-variant mt-1">Intelligence overview and lead performance analysis</p>
             </div>
-            <div class="flex items-center gap-3">
-                <div
-                    class="flex items-center bg-white px-4 py-2.5 rounded-xl shadow-sm border border-outline-variant/10 cursor-pointer hover:bg-surface-container-low transition-colors"
-                    id="reports-date-trigger">
-                    <span class="material-symbols-outlined text-primary mr-2"
-                        data-icon="calendar_today">calendar_today</span>
-                    <span class="text-sm font-medium">Last 30 Days: Oct 1 - Oct 31</span>
-                    <span class="material-symbols-outlined text-slate-400 ml-2"
-                        data-icon="expand_more">expand_more</span>
+            <div class="flex flex-wrap xl:flex-nowrap items-end gap-3 xl:gap-2 xl:ml-auto">
+                <div class="space-y-2">
+                    <label class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Quarter</label>
+                    <select id="reports-quarter-select"
+                        class="w-full xl:w-[11rem] rounded-xl border border-outline-variant/15 bg-white px-4 py-3 text-sm font-medium text-on-surface shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/15">
+                        <option value="">Select Quarter</option>
+                        <option value="Q1">Quarter 1 (Q1)</option>
+                        <option value="Q2">Quarter 2 (Q2)</option>
+                        <option value="Q3">Quarter 3 (Q3)</option>
+                        <option value="Q4">Quarter 4 (Q4)</option>
+                    </select>
+                </div>
+                <div id="reports-month-wrap" class="hidden space-y-2">
+                    <label class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Month</label>
+                    <select id="reports-month-select"
+                        class="w-full xl:w-[11rem] rounded-xl border border-outline-variant/15 bg-white px-4 py-3 text-sm font-medium text-on-surface shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/15">
+                    </select>
+                </div>
+                <div id="reports-year-wrap" class="hidden space-y-2">
+                    <label class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Year</label>
+                    <select id="reports-year-select"
+                        class="w-full xl:w-[8.25rem] rounded-xl border border-outline-variant/15 bg-white px-4 py-3 text-sm font-medium text-on-surface shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/15">
+                    </select>
                 </div>
                 <button
-                    class="flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:-translate-y-0.5 transition-all">
+                    class="flex items-center gap-2 whitespace-nowrap bg-gradient-to-br from-primary to-primary-container text-white px-4 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:-translate-y-0.5 transition-all">
                     <span class="material-symbols-outlined text-lg" data-icon="download">download</span>
                     Export Report
                 </button>
@@ -270,7 +284,7 @@
                 <div class="flex flex-col gap-3">
                     <!-- Stage 1 -->
                     <div class="flex items-center gap-4">
-                        <div class="w-32 text-sm font-medium text-on-surface-variant">Cold Leads</div>
+                        <div class="w-32 text-sm font-medium text-on-surface-variant">Prospecting</div>
                         <div
                             class="flex-1 h-12 bg-primary/10 rounded-lg relative overflow-hidden flex items-center px-4">
                             <div class="absolute inset-y-0 left-0 bg-primary w-full opacity-20"></div>
@@ -283,7 +297,7 @@
                             data-icon="arrow_downward">arrow_downward</span></div>
                     <!-- Stage 2 -->
                     <div class="flex items-center gap-4">
-                        <div class="w-32 text-sm font-medium text-on-surface-variant">Warm Leads</div>
+                        <div class="w-32 text-sm font-medium text-on-surface-variant">Qualification</div>
                         <div
                             class="flex-1 h-12 bg-primary/10 rounded-lg relative overflow-hidden flex items-center px-4">
                             <div class="absolute inset-y-0 left-0 bg-primary w-[65%] opacity-20"></div>
@@ -296,7 +310,7 @@
                             data-icon="arrow_downward">arrow_downward</span></div>
                     <!-- Stage 3 -->
                     <div class="flex items-center gap-4">
-                        <div class="w-32 text-sm font-medium text-on-surface-variant">Hot Leads</div>
+                        <div class="w-32 text-sm font-medium text-on-surface-variant">Proposal</div>
                         <div
                             class="flex-1 h-12 bg-primary/10 rounded-lg relative overflow-hidden flex items-center px-4">
                             <div class="absolute inset-y-0 left-0 bg-primary w-[38%] opacity-20"></div>
@@ -309,7 +323,7 @@
                             data-icon="arrow_downward">arrow_downward</span></div>
                     <!-- Stage 4 -->
                     <div class="flex items-center gap-4">
-                        <div class="w-32 text-sm font-medium text-on-surface-variant">Project in Transition</div>
+                        <div class="w-32 text-sm font-medium text-on-surface-variant">Negotiation</div>
                         <div
                             class="flex-1 h-12 bg-primary/10 rounded-lg relative overflow-hidden flex items-center px-4">
                             <div class="absolute inset-y-0 left-0 bg-primary w-[28%] opacity-20"></div>
