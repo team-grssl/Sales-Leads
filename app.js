@@ -508,26 +508,51 @@
             .sort((a, b) => b.revenueContributed - a.revenueContributed || b.leadsManaged - a.leadsManaged);
 
         const weekdayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-        const weekBuckets = weekdayLabels.map((label, index) => ({ label, newOpps: 0, advancements: 0, won: 0, jsDay: index + 1 }));
+        const weeklyLeadBuckets = weekdayLabels.map((label, index) => ({
+            label,
+            jsDay: index + 1,
+            total: 0,
+            prospecting: 0,
+            qualification: 0,
+            proposal: 0,
+            negotiation: 0,
+            dealWon: 0,
+            dealLost: 0
+        }));
         leads.forEach((lead) => {
             const date = parseDateValue(lead.date);
-            const bucket = weekBuckets.find((item) => item.jsDay === date.getDay());
+            const bucket = weeklyLeadBuckets.find((item) => item.jsDay === date.getDay());
             if (!bucket) {
                 return;
             }
-            bucket.newOpps += 1;
-            if (stageRank(lead.status) >= 2) {
-                bucket.advancements += 1;
-            }
-            if (isWonStatus(lead.status)) {
-                bucket.won += 1;
+            bucket.total += 1;
+            switch (normalizeStatus(lead.status)) {
+                case 'prospecting':
+                    bucket.prospecting += 1;
+                    break;
+                case 'qualification':
+                    bucket.qualification += 1;
+                    break;
+                case 'proposal':
+                    bucket.proposal += 1;
+                    break;
+                case 'negotiation':
+                    bucket.negotiation += 1;
+                    break;
+                case 'deal won':
+                    bucket.dealWon += 1;
+                    break;
+                case 'deal lost':
+                    bucket.dealLost += 1;
+                    break;
+                default:
+                    bucket.prospecting += 1;
+                    break;
             }
         });
-        const weeklyNewDeals = weekBuckets.reduce((sum, bucket) => sum + bucket.newOpps, 0);
-        const weeklyStageUpgrades = weekBuckets.reduce((sum, bucket) => sum + bucket.advancements, 0);
-        const weeklyWonRevenue = wonLeads
-            .filter((lead) => (now - parseDateValue(lead.date).getTime()) <= (7 * 24 * 36e5))
-            .reduce((sum, lead) => sum + lead.value, 0);
+        const weeklyUploadedLeads = weeklyLeadBuckets.reduce((sum, bucket) => sum + bucket.total, 0);
+        const weeklyOpenLeads = weeklyLeadBuckets.reduce((sum, bucket) => sum + bucket.prospecting + bucket.qualification + bucket.proposal + bucket.negotiation, 0);
+        const weeklyClosedLeads = weeklyLeadBuckets.reduce((sum, bucket) => sum + bucket.dealWon + bucket.dealLost, 0);
 
         const totalClients = clients.length;
         const activeProjects = clients.reduce((sum, client) => sum + client.projects, 0);
@@ -560,11 +585,11 @@
             sourceDistribution,
             funnel,
             ownerRanking,
-            weekBuckets,
+            weeklyLeadBuckets,
             avgLeadFlow,
-            weeklyNewDeals,
-            weeklyStageUpgrades,
-            weeklyWonRevenue
+            weeklyUploadedLeads,
+            weeklyOpenLeads,
+            weeklyClosedLeads
         };
     }
 
@@ -2009,40 +2034,42 @@
                 });
             }
 
-            const weeklyPanel = qsa('h4').find((node) => node.textContent.trim() === 'Weekly Deal Activity')?.closest('.bg-surface-container-lowest');
+            const weeklyPanel = qsa('h4').find((node) => node.textContent.trim() === 'Weekly Lead Activity')?.closest('.bg-surface-container-lowest');
             if (weeklyPanel) {
                 const barHost = qsa('div', weeklyPanel).find((node) => node.className.includes('relative h-64'));
                 if (barHost) {
-                    const peak = Math.max(1, ...analytics.weekBuckets.flatMap((bucket) => [bucket.newOpps, bucket.advancements, bucket.won]));
+                    const peak = Math.max(1, ...analytics.weeklyLeadBuckets.map((bucket) => bucket.total));
                     const columns = qsa(':scope > div', barHost).filter((node) => node.className.includes('flex-1'));
                     columns.forEach((column, index) => {
-                        const bucket = analytics.weekBuckets[index];
+                        const bucket = analytics.weeklyLeadBuckets[index];
                         if (!bucket) {
                             return;
                         }
-                        const bars = qsa(':scope > div', column).slice(0, 3);
-                        const values = [bucket.newOpps, bucket.advancements, bucket.won];
+                        const bars = qsa(':scope > div', column).slice(0, 6);
+                        const values = [bucket.prospecting, bucket.qualification, bucket.proposal, bucket.negotiation, bucket.dealWon, bucket.dealLost];
                         bars.forEach((bar, barIndex) => {
-                            const height = Math.max(8, Math.round((values[barIndex] / peak) * 100));
-                            bar.style.height = `${height}%`;
+                            const rawValue = values[barIndex];
+                            const height = rawValue > 0 ? Math.max(6, Math.round((rawValue / peak) * 100)) : 0;
+                            bar.style.height = String(height) + '%';
+                            bar.style.display = rawValue > 0 ? '' : 'none';
                         });
                         setNodeText(qs('span', column), bucket.label);
                     });
                 }
 
-                const statCards = qsa('p', weeklyPanel).filter((node) => ['New Deals', 'Stage Upgrades', 'Revenue Won'].includes(node.textContent.trim()));
+                const statCards = qsa('p', weeklyPanel).filter((node) => ['Leads Uploaded', 'Open Leads', 'Closed Leads'].includes(node.textContent.trim()));
                 statCards.forEach((labelNode) => {
                     const card = labelNode.parentElement;
                     const valueNode = qsa('p', card)[1];
                     if (!valueNode) {
                         return;
                     }
-                    if (labelNode.textContent.trim() === 'New Deals') {
-                        valueNode.textContent = String(analytics.weeklyNewDeals);
-                    } else if (labelNode.textContent.trim() === 'Stage Upgrades') {
-                        valueNode.textContent = String(analytics.weeklyStageUpgrades);
-                    } else if (labelNode.textContent.trim() === 'Revenue Won') {
-                        valueNode.textContent = formatMoney(analytics.weeklyWonRevenue, { currency: analytics.commonCurrency });
+                    if (labelNode.textContent.trim() === 'Leads Uploaded') {
+                        valueNode.textContent = String(analytics.weeklyUploadedLeads);
+                    } else if (labelNode.textContent.trim() === 'Open Leads') {
+                        valueNode.textContent = String(analytics.weeklyOpenLeads);
+                    } else if (labelNode.textContent.trim() === 'Closed Leads') {
+                        valueNode.textContent = String(analytics.weeklyClosedLeads);
                     }
                 });
             }
@@ -2068,8 +2095,6 @@
         if (updatePipelineButton) {
             updatePipelineButton.addEventListener('click', () => {
                 renderDashboardAnalytics();
-        window.addEventListener('resize', fitDashboardValues);
-                toast('Pipeline metrics refreshed on the dashboard.', 'success');
             });
         }
 
@@ -4047,6 +4072,8 @@
         }
     });
 })();
+
+
 
 
 
