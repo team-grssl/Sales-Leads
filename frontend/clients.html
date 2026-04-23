@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clients — Grassroots Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="sidebar.js?v=3"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#f0f1f2",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#0053db",
+              "on-secondary-fixed": "#00174b",
+              "surface-variant": "#e1e3e4",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e1e3e4",
+              "surface-dim": "#d9dadb",
+              "on-background": "#191c1d",
+              "on-secondary": "#ffffff",
+              "on-tertiary-container": "#ffede6",
+              "tertiary-container": "#bc4800",
+              "on-primary": "#ffffff",
+              "primary-fixed-dim": "#b4c5ff",
+              "inverse-primary": "#b4c5ff",
+              "on-surface-variant": "#434655",
+              "on-primary-fixed-variant": "#003ea8",
+              "surface-container": "#edeeef",
+              "error": "#ba1a1a",
+              "surface": "#f8f9fa",
+              "on-secondary-container": "#394c84",
+              "on-tertiary-fixed-variant": "#7d2d00",
+              "secondary": "#495c95",
+              "surface-container-low": "#f3f4f5",
+              "outline-variant": "#c3c6d7",
+              "outline": "#737686",
+              "primary-fixed": "#dbe1ff",
+              "surface-bright": "#f8f9fa",
+              "secondary-fixed": "#dbe1ff",
+              "on-surface": "#191c1d",
+              "tertiary-fixed": "#ffdbcd",
+              "on-error-container": "#93000a",
+              "on-tertiary-fixed": "#360f00",
+              "surface-container-high": "#e7e8e9",
+              "on-error": "#ffffff",
+              "background": "#f8f9fa",
+              "on-primary-container": "#eeefff",
+              "primary-container": "#2563eb",
+              "secondary-fixed-dim": "#b4c5ff",
+              "tertiary": "#943700",
+              "tertiary-fixed-dim": "#ffb596",
+              "secondary-container": "#acbfff",
+              "inverse-surface": "#2e3132",
+              "on-primary-fixed": "#00174b",
+              "primary": "#004ac6",
+              "on-secondary-fixed-variant": "#31447b"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(24px);
+        }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- SideNavBar Shell -->
+<app-sidebar active-page="clients.html"></app-sidebar>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen p-8 lg:p-12">
+<!-- TopAppBar Contextual -->
+<header class="mb-12 space-y-6">
+<div>
+<h2 class="text-3xl font-bold tracking-tight text-on-surface">Client Directory</h2>
+</div>
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 rounded-xl bg-surface-container text-sm font-medium border-none focus:ring-2 focus:ring-primary/20 text-on-surface w-72" id="clients-search" list="clients-search-options" placeholder="Search clients..." type="text"/>
+<datalist id="clients-search-options"></datalist>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<select class="min-w-[168px] px-4 pr-10 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors text-sm font-semibold border-none focus:ring-2 focus:ring-primary/20 text-on-surface" id="clients-page-size">
+<option value="3">Show: 3 per page</option>
+<option value="6">Show: 6 per page</option>
+<option value="9" selected>Show: 9 per page</option>
+</select>
+<button class="bg-primary text-white px-6 py-2.5 rounded-xl font-semibold shadow-sm hover:-translate-y-0.5 transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                    New Client
+                </button>
+</div>
+</div>
+</header>
+<section class="mb-5 flex items-center justify-between gap-4">
+<div>
+<p class="text-[11px] font-bold uppercase tracking-[0.28em] text-on-surface-variant">Directory View</p>
+<h3 class="mt-2 text-2xl font-bold tracking-tight text-on-surface">Accounts At A Glance</h3>
+</div>
+</section>
+<!-- Client Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6" id="clients-grid">
+<!-- Add Client Ghost Card -->
+<div class="flex flex-col items-center justify-center rounded-[28px] border-2 border-dashed border-outline-variant bg-white/65 px-8 py-10 hover:bg-surface-container-low transition-colors group cursor-pointer min-h-[260px]" id="add-client-ghost">
+<div class="w-16 h-16 rounded-[20px] bg-surface-container flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</div>
+<h4 class="font-bold text-on-surface">Add New Partner</h4>
+<p class="text-sm text-on-surface-variant text-center mt-2 max-w-xs">Create a new client profile and start tracking the account from the same directory.</p>
+</div>
+</div>
+<!-- Pagination -->
+<footer class="mt-14 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+<span class="text-sm text-on-surface-variant" id="clients-footer-summary">Showing 0 of 0 clients</span>
+<div class="flex items-center gap-2" id="clients-pagination">
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-surface-container transition-colors" id="clients-prev-button">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold" data-page-slot="1">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-surface-container transition-colors" data-page-slot="2">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-surface-container transition-colors" data-page-slot="3">3</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-surface-container transition-colors" id="clients-next-button">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- Toast Interaction -->
+<script src="toast.js?v=3"></script>
+<script src="app.js?v=6"></script>
+</body></html>
+

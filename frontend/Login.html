@@ -102,7 +102,6 @@
             background: linear-gradient(135deg, #004ac6 0%, #2563eb 100%)
         }
 
-        /* Overlay to ensure readability against the background image */
         .page-overlay {
             background-color: rgba(25, 28, 29, 0.4)
         }
@@ -111,10 +110,8 @@
 
 <body class="min-h-screen flex flex-col antialiased text-on-surface relative">
     <div class="fixed inset-0 page-overlay pointer-events-none z-0"></div>
-    <!-- Header / TopAppBar -->
     <main class="flex-grow flex items-center justify-center px-4 pt-20 pb-12 z-10">
         <div class="w-full max-w-[440px]">
-            <!-- Center Branding -->
             <div class="mb-10 text-center">
                 <div class="inline-flex items-center gap-3 mb-2">
                     <span class="material-symbols-outlined text-white text-4xl" data-icon="psychology">psychology</span>
@@ -122,7 +119,6 @@
                     </h2>
                 </div>
             </div>
-            <!-- Login Card -->
             <div
                 class="bg-surface-container-lowest rounded-xl p-8 md:p-10 ambient-shadow border border-outline-variant/10 relative overflow-hidden">
                 <div class="mb-8 text-center md:text-left">
@@ -132,18 +128,16 @@
                         portal.</p>
                 </div>
                 <form action="#" class="space-y-6" id="loginForm">
-                    <!-- Mobile Number Field -->
                     <div class="space-y-1.5">
                         <label class="text-[0.6875rem] font-semibold uppercase tracking-wider text-on-surface-variant"
-                            for="mobile">Mobile Number</label>
+                            for="username">Username</label>
                         <p data-field-error="true" style="display:none;color:#ba1a1a;font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem;"></p>
                         <div class="relative">
                             <input
                                 class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
-                                id="mobile" name="mobile" placeholder="+1 (555) 000-0000" type="tel" />
+                                id="username" name="username" placeholder="Enter your username" type="text" />
                         </div>
                     </div>
-                    <!-- Password Field -->
                     <div class="space-y-1.5">
                         <div class="flex justify-between items-center">
                             <label
@@ -154,25 +148,9 @@
                         <div class="relative">
                             <input
                                 class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
-                                id="password" name="password" placeholder="••••••••" type="password" />
+                                id="password" name="password" placeholder="........" type="password" />
                         </div>
                     </div>
-                    <!-- OTP Field -->
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between items-center">
-                            <label
-                                class="text-[0.6875rem] font-semibold uppercase tracking-wider text-on-surface-variant"
-                                for="otp">OTP</label>
-                        </div>
-                        <p data-field-error="true" style="display:none;color:#ba1a1a;font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.375rem;"></p>
-                        <div class="relative">
-                            <input
-                                class="w-full bg-surface-container border-none xl:rounded-xl px-4 py-3 text-[0.875rem] focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline/50"
-                                id="otp" maxlength="6" name="otp" placeholder="Enter 6-digit code" type="text" />
-                        </div>
-                    </div>
-                    <!-- Remember Me removed -->
-                    <!-- Sign In Button -->
                     <button
                         class="w-full cta-gradient text-white font-semibold py-3.5 xl:rounded-xl hover:-translate-y-0.5 transition-all shadow-md active:scale-95 text-[0.875rem]"
                         type="submit">
@@ -180,7 +158,6 @@
                     </button>
                 </form>
             </div>
-            <!-- Branding Accent -->
             <div class="mt-8 flex justify-center opacity-60">
                 <div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
                 <div class="w-1.5 h-1.5 rounded-full bg-primary mx-2"></div>
@@ -188,9 +165,8 @@
             </div>
         </div>
     </main>
-    <!-- Footer -->
     <footer class="w-full flex flex-col md:flex-row justify-between items-center px-12 py-8 mt-auto z-10">
-        <span class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 mb-4 md:mb-0">© 2024
+        <span class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 mb-4 md:mb-0">&copy; 2024
             Grassroots Sales Leads. All rights reserved.</span>
         <div class="flex gap-8">
             <a class="text-[0.6875rem] font-semibold uppercase tracking-wider text-slate-300 hover:text-white transition-colors active:scale-95"
@@ -201,10 +177,8 @@
                 href="#">Security</a>
         </div>
     </footer>
-<script src="toast.js?v=3"></script>
+    <script src="toast.js?v=3"></script>
     <script src="app.js?v=6"></script>
 </body>
 
 </html>
-
-

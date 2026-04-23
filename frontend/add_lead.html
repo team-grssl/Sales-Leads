@@ -119,16 +119,14 @@
         <div>
           <span class="text-primary font-semibold tracking-wider text-xs uppercase mb-2 block">Intelligence Suite</span>
           <h2 class="text-4xl font-extrabold text-on-surface tracking-tight leading-none mb-3">Add New Lead</h2>
-          <p class="text-on-surface-variant max-w-lg">Initialize a new opportunity in the Grassroots ecosystem. Please
-            complete all structural details for optimal pipeline tracking.</p>
         </div>
       </div>
     </header>
     <!-- Form Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- Main Form Column -->
-      <div class="lg:col-span-8 space-y-8">
-        <!-- Step 1: Company Details -->
+      <div class="lg:col-span-12 space-y-8">
+        <!-- Step 1: Business Unit Details -->
         <section
           class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_12px_32px_rgba(25,28,29,0.04)] relative">
           <div class="absolute top-0 right-0 p-8 opacity-5">
@@ -142,16 +140,23 @@
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="text-xs font-bold text-outline uppercase tracking-wider">Organization Name</label>
+              <label class="text-xs font-bold text-outline uppercase tracking-wider">Business Unit</label>
               <input
+                id="business-unit-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                placeholder="e.g. Nexus Corp" type="text" />
+                placeholder="e.g. Enterprise Delivery" type="text" />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">LOB (Line of Business)</label>
-              <input
-                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                placeholder="e.g. Enterprise Software" type="text" />
+              <select
+                id="lob-input"
+                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface transition-all">
+                <option value="BPO Services">BPO Services</option>
+                <option value="Staffing Services">Staffing Services</option>
+                <option value="IT Projects">IT Projects</option>
+                <option value="App Developments">App Developments</option>
+                <option value="AI Automation Projects">AI Automation Projects</option>
+              </select>
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Client Name</label>
@@ -178,43 +183,65 @@
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Name</label>
               <input
+                id="contact-name-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                 placeholder="Full legal name" type="text" />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Phone</label>
               <input
+                id="contact-phone-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                placeholder="+1 (555) 000-0000" type="tel" />
+                placeholder="+91 4565463422" type="tel" />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Email</label>
               <input
+                id="contact-email-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                 placeholder="contact@company.com" type="email" />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Industry</label>
+              <select
+                id="industry-select"
+                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface appearance-none transition-all">
+                <option value="">Select Industry</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Telecom">Telecom</option>
+                <option value="Ecommerce">Ecommerce</option>
+                <option value="Retail">Retail</option>
+                <option value="Travel">Travel</option>
+                <option value="Automobile">Automobile</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Banking and Financial">Banking and Financial</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Government">Government</option>
+                <option value="Services">Services</option>
+                <option value="Technology">Technology</option>
+                <option value="Education">Education</option>
+                <option value="Construction">Construction</option>
+                <option value="Hospitality">Hospitality</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="space-y-2 hidden" id="industry-other-wrap">
+              <label class="text-xs font-bold text-outline uppercase tracking-wider">Other Industry</label>
               <input
+                id="industry-other-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                placeholder="e.g. FinTech" type="text" />
+                placeholder="Enter industry" type="text" />
             </div>
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Source of Lead</label>
               <select
+                id="lead-source-select"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface appearance-none transition-all">
                 <option>Inbound Request</option>
                 <option>Referral</option>
                 <option>Cold Outreach</option>
                 <option>Trade Show</option>
               </select>
-            </div>
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-outline uppercase tracking-wider">Website <span
-                  class="lowercase italic font-normal">(optional)</span></label>
-              <input
-                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
-                placeholder="https://..." type="url" />
             </div>
           </div>
         </section>
@@ -228,8 +255,16 @@
           </div>
           <div class="space-y-6">
             <div class="space-y-2">
+              <label class="text-xs font-bold text-outline uppercase tracking-wider">Opportunity Name</label>
+              <input
+                id="opportunity-name-input"
+                class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
+                placeholder="e.g. Q2 AI Automation Rollout" type="text" />
+            </div>
+            <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Opportunity Description</label>
               <textarea
+                id="opportunity-description-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                 placeholder="Detailed scope of the proposed project or engagement..." rows="4"></textarea>
             </div>
@@ -239,6 +274,7 @@
                 <div class="relative">
                   <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-medium pointer-events-none">Rs.</span>
                   <input
+                    id="annual-value-input"
                     class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl pl-14 pr-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                     inputmode="numeric" placeholder="0.00" type="text" />
                 </div>
@@ -246,17 +282,19 @@
               <div class="space-y-2">
                 <label class="text-xs font-bold text-outline uppercase tracking-wider">Currency</label>
                 <select
+                  id="currency-select"
                   class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface appearance-none transition-all">
-                  <option selected>INR - Indian Rupee</option>
-                  <option>USD - United States Dollar</option>
-                  <option>EUR - Euro</option>
-                  <option>GBP - British Pound</option>
-                  <option>JPY - Japanese Yen</option>
+                  <option value="INR" selected>INR - Indian Rupee</option>
+                  <option value="USD">USD - United States Dollar</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+                  <option value="JPY">JPY - Japanese Yen</option>
                 </select>
               </div>
               <div class="space-y-2">
                 <label class="text-xs font-bold text-outline uppercase tracking-wider">Lead Status</label>
                 <select
+                  id="lead-status-select"
                   class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 text-on-surface appearance-none transition-all">
                   <option>Prospecting</option>
                   <option>Qualification</option>
@@ -270,6 +308,7 @@
             <div class="space-y-2">
               <label class="text-xs font-bold text-outline uppercase tracking-wider">Next Action</label>
               <input
+                id="next-action-input"
                 class="w-full bg-surface-container border-none focus:ring-1 focus:ring-primary/20 rounded-xl px-4 py-3 placeholder:text-outline-variant text-on-surface transition-all"
                 placeholder="Schedule follow-up call, Send NDA, etc." type="text" />
             </div>
@@ -284,62 +323,6 @@
           </button>
           <p class="text-center text-xs text-outline mt-4 font-medium italic">By clicking create, you are logging this
             lead into the central intelligence repository.</p>
-        </div>
-      </div>
-      <!-- Right Column: Visual Anchors & Help -->
-      <div class="lg:col-span-4 space-y-8">
-        <!-- Lead Score Projection Card -->
-        <div class="bg-surface-container-low p-8 rounded-xl relative overflow-hidden group border border-white/50">
-          <div
-            class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-          </div>
-          <div class="relative z-10">
-            <div class="flex items-center justify-between mb-6">
-              <span class="text-xs font-bold text-outline uppercase">AI Projection</span>
-              <span
-                class="px-2 py-0.5 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold">PRE-ANALYSIS</span>
-            </div>
-            <div class="flex flex-col items-center text-center py-6">
-              <div
-                class="w-24 h-24 rounded-full border-4 border-surface-container-highest flex items-center justify-center mb-4">
-                <span class="text-3xl font-extrabold text-outline-variant italic">?</span>
-              </div>
-              <h4 class="text-lg font-bold text-on-surface mb-2">Lead Score Unavailable</h4>
-              <p class="text-sm text-on-surface-variant">Complete Step 3 to see a predictive conversion analysis based
-                on historical data.</p>
-            </div>
-          </div>
-        </div>
-        <!-- Editorial/Guidance Card -->
-        <div class="bg-inverse-surface text-inverse-on-surface p-8 rounded-xl shadow-xl">
-          <h4 class="text-xl font-bold mb-4">Quality Guidelines</h4>
-          <ul class="space-y-4">
-            <li class="flex gap-3">
-              <span class="material-symbols-outlined text-primary-fixed" data-icon="verified">verified</span>
-              <div class="text-sm">
-                <p class="font-bold">Accuracy first</p>
-                <p class="opacity-70">Always verify the Organization Name to avoid duplicate CRM entries.</p>
-              </div>
-            </li>
-            <li class="flex gap-3">
-              <span class="material-symbols-outlined text-primary-fixed" data-icon="insights">insights</span>
-              <div class="text-sm">
-                <p class="font-bold">Impact Data</p>
-                <p class="opacity-70">Annual Value helps prioritize your pipeline for the quarterly report.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <!-- Visual Element -->
-        <div class="h-64 rounded-xl overflow-hidden relative shadow-lg group">
-          <img alt="team working in modern glass office"
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            data-alt="high-end corporate meeting room with glass walls and professional atmosphere at midday with bright soft natural light"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTpG0Bu-GU4YspAxpiTpOm4eR115PcUsuy0szZCxc9Egzicyyj3VrczBnzY2MxoauMYC19wSnFqR_LVvMI6rOrLsyRTrlEor8e8EANUbWAYNMBkSIccFrMql7dI_EK0HO4hUVbPsI6F7tn5RLmizSbknQMQ9rsjsAf8qkAJTM6cEhQRZFcrm6wEZ4o4lNggrb7ruD0IddgS40vZHmyBUxr-NhXoKjDCV5BkfZMMyItY6xbiwsnQVR4aNyBBGcy-BGqBTLE7p0HQMU8" />
-          <div class="absolute inset-0 bg-gradient-to-t from-on-background/80 to-transparent flex items-end p-6">
-            <p class="text-white text-sm font-medium leading-relaxed">Intelligence thrives on data. Fill out contact
-              details carefully to ensure seamless integration.</p>
-          </div>
         </div>
       </div>
     </div>

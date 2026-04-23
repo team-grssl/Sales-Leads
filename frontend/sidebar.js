@@ -1,3 +1,44 @@
+(() => {
+    const AUTH_TOKEN_KEY = 'grassroots_auth_token';
+    const SESSION_EXPIRES_KEY = 'grassroots_session_expires_at';
+    const currentPath = (window.location.pathname.split('/').pop() || '').toLowerCase();
+    const isProtectedPage = !['login.html', 'index.html', ''].includes(currentPath);
+
+    function sessionExpired() {
+        const expiresAt = sessionStorage.getItem(SESSION_EXPIRES_KEY) || '';
+        return Boolean(expiresAt && Date.parse(expiresAt) <= Date.now());
+    }
+
+    function hasToken() {
+        return Boolean(sessionStorage.getItem(AUTH_TOKEN_KEY));
+    }
+
+    function redirectToLogin() {
+        sessionStorage.removeItem(AUTH_TOKEN_KEY);
+        sessionStorage.removeItem(SESSION_EXPIRES_KEY);
+        sessionStorage.setItem('grassroots_logout_guard', 'true');
+        window.location.replace('Login.html');
+    }
+
+    function enforceProtectedRoute() {
+        if (!isProtectedPage) {
+            return;
+        }
+        if (sessionExpired() || !hasToken()) {
+            redirectToLogin();
+        }
+    }
+
+    if (isProtectedPage) {
+        enforceProtectedRoute();
+        window.addEventListener('pageshow', enforceProtectedRoute);
+        window.addEventListener('popstate', enforceProtectedRoute);
+        // A no-op unload handler helps prevent the browser from restoring protected
+        // pages straight from the back-forward cache after logout.
+        window.addEventListener('unload', () => {});
+    }
+})();
+
 class AppSidebar extends HTMLElement {
     connectedCallback() {
         const activePage = this.getAttribute('active-page');
@@ -36,10 +77,6 @@ class AppSidebar extends HTMLElement {
                 <a class="sidebar-link flex items-center gap-3 px-3 py-2 text-sm font-medium font-inter rounded-lg transition-all duration-200 cursor-pointer" href="reports.html">
                     <span class="material-symbols-outlined" data-icon="assessment">assessment</span>
                     <span>Reports</span>
-                </a>
-                <a class="sidebar-link flex items-center gap-3 px-3 py-2 text-sm font-medium font-inter rounded-lg transition-all duration-200 cursor-pointer" href="settings.html">
-                    <span class="material-symbols-outlined" data-icon="settings">settings</span>
-                    <span>Settings</span>
                 </a>
             </nav>
             <div class="mt-auto pt-6 border-t border-slate-200/50 space-y-1">
