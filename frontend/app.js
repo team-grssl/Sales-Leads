@@ -90,7 +90,22 @@
     const statusCycle = ['Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Deal Won', 'Deal Lost'];
     const lifecycleCycle = ['Active', 'Hold'];
     const DISPLAY_CURRENCY = 'INR';
-    const API_BASE_URL = window.location.protocol === 'file:' ? 'http://localhost:3000/api' : `${window.location.origin}/api`;
+
+    function resolveApiBaseUrl() {
+        const configuredBase = String(window.GRASSROOTS_CONFIG?.apiBaseUrl || '').trim().replace(/\/$/, '');
+        if (configuredBase) {
+            return configuredBase.endsWith('/api') ? configuredBase : `${configuredBase}/api`;
+        }
+        if (window.location.protocol === 'file:') {
+            return 'http://localhost:3000/api';
+        }
+        if (window.location.hostname.endsWith('github.io')) {
+            return '';
+        }
+        return `${window.location.origin}/api`;
+    }
+
+    const API_BASE_URL = resolveApiBaseUrl();
 
     const APP_STATE = {
         leads: null,
@@ -136,6 +151,13 @@
         if (typeof window.showToast === 'function') {
             window.showToast(message, type);
         }
+    }
+
+    function backendUnavailableMessage() {
+        if (!API_BASE_URL) {
+            return 'Backend API is not configured for this site yet. Add your deployed backend URL in frontend/config.js.';
+        }
+        return 'The backend service is unavailable right now. Please try again in a moment.';
     }
 
     function getStored(_key, fallback) {
@@ -237,12 +259,20 @@
     }
 
     async function apiRequest(path, options = {}) {
+        if (!API_BASE_URL) {
+            throw new Error(backendUnavailableMessage());
+        }
         const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
         const token = getAuthToken();
         if (token && !headers.Authorization) {
             headers.Authorization = 'Bearer ' + token;
         }
-        const response = await fetch(API_BASE_URL + path, Object.assign({}, options, { headers }));
+        let response;
+        try {
+            response = await fetch(API_BASE_URL + path, Object.assign({}, options, { headers }));
+        } catch (error) {
+            throw new Error(backendUnavailableMessage());
+        }
         if (!response.ok) {
             const payload = await response.json().catch(() => ({}));
             if (response.status === 401 && path !== '/auth/login') {
@@ -252,7 +282,7 @@
                     window.location.replace('Login.html');
                 }
             }
-            throw new Error(payload.message || 'API request failed.');
+            throw new Error(payload.message || backendUnavailableMessage());
         }
         if (response.status === 204) {
             return null;
