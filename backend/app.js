@@ -8,6 +8,18 @@ const { notFound } = require('./Middleware/not-found');
 const { errorHandler } = require('./Middleware/error-handler');
 
 const app = express();
+const pageRoutes = {
+  '/': 'index.html',
+  '/login': 'Login.html',
+  '/dashboard': 'dashboard.html',
+  '/owner-leads': 'owner_leads.html',
+  '/add-lead': 'add_lead.html',
+  '/review-leads': 'review_leads.html',
+  '/manage-leads': 'manage_leads.html',
+  '/clients': 'clients.html',
+  '/reports': 'reports.html',
+  '/profile': 'profile.html'
+};
 
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
@@ -20,8 +32,10 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api', apiRoutes);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(frontendDir, 'index.html'));
+Object.entries(pageRoutes).forEach(([route, fileName]) => {
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(frontendDir, fileName));
+  });
 });
 
 app.use(notFound);

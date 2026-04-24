@@ -2,7 +2,8 @@
     const STORAGE_KEYS = {
         authToken: 'grassroots_auth_token',
         sessionExpiresAt: 'grassroots_session_expires_at',
-        notificationsSeenAt: 'grassroots_notifications_seen_at'
+        notificationsSeenAt: 'grassroots_notifications_seen_at',
+        addLeadDraft: 'grassroots_add_lead_draft'
     };
 
     const SESSION_FLAGS = {
@@ -90,6 +91,18 @@
     const statusCycle = ['Prospecting', 'Qualification', 'Proposal', 'Negotiation', 'Deal Won', 'Deal Lost'];
     const lifecycleCycle = ['Active', 'Hold'];
     const DISPLAY_CURRENCY = 'INR';
+    const PAGE_ROUTES = {
+        'index.html': '',
+        'login.html': 'login',
+        'dashboard.html': 'dashboard',
+        'owner_leads.html': 'owner-leads',
+        'add_lead.html': 'add-lead',
+        'review_leads.html': 'review-leads',
+        'manage_leads.html': 'manage-leads',
+        'clients.html': 'clients',
+        'reports.html': 'reports',
+        'profile.html': 'profile'
+    };
 
     function resolveApiBaseUrl() {
         const configuredBase = String(window.GRASSROOTS_CONFIG?.apiBaseUrl || '').trim().replace(/\/$/, '');
@@ -142,9 +155,34 @@
         return Array.from(scope.querySelectorAll(selector));
     }
 
+    function cleanRouteEnabled() {
+        return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    }
+
+    function normalizePageKey(value) {
+        const raw = String(value || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
+        if (!raw) {
+            return 'index.html';
+        }
+        if (raw.endsWith('.html')) {
+            return raw;
+        }
+        const match = Object.entries(PAGE_ROUTES).find(([, route]) => route === raw);
+        return match ? match[0] : `${raw}.html`;
+    }
+
+    function routePath(page) {
+        const key = normalizePageKey(page);
+        const route = PAGE_ROUTES[key];
+        if (cleanRouteEnabled() && typeof route === 'string') {
+            return route ? `/${route}` : '/';
+        }
+        return key;
+    }
+
     function pageName() {
         const parts = window.location.pathname.split('/');
-        return (parts[parts.length - 1] || 'dashboard.html').toLowerCase();
+        return normalizePageKey(parts[parts.length - 1] || '');
     }
 
     function toast(message, type = 'info') {
@@ -204,6 +242,7 @@
         APP_STATE.profile = { ...DEFAULT_PROFILE };
         APP_STATE.currentLocation = { ...DEFAULT_LOCATION };
         sessionStorage.removeItem('grassroots_target_review_lead');
+        clearAddLeadDraft();
         sessionStorage.setItem(SESSION_FLAGS.logoutGuard, 'true');
     }
 
@@ -217,7 +256,7 @@
         }
 
         if (!isAuthPage && !getAuthToken()) {
-            window.location.replace('Login.html');
+            window.location.replace(routePath('Login.html'));
             return { allowed: false, currentPage, isAuthPage };
         }
 
@@ -279,7 +318,7 @@
                 clearAuthState();
                 const currentPage = pageName();
                 if (!['login.html', 'index.html'].includes(currentPage)) {
-                    window.location.replace('Login.html');
+                    window.location.replace(routePath('Login.html'));
                 }
             }
             throw new Error(payload.message || backendUnavailableMessage());
@@ -623,6 +662,32 @@
         } else {
             sessionStorage.removeItem(STORAGE_KEYS.notificationsSeenAt);
         }
+    }
+
+    function getAddLeadDraft() {
+        const raw = sessionStorage.getItem(STORAGE_KEYS.addLeadDraft);
+        if (!raw) {
+            return {};
+        }
+        try {
+            const parsed = JSON.parse(raw);
+            return parsed && typeof parsed === 'object' ? parsed : {};
+        } catch (error) {
+            return {};
+        }
+    }
+
+    function setAddLeadDraft(patch = {}) {
+        const next = {
+            ...getAddLeadDraft(),
+            ...patch
+        };
+        sessionStorage.setItem(STORAGE_KEYS.addLeadDraft, JSON.stringify(next));
+        return next;
+    }
+
+    function clearAddLeadDraft() {
+        sessionStorage.removeItem(STORAGE_KEYS.addLeadDraft);
     }
 
     function buildIntelligenceFeedMarkup(items, options = {}) {
@@ -2220,27 +2285,27 @@
                 const leadEntries = getAllLeads().slice(0, 24).map((lead) => ({
                     title: lead.businessUnit || lead.company,
                     subtitle: `Lead | ${lead.status} | ${lead.owner}`,
-                    href: 'review_leads.html',
+                    href: routePath('review_leads.html'),
                     keywords: [lead.businessUnit || lead.company, lead.opportunityName, lead.contact, lead.clientName, lead.status, lead.owner, lead.industry, lead.id].join(' ').toLowerCase()
                 }));
                 const clientEntries = getAllClients().slice(0, 24).map((client) => ({
                     title: client.name,
                     subtitle: `Client | ${client.category}`,
-                    href: 'clients.html',
+                    href: routePath('clients.html'),
                     keywords: [client.name, client.category, 'clients client profile'].join(' ').toLowerCase()
                 }));
 
                 return [
-                    { title: 'Intelligence Dashboard', subtitle: 'Dashboard overview and live KPIs', href: 'dashboard.html', keywords: 'dashboard intelligence overview kpi pipeline win rate weekly activity reports' },
-                    { title: 'Add New Lead', subtitle: 'Create and stage a new opportunity', href: 'add_lead.html', keywords: 'add new lead create opportunity intake form client' },
-                    { title: 'Review Leads', subtitle: 'Comments, timeline, owner changes, and location', href: 'review_leads.html', keywords: 'review leads comments timeline owner change location queue' },
-                    { title: 'Manage Leads', subtitle: 'Search, pipeline actions, exports, and status updates', href: 'manage_leads.html', keywords: 'manage leads status export pipeline bulk actions industry' },
-                    { title: 'Clients', subtitle: 'Client profiles and related lead details', href: 'clients.html', keywords: 'clients client profiles related leads' },
-                    { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: 'reports.html', keywords: 'reports funnel team performance export conversion revenue' },
-                    { title: 'Profile', subtitle: `${profile.name} | ${profile.role}`, href: 'profile.html', keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
-                    { title: 'Total Pipeline', subtitle: `${formatMoney(liveAnalytics.pipelineValue, { currency: liveAnalytics.commonCurrency })} currently in play`, href: 'dashboard.html', keywords: 'total pipeline value revenue dashboard kpi' },
-                    { title: 'Win Rate', subtitle: `${formatPercent(liveAnalytics.winRate, 0)} current close rate`, href: 'dashboard.html', keywords: 'win rate target dashboard close rate' },
-                    { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: 'reports.html', keywords: 'team performance ranking leaderboard reports owners revenue' },
+                    { title: 'Intelligence Dashboard', subtitle: 'Dashboard overview and live KPIs', href: routePath('dashboard.html'), keywords: 'dashboard intelligence overview kpi pipeline win rate weekly activity reports' },
+                    { title: 'Add New Lead', subtitle: 'Create and stage a new opportunity', href: routePath('add_lead.html'), keywords: 'add new lead create opportunity intake form client' },
+                    { title: 'Review Leads', subtitle: 'Comments, timeline, owner changes, and location', href: routePath('review_leads.html'), keywords: 'review leads comments timeline owner change location queue' },
+                    { title: 'Manage Leads', subtitle: 'Search, pipeline actions, exports, and status updates', href: routePath('manage_leads.html'), keywords: 'manage leads status export pipeline bulk actions industry' },
+                    { title: 'Clients', subtitle: 'Client profiles and related lead details', href: routePath('clients.html'), keywords: 'clients client profiles related leads' },
+                    { title: 'Reports', subtitle: 'Funnel metrics, exports, and team performance', href: routePath('reports.html'), keywords: 'reports funnel team performance export conversion revenue' },
+                    { title: 'Profile', subtitle: `${profile.name} | ${profile.role}`, href: routePath('profile.html'), keywords: [profile.name, profile.email, profile.role, profile.focus, 'profile account bio'].join(' ').toLowerCase() },
+                    { title: 'Total Pipeline', subtitle: `${formatMoney(liveAnalytics.pipelineValue, { currency: liveAnalytics.commonCurrency })} currently in play`, href: routePath('dashboard.html'), keywords: 'total pipeline value revenue dashboard kpi' },
+                    { title: 'Win Rate', subtitle: `${formatPercent(liveAnalytics.winRate, 0)} current close rate`, href: routePath('dashboard.html'), keywords: 'win rate target dashboard close rate' },
+                    { title: 'Team Performance Ranking', subtitle: 'Reports ranking and team contribution table', href: routePath('reports.html'), keywords: 'team performance ranking leaderboard reports owners revenue' },
                     ...leadEntries,
                     ...clientEntries
                 ];
@@ -2387,14 +2452,14 @@
             });
         }
 
-        qsa('a[href="profile.html"]').forEach((link) => {
+        qsa('a[data-route="profile"]').forEach((link) => {
             const label = link.querySelector('span:last-child');
             if (label) {
                 label.textContent = 'Profile';
             }
         });
 
-        qsa('a[href="Login.html"]').forEach((link) => {
+        qsa('a[data-route="logout"]').forEach((link) => {
             if (link.dataset.boundLogoutConfirm) {
                 return;
             }
@@ -2413,7 +2478,7 @@
                             // ignore logout transport issues and clear local session anyway
                         }
                         clearAuthState();
-                        window.location.replace('Login.html');
+                        window.location.replace(routePath('Login.html'));
                     }
                 });
             });
@@ -2478,14 +2543,14 @@
                 if (openProfileAction) {
                     openProfileAction.addEventListener('click', () => {
                         close();
-                        window.location.href = 'profile.html';
+                        window.location.href = routePath('profile.html');
                     });
                 }
 
                 if (openProfileSecondaryAction) {
                     openProfileSecondaryAction.addEventListener('click', () => {
                         close();
-                        window.location.href = 'profile.html';
+                        window.location.href = routePath('profile.html');
                     });
                 }
 
@@ -2506,11 +2571,11 @@
                                     await apiRequest('/auth/logout', { method: 'POST' });
                                 } catch (error) {
                                     // ignore logout transport issues and clear local session anyway
-                                }
-                                clearAuthState();
-                                window.location.replace('Login.html');
-                            }
-                        });
+                                  }
+                                  clearAuthState();
+                                  window.location.replace(routePath('Login.html'));
+                              }
+                          });
                     });
                 }
             });
@@ -2848,7 +2913,7 @@
                 window.addEventListener('popstate', () => {
                     if (!getAuthToken() && sessionStorage.getItem(SESSION_FLAGS.logoutGuard) === 'true') {
                         history.pushState(null, '', window.location.href);
-                        window.location.replace('Login.html');
+                        window.location.replace(routePath('Login.html'));
                     }
                 });
             }
@@ -2941,7 +3006,7 @@
             });
         });
         function redirectToDashboard() {
-            const dashboardUrl = new URL('dashboard.html', window.location.href).href;
+            const dashboardUrl = new URL(routePath('dashboard.html'), window.location.origin).href;
             window.location.replace(dashboardUrl);
         }
         async function validateLogin(event) {
@@ -3042,71 +3107,66 @@
             }
         });
 
-        const targetRate = 70;
         const trendHost = qs('#dashboard-win-rate-chart');
         const trendActualLabel = qs('#dashboard-win-rate-actual');
         const trendTargetLabel = qs('#dashboard-win-rate-target');
 
         if (trendHost) {
-            const now = new Date();
-            const trendBuckets = Array.from({ length: 5 }, (_, index) => {
-                const date = new Date(now.getFullYear(), now.getMonth() - (4 - index), 1);
-                const monthLabel = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
-                const bucketLeads = analytics.leads.filter((lead) => {
-                    const leadDate = parseDateValue(lead.date);
-                    return leadDate.getFullYear() === date.getFullYear() && leadDate.getMonth() === date.getMonth();
-                });
-                const closed = bucketLeads.filter((lead) => isClosedStatus(lead.status));
-                const won = closed.filter((lead) => isWonStatus(lead.status));
-                return {
-                    label: monthLabel,
-                    winRate: closed.length ? (won.length / closed.length) * 100 : 0
-                };
-            });
-
-            const chartWidth = 400;
-            const chartHeight = 200;
-            const axisLeft = 18;
-            const axisRight = 390;
+            const ownerSummaries = (Array.isArray(APP_STATE.ownerTargetSummaries) ? APP_STATE.ownerTargetSummaries : [])
+                .map((summary) => ({
+                    owner: String(summary.owner || '').trim(),
+                    targetAmount: Number(summary.quarterTargetAmount || 0),
+                    closedAmount: Number(summary.quarterClosedAmount || 0)
+                }))
+                .filter((summary) => summary.owner);
+            const ownerBars = ownerSummaries.length
+                ? ownerSummaries
+                : analytics.ownerRanking.map((entry) => ({
+                    owner: entry.owner,
+                    targetAmount: 0,
+                    closedAmount: Number(entry.revenueContributed || 0)
+                }));
+            const chartWidth = 420;
+            const chartHeight = 210;
+            const axisLeft = 28;
+            const axisRight = 402;
             const axisTop = 20;
-            const axisBottom = 164;
+            const axisBottom = 162;
             const axisSpan = axisBottom - axisTop;
-            const stepX = trendBuckets.length > 1 ? (axisRight - axisLeft) / (trendBuckets.length - 1) : 0;
-            const axisY = axisBottom;
-            const scaleY = (value) => axisBottom - ((Math.min(100, Math.max(0, value)) / 100) * axisSpan);
-            const points = trendBuckets.map((bucket, index) => {
-                const x = axisLeft + (index * stepX);
-                const y = scaleY(bucket.winRate);
-                return { x, y, label: bucket.label, value: bucket.winRate };
-            });
-            const targetPoints = trendBuckets.map((bucket, index) => ({
-                x: axisLeft + (index * stepX),
-                y: scaleY(targetRate),
-                label: bucket.label,
-                value: targetRate
-            }));
-            const actualPath = points.map((point) => `${point.x} ${point.y}`).join(' L ');
-            const targetPath = targetPoints.map((point) => `${point.x} ${point.y}`).join(' L ');
+            const groupWidth = ownerBars.length ? (axisRight - axisLeft) / ownerBars.length : 64;
+            const maxAmount = Math.max(1, ...ownerBars.flatMap((entry) => [entry.targetAmount, entry.closedAmount]));
+            const scaleY = (value) => axisBottom - ((Math.max(0, Number(value || 0)) / maxAmount) * axisSpan);
+            const formatOwnerLabel = (owner) => owner.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase() || owner.slice(0, 2).toUpperCase();
+            const teamTargetAmount = ownerBars.reduce((sum, entry) => sum + entry.targetAmount, 0);
+            const teamClosedAmount = ownerBars.reduce((sum, entry) => sum + entry.closedAmount, 0);
 
             trendHost.innerHTML = `
                 <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 ${chartWidth} ${chartHeight}">
-                    <line stroke="#CBD5E1" stroke-width="2" x1="${axisLeft}" x2="${axisRight}" y1="${axisY}" y2="${axisY}"></line>
-                    <path d="M${targetPath}" fill="none" stroke="#94A3B8" stroke-dasharray="6 5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M${actualPath}" fill="none" stroke="#004AC6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-                    ${targetPoints.map((point) => `<circle cx="${point.x}" cy="${point.y}" r="4" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"></circle>`).join('')}
-                    ${points.map((point) => `<circle cx="${point.x}" cy="${point.y}" fill="#004AC6" r="4.5"></circle>`).join('')}
-                    <text fill="#94A3B8" font-size="10" font-weight="700" x="${axisRight}" y="${Math.max(12, targetPoints[0].y - 8)}" text-anchor="end">TARGET (${formatPercent(targetRate, 0)})</text>
-                    <text fill="#004AC6" font-size="10" font-weight="700" x="${axisRight}" y="${Math.max(24, points[points.length - 1].y - 8)}" text-anchor="end">CURRENT (${formatPercent(analytics.winRate, 0)})</text>
-                    ${points.map((point, index) => `<text x="${point.x}" y="186" text-anchor="${index === 0 ? 'start' : (index === points.length - 1 ? 'end' : 'middle')}" fill="#94A3B8" font-size="10" font-weight="700">${point.label}</text>`).join('')}
+                    <line stroke="#CBD5E1" stroke-width="2" x1="${axisLeft}" x2="${axisRight}" y1="${axisBottom}" y2="${axisBottom}"></line>
+                    ${ownerBars.map((entry, index) => {
+                        const centerX = axisLeft + (groupWidth * index) + (groupWidth / 2);
+                        const barWidth = Math.min(20, Math.max(12, (groupWidth - 20) / 2));
+                        const targetX = centerX - barWidth - 4;
+                        const actualX = centerX + 4;
+                        const targetY = scaleY(entry.targetAmount);
+                        const actualY = scaleY(entry.closedAmount);
+                        const targetHeight = Math.max(0, axisBottom - targetY);
+                        const actualHeight = Math.max(0, axisBottom - actualY);
+                        return `
+                            <rect x="${targetX}" y="${targetY}" width="${barWidth}" height="${targetHeight}" rx="6" fill="#CBD5E1"></rect>
+                            <rect x="${actualX}" y="${actualY}" width="${barWidth}" height="${actualHeight}" rx="6" fill="#004AC6"></rect>
+                            <text x="${centerX}" y="184" text-anchor="middle" fill="#64748B" font-size="10" font-weight="700">${escapeHtml(formatOwnerLabel(entry.owner))}</text>
+                        `;
+                    }).join('')}
                 </svg>
             `;
-        }
-
-        if (trendActualLabel) {
-            trendActualLabel.textContent = `Actual: ${formatPercent(analytics.winRate, 0)}`;
-        }
-        if (trendTargetLabel) {
-            trendTargetLabel.textContent = `Target: ${formatPercent(targetRate, 0)}`;
+            trendHost.setAttribute('title', ownerBars.map((entry) => `${entry.owner}: Closed ${formatMoney(entry.closedAmount, { currency: DISPLAY_CURRENCY })} / Target ${formatMoney(entry.targetAmount, { currency: DISPLAY_CURRENCY })}`).join('\n'));
+            if (trendActualLabel) {
+                trendActualLabel.textContent = `Team Closed: ${formatMoney(teamClosedAmount, { currency: DISPLAY_CURRENCY })}`;
+            }
+            if (trendTargetLabel) {
+                trendTargetLabel.textContent = `Team Target: ${formatMoney(teamTargetAmount, { currency: DISPLAY_CURRENCY })}`;
+            }
         }
 
         const weeklyChart = qs('#dashboard-weekly-lead-chart');
@@ -3205,6 +3265,58 @@
             syncIndustryOtherField();
         }
 
+        const draftBindings = [
+            ['businessUnit', businessUnitInput],
+            ['clientName', clientNameInput],
+            ['lob', lobInput],
+            ['contact', contactNameInput],
+            ['phone', phoneInput],
+            ['email', emailInput],
+            ['industry', industrySelect],
+            ['industryOther', industryOtherInput],
+            ['source', sourceSelect],
+            ['opportunityName', opportunityNameInput],
+            ['description', descriptionInput],
+            ['value', annualValueInput],
+            ['currency', currencySelect],
+            ['status', statusSelect],
+            ['nextAction', nextActionInput]
+        ];
+
+        function restoreAddLeadDraft() {
+            const draft = getAddLeadDraft();
+            draftBindings.forEach(([key, field]) => {
+                if (!field || !Object.prototype.hasOwnProperty.call(draft, key)) {
+                    return;
+                }
+                field.value = String(draft[key] || '');
+            });
+            syncIndustryOtherField();
+        }
+
+        function persistAddLeadDraft() {
+            const nextDraft = {};
+            draftBindings.forEach(([key, field]) => {
+                if (!field) {
+                    return;
+                }
+                nextDraft[key] = field.value;
+            });
+            setAddLeadDraft(nextDraft);
+        }
+
+        restoreAddLeadDraft();
+        draftBindings.forEach(([, field]) => {
+            if (!field) {
+                return;
+            }
+            const eventName = field.tagName === 'SELECT' ? 'change' : 'input';
+            field.addEventListener(eventName, persistAddLeadDraft);
+            if (eventName !== 'change') {
+                field.addEventListener('change', persistAddLeadDraft);
+            }
+        });
+
         function getClientNameMatches(query = '') {
             const normalizedQuery = String(query || '').trim().toLowerCase();
             const names = getAllClients()
@@ -3259,6 +3371,7 @@
             qsa('.client-name-option', clientNameSuggestions).forEach((optionButton) => {
                 optionButton.addEventListener('click', () => {
                     clientNameInput.value = optionButton.getAttribute('data-client-name') || '';
+                    persistAddLeadDraft();
                     hideClientSuggestions();
                     clientNameInput.focus();
                 });
@@ -3286,7 +3399,7 @@
             const targets = ['dashboard.html', 'add_lead.html', 'manage_leads.html', 'reports.html'];
             link.addEventListener('click', (event) => {
                 event.preventDefault();
-                window.location.href = targets[index] || 'dashboard.html';
+                window.location.href = routePath(targets[index] || 'dashboard.html');
             });
         });
 
@@ -3379,11 +3492,12 @@
                 }
 
                 ensureClientProfileForLead(leadToStore);
+                clearAddLeadDraft();
 
                 toast('Lead entry created successfully.', 'success');
                 broadcastActivityChange();
                 setTimeout(() => {
-                    window.location.href = 'manage_leads.html';
+                    window.location.href = routePath('manage_leads.html');
                 }, 700);
             } catch (error) {
                 toast(error.message || 'Lead entry could not be created.', 'error');
@@ -3630,7 +3744,7 @@
 
         if (newLeadButton) {
             newLeadButton.addEventListener('click', () => {
-                window.location.href = 'add_lead.html';
+                window.location.href = routePath('add_lead.html');
             });
         }
 
@@ -3782,7 +3896,7 @@
 
         if (fab) {
             fab.addEventListener('click', () => {
-                window.location.href = 'add_lead.html';
+                window.location.href = routePath('add_lead.html');
             });
         }
 
@@ -5528,6 +5642,14 @@
             return;
         }
         const { currentPage, isAuthPage } = guard;
+        if (cleanRouteEnabled()) {
+            const cleanUrl = new URL(routePath(currentPage), window.location.origin);
+            cleanUrl.search = window.location.search;
+            cleanUrl.hash = window.location.hash;
+            if (`${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}` !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+                history.replaceState(null, '', cleanUrl.toString());
+            }
+        }
 
         if (!isAuthPage) {
             await hydrateBackendState();
