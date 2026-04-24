@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Grassroots Lead Intelligence</title>
-    <meta http-equiv="refresh" content="0; url=Login.html" />
     <script>
-        window.location.replace('Login.html');
+        const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        const nextPath = isLocalHost ? '/login' : 'Login.html';
+        window.location.replace(nextPath);
     </script>
 </head>
 <body>
-    <p>Redirecting to <a href="Login.html">Login.html</a>...</p>
+    <p>Redirecting to <a href="/login">login</a>...</p>
 </body>
 </html>
 

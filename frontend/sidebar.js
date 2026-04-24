@@ -1,43 +1,44 @@
+const PAGE_ROUTES = {
+    'index.html': '',
+    'login.html': 'login',
+    'dashboard.html': 'dashboard',
+    'owner_leads.html': 'owner-leads',
+    'add_lead.html': 'add-lead',
+    'review_leads.html': 'review-leads',
+    'manage_leads.html': 'manage-leads',
+    'clients.html': 'clients',
+    'reports.html': 'reports',
+    'profile.html': 'profile'
+};
+
+function cleanRouteEnabled() {
+    return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+}
+
+function normalizePageKey(value) {
+    const raw = String(value || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
+    if (!raw) {
+        return 'index.html';
+    }
+    if (raw.endsWith('.html')) {
+        return raw;
+    }
+    const match = Object.entries(PAGE_ROUTES).find(([, route]) => route === raw);
+    return match ? match[0] : `${raw}.html`;
+}
+
+function routePath(page) {
+    const key = normalizePageKey(page);
+    const route = PAGE_ROUTES[key];
+    if (cleanRouteEnabled() && typeof route === 'string') {
+        return route ? `/${route}` : '/';
+    }
+    return key;
+}
+
 (() => {
     const AUTH_TOKEN_KEY = 'grassroots_auth_token';
     const SESSION_EXPIRES_KEY = 'grassroots_session_expires_at';
-    const PAGE_ROUTES = {
-        'index.html': '',
-        'login.html': 'login',
-        'dashboard.html': 'dashboard',
-        'owner_leads.html': 'owner-leads',
-        'add_lead.html': 'add-lead',
-        'review_leads.html': 'review-leads',
-        'manage_leads.html': 'manage-leads',
-        'clients.html': 'clients',
-        'reports.html': 'reports',
-        'profile.html': 'profile'
-    };
-
-    function cleanRouteEnabled() {
-        return ['localhost', '127.0.0.1'].includes(window.location.hostname);
-    }
-
-    function normalizePageKey(value) {
-        const raw = String(value || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
-        if (!raw) {
-            return 'index.html';
-        }
-        if (raw.endsWith('.html')) {
-            return raw;
-        }
-        const match = Object.entries(PAGE_ROUTES).find(([, route]) => route === raw);
-        return match ? match[0] : `${raw}.html`;
-    }
-
-    function routePath(page) {
-        const key = normalizePageKey(page);
-        const route = PAGE_ROUTES[key];
-        if (cleanRouteEnabled() && typeof route === 'string') {
-            return route ? `/${route}` : '/';
-        }
-        return key;
-    }
 
     const currentPath = normalizePageKey(window.location.pathname.split('/').pop() || '');
     const isProtectedPage = !['login.html', 'index.html'].includes(currentPath);
