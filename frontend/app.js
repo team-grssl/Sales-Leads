@@ -3112,6 +3112,13 @@
         const trendTargetLabel = qs('#dashboard-win-rate-target');
 
         if (trendHost) {
+            const chartPalette = {
+                targetFill: '#334155',
+                targetLabel: '#334155',
+                closedFill: '#0F766E',
+                axis: '#CBD5E1',
+                ownerLabel: '#64748B'
+            };
             const ownerSummaries = (Array.isArray(APP_STATE.ownerTargetSummaries) ? APP_STATE.ownerTargetSummaries : [])
                 .map((summary) => ({
                     owner: String(summary.owner || '').trim(),
@@ -3142,7 +3149,7 @@
 
             trendHost.innerHTML = `
                 <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 ${chartWidth} ${chartHeight}">
-                    <line stroke="#CBD5E1" stroke-width="2" x1="${axisLeft}" x2="${axisRight}" y1="${axisBottom}" y2="${axisBottom}"></line>
+                    <line stroke="${chartPalette.axis}" stroke-width="2" x1="${axisLeft}" x2="${axisRight}" y1="${axisBottom}" y2="${axisBottom}"></line>
                     ${ownerBars.map((entry, index) => {
                         const centerX = axisLeft + (groupWidth * index) + (groupWidth / 2);
                         const barWidth = Math.min(20, Math.max(12, (groupWidth - 20) / 2));
@@ -3153,9 +3160,9 @@
                         const targetHeight = Math.max(0, axisBottom - targetY);
                         const actualHeight = Math.max(0, axisBottom - actualY);
                         return `
-                            <rect x="${targetX}" y="${targetY}" width="${barWidth}" height="${targetHeight}" rx="6" fill="#CBD5E1"></rect>
-                            <rect x="${actualX}" y="${actualY}" width="${barWidth}" height="${actualHeight}" rx="6" fill="#004AC6"></rect>
-                            <text x="${centerX}" y="184" text-anchor="middle" fill="#64748B" font-size="10" font-weight="700">${escapeHtml(formatOwnerLabel(entry.owner))}</text>
+                            <rect x="${targetX}" y="${targetY}" width="${barWidth}" height="${targetHeight}" rx="6" fill="${chartPalette.targetFill}"></rect>
+                            <rect x="${actualX}" y="${actualY}" width="${barWidth}" height="${actualHeight}" rx="6" fill="${chartPalette.closedFill}"></rect>
+                            <text x="${centerX}" y="184" text-anchor="middle" fill="${chartPalette.ownerLabel}" font-size="10" font-weight="700">${escapeHtml(formatOwnerLabel(entry.owner))}</text>
                         `;
                     }).join('')}
                 </svg>
